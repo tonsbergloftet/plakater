@@ -3174,8 +3174,18 @@ function wavePath(pts,x0,w,yTop,amp,flip,yBottom){
   if(flip) m.reverse();
   return smooth(m) + ` L${x0+w},${yBottom} L${x0},${yBottom} Z`;
 }
+/* Sløret er delvis gjennomsiktig, som i profilens originaler (målt: 63–89 % dekkevne,
+   varierende langs bølgen). Bilde og bakgrunn skinner derfor gjennom. */
+let slorN = 0;
+function slorFill(farge, loddrett){
+  const id = 'slor' + (slorN++);
+  const stopp = [[0,.55],[.3,.88],[.55,.62],[.8,.9],[1,.78]]
+    .map(([o,a]) => `<stop offset="${o}" stop-color="${farge}" stop-opacity="${a}"/>`).join('');
+  return { defs: `<defs><linearGradient id="${id}" x1="0" y1="0" x2="${loddrett?0:1}" y2="${loddrett?1:0}">${stopp}</linearGradient></defs>`, fill: `url(#${id})` };
+}
 function waveLayers(o){ // o: x0,w,yTop,amp,flip,yBottom,back,front
-  return `<path d="${wavePath(WAVE_BACK,o.x0,o.w,o.yTop,o.amp,o.flip,o.yBottom)}" fill="${o.back}"/>`
+  const sl = slorFill(o.back);
+  return sl.defs + `<path d="${wavePath(WAVE_BACK,o.x0,o.w,o.yTop,o.amp,o.flip,o.yBottom)}" fill="${sl.fill}"/>`
        + `<path d="${wavePath(WAVE_FRONT,o.x0,o.w,o.yTop,o.amp,o.flip,o.yBottom)}" fill="${o.front}"/>`;
 }
 
@@ -3414,7 +3424,7 @@ LAYOUTS.bildetekst = (uid,f) => {
   const imgD = edge + ` L${g.W},${g.H} L${g.W},0 Z`;
   const bandD = `M${ex+40-24},0 C${ex-10-24},120 ${ex+70-24},250 ${ex+18-24},380 C${ex-28-24},500 ${ex+10-24},610 ${ex+46-24},${g.H} L${g.W},${g.H} L${g.W},0 Z`;
   const svg = `<svg class="bg" viewBox="0 0 ${g.W} ${g.H}"><defs><clipPath id="${uid}p"><path d="${fr}"/></clipPath></defs>
-    <g clip-path="url(#${uid}p)"><path d="${bandD}" fill="${c.c}"/>${imageIn(uid,imgD,ex-30,g.y0,g.x1-ex+30,g.y1-g.y0)}</g></svg>`;
+    <g clip-path="url(#${uid}p)">${(sl => sl.defs + `<path d="${bandD}" fill="${sl.fill}"/>`)(slorFill(c.c, true))}${imageIn(uid,imgD,ex-30,g.y0,g.x1-ex+30,g.y1-g.y0)}</g></svg>`;
   const badge = q ? `<div class="qrbadge" style="left:1050px;top:52px;width:170px;height:170px;--qfs:19px"><div class="qr">${q}</div>${E('qrTekst','','span')}</div>` : '';
   const html = stikk()+tittel()+T('ingress','ingress')+T('tx1','p')+praktisk()+cta(false);
   // Clip uten utsparing for bildet til høyre: rammen trengs ikke på hvit flate
