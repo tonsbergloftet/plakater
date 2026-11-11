@@ -218,14 +218,15 @@ details[open] .sumh{margin-bottom:12px}
 /* QR-merke (ICDP-stil) */
 .page .qrbadge{position:absolute;border-radius:50%;background:#f1be48;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6%;transform:rotate(-7deg);color:#1d1d1b}
 .page .qrbadge .qr{width:47%;height:47%}
+.page .qrbadge .qr svg path{fill:#013952}
 .page .qrbadge span{font-weight:800;font-size:var(--qfs);letter-spacing:.02em;line-height:1}
 /* 7 · Invitasjon (fra designerens InDesign-fil mal1_invitasjon) */
 .page .tem{font-style:inherit}
 .page .inv7{color:#fff;text-align:center}
-.page .inv7 .stikk{display:block;color:var(--slor);font-weight:700;font-size:.8667em;letter-spacing:.3em;text-transform:uppercase;line-height:1.3;margin:0 0 .4em}
+.page .inv7 .stikk{display:block;color:var(--slor);font-weight:700;font-size:.8667em;letter-spacing:.3em;text-transform:uppercase;line-height:1.3;margin:0 0 .05em}
 .page .inv7 .stikk::before{display:none}
-.page .inv7 .tittel{font-weight:400;font-size:2.667em;line-height:1.28;letter-spacing:0;word-spacing:.07em;margin:0;color:#fff;position:relative;top:.094em}
-.page .inv7 .tittel .tem{font-weight:900;font-style:italic;font-size:1.25em;line-height:0}
+.page .inv7 .tittel{font-weight:900;font-style:italic;font-size:3.2em;line-height:1.08;letter-spacing:0;margin:0 0 .22em;color:#fff}
+.page .inv7 .tittel .tem{font-weight:inherit}
 .page .inv7 .ingress{font-style:italic;font-weight:400;font-size:1.333em;line-height:1.54;margin:0;color:#fff}
 .page .dline7{font-size:1em;line-height:1.4;white-space:normal;color:#fff}
 .page .dline7 b{font-weight:700}
@@ -280,6 +281,7 @@ details[open] .sumh{margin-bottom:12px}
       <div class="upl"><input type="file" accept="image/*"><b>Last opp bilde</b><span class="uplh">JPG eller PNG</span><br><img alt=""></div>
       <div class="rng">Utsnitt ↔<input type="range" data-a="fx" min="0" max="100"></div>
       <div class="rng">Utsnitt ↕<input type="range" data-a="fy" min="0" max="100"></div>
+      <div class="rng">Zoom<input type="range" data-a="z" min="1" max="3" step="0.05" value="1"></div>
       <div class="row2" style="margin-top:6px"><button class="btn rm">Fjern bilde</button><button class="btn eks">Bruk eksempelbilde</button></div>
     </div>
     <div class="imgblk" data-n="1">
@@ -288,6 +290,7 @@ details[open] .sumh{margin-bottom:12px}
       <div class="upl"><input type="file" accept="image/*"><b>Last opp bilde</b><span class="uplh">JPG eller PNG</span><br><img alt=""></div>
       <div class="rng">Utsnitt ↔<input type="range" data-a="fx" min="0" max="100"></div>
       <div class="rng">Utsnitt ↕<input type="range" data-a="fy" min="0" max="100"></div>
+      <div class="rng">Zoom<input type="range" data-a="z" min="1" max="3" step="0.05" value="1"></div>
       <div class="row2" style="margin-top:6px"><button class="btn rm">Fjern bilde</button><button class="btn eks">Bruk eksempelbilde</button></div>
     </div>
     <label class="chk" style="margin-top:10px"><input type="checkbox" id="ki"> Merk som KI-generert bilde</label>
@@ -3228,7 +3231,7 @@ function imageIn(uid, clipD, bx,by,bw,bh, n){
   const id = uid+'im'+Math.random().toString(36).slice(2,7);
   let inner;
   if(I.src){
-    const sc = Math.max(bw/I.w, bh/I.h);
+    const sc = Math.max(bw/I.w, bh/I.h) * (I.z || 1);
     const w = I.w*sc, h = I.h*sc;
     const x = bx + (bw-w)*(I.fx/100), y = by + (bh-h)*(I.fy/100);
     inner = `<image href="${I.src}" x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" preserveAspectRatio="none"/>`;
@@ -3246,7 +3249,8 @@ function qrSvg(){
   if(!/^https?:\/\//i.test(u)) u = 'https://' + u;
   try{
     const q = qrcode(0,'M'); q.addData(u); q.make();
-    return q.createSvgTag({cellSize:4, margin:0, scalable:true});
+    // Bakgrunnen fjernes, så koden tar fargen fra flaten bak (lys bunn) eller fra den hvite rammen (mørk bunn/foto)
+    return q.createSvgTag({cellSize:4, margin:0, scalable:true}).replace('fill="white"', 'fill="none"').replace(/<path /, '<path fill="#1d1d1b" ');
   }catch(e){ return ''; }
 }
 const ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
@@ -3536,7 +3540,6 @@ LAYOUTS.invitasjon = (uid,f) => {
     <g clip-path="url(#${uid}ph)"><g filter="url(#${uid}lt)">${imageIn(uid, photoD, ph.x0, ph.y0, ph.x1-ph.x0, ph.y1-ph.y0, 0)}</g></g>
     <g clip-path="url(#${uid}ph)" pointer-events="none">
       <rect x="${ph.x0}" y="${ph.y0}" width="${ph.x1-ph.x0}" height="${ph.y1-ph.y0}" fill="url(#${uid}dk)"/>
-      <path d="${photoD}" fill="none" stroke="#000" stroke-opacity=".28" stroke-width="${A?94:80}" filter="url(#${uid}bl)"/>
     </g>
     <g pointer-events="none">
       <g transform="${tf}"><path d="${INV7.gronn}" fill="url(#${uid}sl)"/></g>
@@ -3566,8 +3569,7 @@ LAYOUTS.invitasjon = (uid,f) => {
   const kiTop = A ? 36 : 30;
   const ki = S.ki ? `<div class="ki" style="right:${A?40:36}px;top:${kiTop}px">${KI_ICON}KI-generert bilde</div>` : '';
   if(A) return svg + logo(84,45,92.5) + ki + qrDel + merke
-    + box(105,563,584,161,20,'inv7', topp)
-    + box(88,729,618,30,20,'inv7', E('praktisk','dline7','div',null,'dline'))
+    + box(88,563,618,222,20,'inv7', topp + E('praktisk','dline7','div','margin-top:.95em','dline'))
     + box(88,796,618,244,14.667,'', `<div class="body7">${brod}</div>`)
     + `<div class="fot7" style="top:1059px"><span class="m">Tønsberg</span> <span class="l">kommune</span></div>`;
   return svg + logo(63,34,69) + ki + qrDel + merke
@@ -3679,7 +3681,7 @@ function fillForm(){
     if(n < 2){
       b.classList.toggle('hide', n >= nImg);
       b.querySelector('.imglbl').style.display = nImg > 1 ? '' : 'none';
-      b.querySelector('[data-a=fx]').value = I.fx; b.querySelector('[data-a=fy]').value = I.fy;
+      b.querySelector('[data-a=fx]').value = I.fx; b.querySelector('[data-a=fy]').value = I.fy; b.querySelector('[data-a=z]').value = I.z || 1;
     }
     const up = b.querySelector('.upl');
     if(I.src){ im.src = I.src; up.classList.add('has'); } else { im.removeAttribute('src'); up.classList.remove('has'); }
@@ -3880,7 +3882,7 @@ function loadImage(file, n){
       cv.width = Math.round(im.width*sc); cv.height = Math.round(im.height*sc);
       cv.getContext('2d').drawImage(im, 0, 0, cv.width, cv.height);
       const png = n===3 || /png/i.test(file.type) && n>=2;
-      Object.assign(S.imgs[n], {src: png ? cv.toDataURL('image/png') : cv.toDataURL('image/jpeg', .9), w: cv.width, h: cv.height, ex:false, fx:50, fy:45});
+      Object.assign(S.imgs[n], {src: png ? cv.toDataURL('image/png') : cv.toDataURL('image/jpeg', .9), w: cv.width, h: cv.height, ex:false, fx:50, fy:45, z:1});
       fillForm(); render();
     };
     im.src = r.result;
@@ -3935,7 +3937,7 @@ function download(href, name){ const a = document.createElement('a'); a.href = h
 
 /* ═════════ UTKAST ═════════ */
 function saveDraft(){
-  const data = {type:'tk-plakat', v:3, ...S, imgs: S.imgs.map(I => I.ex ? {ex:true, fx:I.fx, fy:I.fy} : I.bank ? {bank:I.bank, fx:I.fx, fy:I.fy} : I)};
+  const data = {type:'tk-plakat', v:3, ...S, imgs: S.imgs.map(I => I.ex ? {ex:true, fx:I.fx, fy:I.fy, z:I.z} : I.bank ? {bank:I.bank, fx:I.fx, fy:I.fy, z:I.z} : I)};
   const blob = new Blob([JSON.stringify(data)], {type:'application/json'});
   const u = URL.createObjectURL(blob); download(u, 'plakat-utkast.json'); setTimeout(() => URL.revokeObjectURL(u), 1000);
 }
@@ -3949,12 +3951,12 @@ function loadDraft(e){
       Object.keys(S).forEach(k => { if(k in d) S[k] = d[k]; });
       if(d.img && !d.imgs) S.imgs[0] = {src:d.img, w:d.imgW, h:d.imgH, fx:d.fx??50, fy:d.fy??40}; // eldre utkast
       while(S.imgs.length < 4) S.imgs.push({ex:true});
-      S.imgs = S.imgs.map((I,n) => I.ex ? {...EKS[n], fx:I.fx??EKS[n].fx, fy:I.fy??EKS[n].fy, ex:true} : I);
+      S.imgs = S.imgs.map((I,n) => I.ex ? {...EKS[n], fx:I.fx??EKS[n].fx, fy:I.fy??EKS[n].fy, z:I.z||1, ex:true} : I);
       for(let n = 0; n < S.imgs.length; n++){
         const I = S.imgs[n];
         if(I.bank && !I.src){
           const b = BANK.find(x => x.id === I.bank);
-          if(b){ await velgBank(n, b, true); S.imgs[n].fx = I.fx ?? b.fx; S.imgs[n].fy = I.fy ?? b.fy; }
+          if(b){ await velgBank(n, b, true); S.imgs[n].fx = I.fx ?? b.fx; S.imgs[n].fy = I.fy ?? b.fy; S.imgs[n].z = I.z || 1; }
           else S.imgs[n] = {...EKS[n], ex:true}; // bildet finnes ikke lenger i banken
         }
       }
