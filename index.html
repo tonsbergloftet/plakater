@@ -3654,9 +3654,7 @@ LAYOUTS.forside = (uid,f) => {
   const g0 = A ? [459.1,745.8,471,817.9] : [740,455.5,759.3,498.7];
   // Bildet: illustrasjon (gjennomsiktig) = hel og sentrert; foto = fyller panelet
   let bilde;
-  const medIkon = !!(S.ikon && ikonSvg(S.ikon));
-  if(medIkon){ bilde = ''; }
-  else if(I && I.src && I.alpha){
+  if(I && I.src && I.alpha){
     const fr = A ? {x:68,y:119,w:674,h:1026} : {x:380,y:44,w:520,h:820};
     const sc = Math.min(fr.w/I.w, fr.h/I.h) * (I.z||1), w = I.w*sc, h = I.h*sc;
     const x = fr.x + (fr.w-w)*(I.fx/100), y = fr.y + (fr.h-h)*(I.fy/100);
@@ -3679,11 +3677,10 @@ LAYOUTS.forside = (uid,f) => {
   </svg>`;
   const ki = S.ki ? `<div class="ki" style="right:${A?44:36}px;top:${A?44:30}px">${KI_ICON}KI-generert bilde</div>` : '';
   const tekst = E('stikk','stikk') + E('tittel','tittel') + E('ingress','ingress');
-  const ik = medIkon ? (A ? ikonHer(207,190,380,NAVY,'#f6f7f9') : ikonHer(470,60,340,NAVY,'#f6f7f9')) : '';
-  if(A) return svg + logo(90,49,89) + ki + ik
+  if(A) return svg + logo(90,49,89) + ki
     + box(96,864,603,150,20,'fs8', tekst)
     + `<div class="fot8" style="top:1038px"><span class="m">Tønsberg</span> <span class="l">kommune</span></div>`;
-  return svg + logo(63,34,66) + ki + ik
+  return svg + logo(63,34,66) + ki
     + `<div class="box fs8" data-base="17" style="left:190px;top:518px;width:900px;height:140px;font-size:17px;justify-content:center">${tekst}</div>`
     + `<div class="fot8" style="top:676px;font-size:13px"><span class="m">Tønsberg</span> <span class="l">kommune</span></div>`;
 };
@@ -3793,7 +3790,7 @@ function fillForm(){
   TEXT_KEYS.forEach(k => { $(k).value = S[k] || ''; });
   $('urlqr').value = S.url || '';
   $('sec-merke').classList.toggle('hide', !TPLS[S.tpl].felt.includes('merke'));
-  const IKON_TXT = {invitasjon:'Ikonet vises i det gule merket.', forside:'Ikonet vises stort i stedet for bildet.', tekst:'Ikonet vises øverst til høyre.'};
+  const IKON_TXT = {invitasjon:'Ikonet vises i det gule merket.', tekst:'Ikonet vises øverst til høyre.'};
   $('sec-ikon').classList.toggle('hide', !IKON_TXT[S.tpl]);
   $('ikonnote').textContent = IKON_TXT[S.tpl] || '';
   const sv = ikonSvg(S.ikon);
