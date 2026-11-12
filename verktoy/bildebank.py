@@ -11,6 +11,8 @@ Kjøres automatisk av GitHub Actions ved hver opplasting (se .github/workflows/p
 Kjøre lokalt:  python verktoy/bildebank.py
 """
 import csv, json, re, shutil, sys
+sys.path.insert(0, str(__import__('pathlib').Path(__file__).resolve().parent))
+from ikoner import rydd, navn_fra_fil
 from pathlib import Path
 from PIL import Image, ImageOps
 
@@ -19,7 +21,8 @@ KILDE = ROT / 'bilder'
 SITE = ROT / '_site'
 WEB_MAKS, MINI_MAKS = 2600, 480
 TYPER = {'.jpg', '.jpeg', '.png', '.webp'}
-IKKE_PUBLISER = {'.git', '.github', 'verktoy', 'bilder', '_site'}
+IKKE_PUBLISER = {'.git', '.github', 'verktoy', 'bilder', 'ikoner', '_site'}
+IKONKILDE = ROT / 'ikoner'
 
 
 def lag_id(navn: str) -> str:
@@ -94,6 +97,32 @@ def main():
         print(f'{f.name} -> {bid} ({stor.width}x{stor.height})')
     (SITE / 'bilder' / 'bilder.json').write_text(json.dumps(liste, ensure_ascii=False, indent=1), encoding='utf-8')
     print(f'Bildebank: {len(liste)} bilder')
+
+    # 3) Ikonbiblioteket: ikoner/*.svg -> _site/ikoner/ikoner.json (ryddet, kan farges om)
+    (SITE / 'ikoner').mkdir()
+    ekstra = {}
+    f = IKONKILDE / 'ikoninfo.csv'
+    if f.exists():
+        tekst = f.read_text(encoding='utf-8-sig')
+        skille = ';' if tekst.count(';') >= tekst.count(',') else ','
+        for rad in csv.DictReader(tekst.splitlines(), delimiter=skille):
+            rad = {(k or '').strip().lower(): (v or '').strip() for k, v in rad.items()}
+            if rad.get('fil'):
+                ekstra[Path(rad['fil']).stem.lower()] = rad
+    ikoner, brukt = [], set()
+    for f in sorted(IKONKILDE.glob('*.svg')) if IKONKILDE.exists() else []:
+        try:
+            svg = rydd(f.read_text(encoding='utf-8'))
+        except Exception as e:
+            print(f'Hopper over {f.name}: {e}', file=sys.stderr); continue
+        iid = lag_id(f.stem)
+        while iid in brukt: iid += '-2'
+        brukt.add(iid)
+        navn, kat = navn_fra_fil(f.stem)
+        e = ekstra.get(f.stem.lower(), {})
+        ikoner.append({'id': iid, 'navn': e.get('navn') or navn, 'kategori': kat, 'sokeord': e.get('sokeord', ''), 'svg': svg})
+    (SITE / 'ikoner' / 'ikoner.json').write_text(json.dumps(ikoner, ensure_ascii=False), encoding='utf-8')
+    print(f'Ikonbibliotek: {len(ikoner)} ikoner')
 
 
 if __name__ == '__main__':
