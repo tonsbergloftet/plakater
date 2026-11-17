@@ -12,7 +12,7 @@ Lag plakater (A4), skjermversjoner (16:9) og innhold til skjermene på bymøblen
 
 ## Maler og formater
 
-- Mal 1–8 og mal 10 lages som stående A4 eller liggende 16:9 (1920 × 1080).
+- Mal 1–8, 10 og 11 lages som stående A4 eller liggende 16:9 (1920 × 1080).
 - Mal 9 · Bymøbel er laget bare for skjermene på bymøblene: stående 9:16, lastes ned i 2160 × 3840 px.
 - Mal 1 og mal 9 har en mørk variant (valg under «Slørfarge»): hvit tekst for mørke bilder i mal 1, mørk bunn i mal 9.
 - Skriv linjeskift i tittelen der du vil at linjen skal brytes.
