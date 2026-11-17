@@ -1,6 +1,6 @@
 # Plakatgenerator – Tønsberg kommune
 
-Lag plakater (A4) og skjermversjoner (16:9) etter kommunens grafiske profil.
+Lag plakater (A4), skjermversjoner (16:9) og innhold til skjermene på bymøblene (9:16) etter kommunens grafiske profil.
 
 ## Slik brukes generatoren
 
@@ -9,6 +9,13 @@ Lag plakater (A4) og skjermversjoner (16:9) etter kommunens grafiske profil.
 - **Sidepanelet** brukes til mal, format, bilde, farge, QR-kode og nedlasting. Alle tekstfeltene finnes også nederst i sidepanelet.
 - Knappen **«Slik virker det»** over plakaten viser en kort forklaring.
 - Skriv `**ord**` for å utheve ord med farge i brødtekst.
+
+## Maler og formater
+
+- Mal 1–8 lages som stående A4 eller liggende 16:9 (1920 × 1080).
+- Mal 9 · Bymøbel er laget bare for skjermene på bymøblene: stående 9:16, lastes ned i 2160 × 3840 px.
+- Mal 1 og mal 9 har en mørk variant (valg under «Slørfarge»): hvit tekst for mørke bilder i mal 1, mørk bunn i mal 9.
+- Skriv linjeskift i tittelen der du vil at linjen skal brytes.
 
 ## Innhold
 
@@ -58,7 +65,7 @@ Illustrators redigeringsdata fjernes (filene blir 5–10 ganger mindre), og ikon
 - Ikonene bør være tegnet i én farge (profilblått). Hvitt brukes som utsparing og følger bakgrunnen.
 - Søkeord (valgfritt) legges i `ikoner/ikoninfo.csv`: kolonnene `fil;navn;sokeord`, f.eks. `app_avfall.svg;Avfall;søppel renovasjon`.
 
-Ikonene brukes i mal 4 (øverst til høyre), mal 7 (i det gule merket) og mal 8 (i stedet for bildet). Klikk på ikonet i plakaten for å bytte det.
+Ikonene brukes i mal 4 (øverst til høyre) og mal 7 (i det gule merket). Klikk på ikonet i plakaten for å bytte det.
 
 ## Rullering
 
