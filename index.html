@@ -3660,7 +3660,7 @@ LAYOUTS.forside = (uid,f) => {
     const x = fr.x + (fr.w-w)*(I.fx/100), y = fr.y + (fr.h-h)*(I.fy/100);
     bilde = `<clipPath id="${uid}pc"><path d="${panelD}"/></clipPath><g clip-path="url(#${uid}pc)"${EDIT?` class="klikkbilde" data-img="0"`:''}>${EDIT?'<title>Klikk for å bytte bilde</title>':''}<image href="${I.src}" x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" preserveAspectRatio="none"/></g>`;
   } else {
-    bilde = imageIn(uid, panelD, pn.x0, pn.y0, pn.x1-pn.x0, (A?820:470)-pn.y0, 0);
+    bilde = imageIn(uid, panelD, pn.x0, pn.y0, pn.x1-pn.x0, pn.y1-pn.y0, 0); // fotoet går helt ned bak bølgen, så ingen kant synes
   }
   const svg = `<svg class="bg" viewBox="0 0 ${W} ${H}"><defs>
       <radialGradient id="${uid}rg" gradientUnits="userSpaceOnUse" cx="${rc[0]}" cy="${rc[1]}" r="${rc[2]}"><stop offset="0" stop-color="#e8eaee" stop-opacity="0"/><stop offset="1" stop-color="#e8eaee" stop-opacity="1"/></radialGradient>
