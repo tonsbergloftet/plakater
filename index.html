@@ -292,6 +292,21 @@ details[open] .sumh{margin-bottom:12px}
 .page .merke9 .mt9{font-weight:900;font-style:italic;font-size:1em;line-height:1.027;white-space:pre-line}
 .page .merke9 .mtx9{font-weight:500;font-size:.577em;line-height:1.113;margin-top:.4em;white-space:pre-line}
 .page .qr9{position:absolute}.page .qr9 svg{display:block;width:100%;height:100%}
+/* 10 · Tekstplakat (fra designerens InDesign-fil mal5_tekstplakat) */
+.page .tp10{color:#1d1d1b;text-align:left}
+.page .tp10 .stikk{display:block;color:var(--navy);font-weight:700;font-size:1em;letter-spacing:.3em;text-transform:uppercase;line-height:1.2;margin:0 0 .43em}
+.page .tp10 .stikk::before{display:none}
+.page .tp10 .tittel{font-weight:700;font-style:normal;font-size:2.667em;line-height:1.02;letter-spacing:0;margin:0}
+.page .tp10 .tittel .tem{font-weight:900;font-style:italic}
+.page .tp10 .ingress{font-style:italic;font-weight:400;font-size:1.2em;line-height:1.556;margin:.315em 0 0}
+.page .tp10 .gap10{height:1.6em;flex-shrink:0}
+.page .tp10 .h10{font-weight:700;font-size:1.067em;line-height:1.2;margin:.71em 0 .177em}
+.page .tp10 .gap10 + .h10{margin-top:0}
+.page .tp10 .p10{font-size:1em;line-height:1.2;margin:0;white-space:pre-line}
+.page .tp10 .liste{margin:0}
+.page .tp10 .liste .li{padding-left:.756em;line-height:1.2;margin:0}
+.page .tp10 .liste .li::before{content:'•';background:none;width:auto;height:auto;border-radius:0;left:.19em;top:0;color:inherit}
+.page .tp10 .praktisk{margin:1.2em 0 0;line-height:1.4}
 /* Ikon fra ikonbiblioteket */
 .page .ikon7{position:absolute;display:block}
 .page .ikon7 svg{display:block;width:100%;height:100%}
@@ -3250,6 +3265,8 @@ const TPLS = {
     felt:['stikk','tittel','ingress']},
   bymobel:{navn:'9 · Bymøbel', sub:'Bymøbelskjerm, 9:16', bilder:3, fmts:['bym'],
     felt:['stikk','tittel','ingress','cta','url','merke','merkeTx','bs1','bs2','bs3'], mork:'Mørk bunn'},
+  tekstplakat:{navn:'10 · Tekstplakat', sub:'Tekst, punkter og QR', bilder:0,
+    felt:['stikk','tittel','ingress','ut1','tx1','ut2','tx2','pTittel','punkter','praktisk','cta','url']},
 };
 Object.values(TPLS).forEach(t => { t.fmts = t.fmts || ['a4','wide']; });
 const fmtFor = k => TPLS[k].fmts.includes(S.fmt) ? S.fmt : TPLS[k].fmts[0];
@@ -3806,6 +3823,42 @@ LAYOUTS.bymobel = (uid) => {
     + qr;
 };
 
+
+/* 10 · Tekstplakat. A4 er målt fra InDesign-fila (mal5_tekstplakat.idml): lys grå flate med radial overgang,
+   samme bølger som mal 1, all tekst i én spalte, valgfritt ikon øverst til høyre. Liggende er en tilpasning. */
+LAYOUTS.tekstplakat = (uid,f) => {
+  const c = SLOR[S.slor], A = f==='a4', W = A?794:1280, H = A?1123:720;
+  const pn = A ? {x0:28.7,y0:28.7,x1:765,y1:1094,r:54.5} : {x0:20,y0:20,x1:1260,y1:700,r:40};
+  const panelD = rrect(pn.x0,pn.y0,pn.x1,pn.y1,pn.r);
+  const tf = A ? 'translate(0,174.45)' : 'matrix(1.6121,0,0,0.44,0,267)';
+  const svg = `<svg class="bg" viewBox="0 0 ${W} ${H}"><defs>
+      <radialGradient id="${uid}rg" gradientUnits="userSpaceOnUse" cx="${W/2}" cy="${H/2}" r="${A?561.3:700}"><stop offset="0" stop-color="#fbfbfb"/><stop offset="1" stop-color="#e2e2e2"/></radialGradient>
+      <linearGradient id="${uid}sl" gradientUnits="userSpaceOnUse" x1="459.1" y1="745.8" x2="471" y2="817.9"><stop offset="0" stop-color="${c.c}" stop-opacity=".75"/><stop offset="1" stop-color="${c.c}" stop-opacity="0"/></linearGradient>
+      <clipPath id="${uid}pc"><path d="${panelD}"/></clipPath>
+    </defs>
+    <rect width="${W}" height="${H}" fill="#fff"/>
+    <g clip-path="url(#${uid}pc)" pointer-events="none">
+      <rect width="${W}" height="${H}" fill="url(#${uid}rg)"/>
+      <g transform="${tf}"><path d="${FS8.gronn}" fill="url(#${uid}sl)"/><path d="${FS8.navy}" fill="${NAVY}"/></g>
+    </g>
+    <g pointer-events="none" transform="${A?'':'scale(.75)'}"><path d="${FS8.hvit}" fill="#fff"/><path d="${FS8.hale}" fill="#fff"/></g>
+  </svg>`;
+  const q = S.qr ? qrSvg() : '';
+  const topp = E('stikk','stikk') + E('tittel','tittel') + E('ingress','ingress');
+  const brod = E('ut1','h10') + E('tx1','p10','div',null,'rich') + E('ut2','h10') + E('tx2','p10','div',null,'rich')
+    + E('pTittel','h10') + E('punkter','liste') + E('praktisk','praktisk');
+  const harBrod = ['ut1','tx1','ut2','tx2','pTittel','punkter','praktisk'].some(hasE);
+  if(A) return svg + logo(87.5,48.5,89) + ikonHer(608,90,98,NAVY,'#f3f3f3')
+    + box(105,255,584,670,20,'tp10', topp + (harBrod ? '<div class="gap10"></div>' : '') + brod)
+    + (q ? `<div class="qrbox7" style="left:628px;top:959px;width:103.3px;height:103.3px;padding:8px">${q}</div>` : '')
+    + `<div class="box" data-base="18.22" style="left:${q?399:522}px;top:976px;width:210px;height:80.5px;justify-content:flex-end">${E('cta','qrt1','div',null,'bold')}</div>`;
+  return svg + logo(63,34,66) + ikonHer(1150,40,80,NAVY,'#f3f3f3')
+    + box(80,170,520,400,18,'tp10', topp)
+    + box(660,(S.ikon && ikonSvg(S.ikon)) ? 130 : 60,520,(S.ikon && ikonSvg(S.ikon)) ? 440 : 510,16,'tp10', brod)
+    + (q ? `<div class="qrbox7" style="left:1148px;top:602px;width:88px;height:88px;padding:7px">${q}</div>` : '')
+    + `<div class="box" data-base="16" style="left:${q?930:1028}px;top:620px;width:200px;height:66px;justify-content:flex-end">${E('cta','qrt1','div',null,'bold')}</div>`;
+};
+
 /* ═════════ RENDER ═════════ */
 let uidN = 0;
 const hasSide2 = () => S.tpl==='bildetekst' && S.fmt==='a4' && S.side2;
@@ -3917,7 +3970,7 @@ function fillForm(){
   $('morktxt').textContent = TPLS[S.tpl].mork || '';
   $('mork').checked = !!S.mork;
   document.querySelectorAll('#fmtseg button').forEach(b => b.style.display = TPLS[S.tpl].fmts.includes(b.dataset.fmt) ? '' : 'none');
-  const IKON_TXT = {invitasjon:'Ikonet vises i det gule merket.', tekst:'Ikonet vises øverst til høyre.'};
+  const IKON_TXT = {invitasjon:'Ikonet vises i det gule merket.', tekst:'Ikonet vises øverst til høyre.', tekstplakat:'Ikonet vises øverst til høyre.'};
   $('sec-ikon').classList.toggle('hide', !IKON_TXT[S.tpl]);
   $('ikonnote').textContent = IKON_TXT[S.tpl] || '';
   const sv = ikonSvg(S.ikon);
