@@ -55,6 +55,7 @@ Kan redigeres i Excel (lagre som CSV, semikolon). Én rad per bilde, bare filnav
 | `fotograf` | `Ola Nordmann` | Vises i bildebanken |
 | `utloper` | `2027-12-31` | Bildet forsvinner automatisk etter denne datoen (bruksrett) |
 | `fokus_x`, `fokus_y` | `50`, `40` | Standard utsnitt i prosent (0 = venstre/topp, 100 = høyre/bunn) |
+| `standard` | `1` | Bildet vises når generatoren åpnes. Bruk `1`, `2` og `3` for bilde 1, 2 og 3. Uten merking brukes tilfeldige bilder fra banken |
 
 ## Ikoner
 
@@ -73,6 +74,7 @@ For at de samme bildene ikke skal brukes hele tiden:
 
 - Hver måned «hviler» omtrent en tredjedel av bildene (gjelder når banken har minst 9 bilder). De kommer tilbake måneden etter.
 - Rekkefølgen stokkes på nytt hver dag.
+- Bilder merket i kolonnen `standard` vises alltid når generatoren åpnes, også i måneder der de ellers ville hvilt.
 - Hver bruker ser merket «Du brukte dette …» på bilder de selv har lastet ned plakater med (lagres bare i egen nettleser).
 
 Hvilende bilder kan likevel hentes fram via lenken nederst i bildebanken.
@@ -81,4 +83,5 @@ Hvilende bilder kan likevel hentes fram via lenken nederst i bildebanken.
 
 - Siden er offentlig. Bilder i `bilder/` må være klarert for publisering.
 - Originalbildene ligger i repoet, men bare nedskalerte kopier publiseres på nettsiden.
-- Åpnes `index.html` direkte fra disk, virker alt unntatt bildebanken.
+- Åpnes `index.html` direkte fra disk, virker alt unntatt bildebanken. Da starter plakaten uten bilde.
+- Når noen laster opp et eget bilde, spør generatoren om bildet er KI-generert. Svarer de ja, merkes plakaten automatisk.
