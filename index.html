@@ -307,6 +307,26 @@ details[open] .sumh{margin-bottom:12px}
 .page .tp10 .liste .li{padding-left:.756em;line-height:1.2;margin:0}
 .page .tp10 .liste .li::before{content:'•';background:none;width:auto;height:auto;border-radius:0;left:.19em;top:0;color:inherit}
 .page .tp10 .praktisk{margin:1.2em 0 0;line-height:1.4}
+/* 11 · Inndelt plakat (fra designerens InDesign-fil mal6_inndelt_plakat) */
+.page .ip11{color:#fff;text-align:right}
+.page .ip11 .stikk{display:block;color:var(--slor);font-weight:700;font-size:1em;letter-spacing:.3em;text-transform:uppercase;line-height:1.2;margin:0 0 .5em}
+.page .ip11 .stikk::before{display:none}
+.page .ip11 .tittel{font-weight:700;font-style:normal;font-size:2.533em;line-height:1.053;letter-spacing:0;margin:0;color:#fff}
+.page .ip11 .tittel .tem{font-weight:900;font-style:italic}
+.page .ip11 .ingress{font-style:italic;font-weight:400;font-size:1.2em;line-height:1.556;margin:.45em 0 0;color:#fff}
+.page .body7.b11{color:#1d1d1b}
+.page .body7.b11 .h11{font-weight:700;font-size:1.333em;line-height:1.2;margin:.71em 0 .177em;break-after:avoid}
+.page .body7.b11 > .h11:first-child{margin-top:0}
+.page .body7.b11 .p11{font-size:1em;line-height:1.2;margin:0;white-space:pre-line}
+.page .body7.b11 .liste{margin:0}
+.page .body7.b11 .liste .li{padding-left:.945em;line-height:1.2;margin:0;break-inside:avoid}
+.page .body7.b11 .liste .li::before{content:'•';background:none;width:auto;height:auto;border-radius:0;left:.24em;top:0;color:inherit}
+.page .body7.b11.k3{column-count:3;column-rule:.5px solid #1d1d1b;height:auto}
+.page .rule7.r11{background:#1d1d1b;width:.5px;left:calc(50% - .25px)}
+.page .qrt11{text-align:right;color:#1d1d1b;font-style:italic;font-size:1em;line-height:1.0833}
+.page .qrt11 b{font-weight:700}
+.page .qr11{position:absolute;background:#fff;border-radius:11px;box-shadow:0 0 8px 5px #fff}
+.page .qr11 svg{display:block;width:100%;height:100%}
 /* Ikon fra ikonbiblioteket */
 .page .ikon7{position:absolute;display:block}
 .page .ikon7 svg{display:block;width:100%;height:100%}
@@ -453,6 +473,9 @@ details[open] .sumh{margin-bottom:12px}
     <div class="f" data-k="punkter"><label>Punktliste <span class="h">ett punkt per linje</span></label><textarea id="punkter" rows="3"></textarea></div>
     <div class="f" data-k="ut2"><label>Underoverskrift 2</label><input type="text" id="ut2"></div>
     <div class="f" data-k="tx2"><label>Brødtekst 2</label><textarea id="tx2" rows="3"></textarea></div>
+    <div class="f" data-k="pIntro"><label>Innledning til punktlista <span class="h">valgfri</span></label><textarea id="pIntro" rows="2"></textarea></div>
+    <div class="f" data-k="ut3"><label>Underoverskrift 3</label><input type="text" id="ut3"></div>
+    <div class="f" data-k="tx3"><label>Brødtekst 3</label><textarea id="tx3" rows="3"></textarea></div>
     <div class="f" data-k="praktisk"><label>Praktisk informasjon <span class="h">«Tid: …» per linje</span></label><textarea id="praktisk" rows="3"></textarea></div>
     <div class="f" data-k="cta"><label>Lenketekst / tekst ved QR-koden</label><textarea id="cta" rows="2"></textarea></div>
     <div class="f" data-k="bs1"><label>Stikkord på bilde 1 <span class="h">valgfritt</span></label><input type="text" id="bs1"></div>
@@ -3266,7 +3289,9 @@ const TPLS = {
   bymobel:{navn:'9 · Bymøbel', sub:'Bymøbelskjerm, 9:16', bilder:3, fmts:['bym'],
     felt:['stikk','tittel','ingress','cta','url','merke','merkeTx','bs1','bs2','bs3'], mork:'Mørk bunn'},
   tekstplakat:{navn:'10 · Tekstplakat', sub:'Tekst, punkter og QR', bilder:0,
-    felt:['stikk','tittel','ingress','ut1','tx1','ut2','tx2','pTittel','punkter','praktisk','cta','url']},
+    felt:['stikk','tittel','ingress','ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk','cta','url']},
+  inndelt:{navn:'11 · Inndelt plakat', sub:'Bilde, tittel og to spalter', bilder:1,
+    felt:['stikk','tittel','ingress','ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','ut3','tx3','cta','url']},
 };
 Object.values(TPLS).forEach(t => { t.fmts = t.fmts || ['a4','wide']; });
 const fmtFor = k => TPLS[k].fmts.includes(S.fmt) ? S.fmt : TPLS[k].fmts[0];
@@ -3290,6 +3315,7 @@ const S = {
   qr:true, qrTekst:'SKANN MEG!', merke:'Arrangementet\ner gratis!', avslutt:'Vi gleder oss til å se deg!',
   imgs:[], ki:false, zoom:'fit', skjulTomme:false, ikon:null, mork:false,
   merkeTx:'Kortfattet tekst', bs1:'', bs2:'', bs3:'',
+  pIntro:'', ut3:'Hvem kan delta?', tx3:'Kurset er gratis og åpent for alle foreldre.',
   side2:true, side:1,
   s2Tittel:'Et foreldrekurs for migrasjonsfamilier',
   s2Ut1:'Hva er ICDP-kurs?',
@@ -3395,7 +3421,7 @@ function urlBreak(u){ return esc(u||'').replace(/([\/.])/g,'$1<wbr>'); }
    EDIT er sann bare når forhåndsvisningen bygges. Da blir alle tekstfelt redigerbare,
    og tomme felt vises med grå hjelpetekst. Miniatyrer og nedlasting bygges uten. */
 let EDIT = false;
-const PH = {
+const PH = {pIntro:'Innledning til punktlista (valgfri)', ut3:'Underoverskrift', tx3:'Skriv brødtekst',
   stikk:'Tema', tittel:'Skriv en tittel', ingress:'Skriv en kort ingress',
   ut1:'Underoverskrift', tx1:'Skriv brødtekst', pTittel:'Overskrift over punktene',
   punkter:'Ett punkt per linje', ut2:'Underoverskrift', tx2:'Skriv brødtekst',
@@ -3405,8 +3431,8 @@ const PH = {
   s2Merknad:'Kort merknad med pil', s2Kontakt:'Kontaktinformasjon', merke:'Tekst i merket', avslutt:'Avsluttende setning (fet kursiv)',
   merkeTx:'Kort tekst', bs1:'Stikkord om bildet (valgfritt)', bs2:'Stikkord om bildet (valgfritt)', bs3:'Stikkord om bildet (valgfritt)',
 };
-const KIND = {tittel:'tit', tx1:'rich', tx2:'rich', s2Tx1:'rich', s2Tx2:'rich', s2Tx3:'rich', s2Slutt:'rich', punkter:'list', praktisk:'prak', url:'url'};
-const SINGLE = new Set(['stikk','ut1','ut2','pTittel','cta','url','qrTekst','s2Ut1','s2Ut2','s2Slutt','bs1','bs2','bs3']);
+const KIND = {tittel:'tit', tx1:'rich', tx2:'rich', tx3:'rich', s2Tx1:'rich', s2Tx2:'rich', s2Tx3:'rich', s2Slutt:'rich', punkter:'list', praktisk:'prak', url:'url'};
+const SINGLE = new Set(['ut3','stikk','ut1','ut2','pTittel','cta','url','qrTekst','s2Ut1','s2Ut2','s2Slutt','bs1','bs2','bs3']);
 const hasE = k => EDIT || has(k);
 function disp(k, kindOverride){
   const v = String(S[k]||''), kind = kindOverride || KIND[k];
@@ -3846,8 +3872,8 @@ LAYOUTS.tekstplakat = (uid,f) => {
   const q = S.qr ? qrSvg() : '';
   const topp = E('stikk','stikk') + E('tittel','tittel') + E('ingress','ingress');
   const brod = E('ut1','h10') + E('tx1','p10','div',null,'rich') + E('ut2','h10') + E('tx2','p10','div',null,'rich')
-    + E('pTittel','h10') + E('punkter','liste') + E('praktisk','praktisk');
-  const harBrod = ['ut1','tx1','ut2','tx2','pTittel','punkter','praktisk'].some(hasE);
+    + E('pTittel','h10') + E('pIntro','p10') + E('punkter','liste') + E('praktisk','praktisk');
+  const harBrod = ['ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk'].some(hasE);
   if(A) return svg + logo(87.5,48.5,89) + ikonHer(608,90,98,NAVY,'#f3f3f3')
     + box(105,255,584,670,20,'tp10', topp + (harBrod ? '<div class="gap10"></div>' : '') + brod)
     + (q ? `<div class="qrbox7" style="left:628px;top:959px;width:103.3px;height:103.3px;padding:8px">${q}</div>` : '')
@@ -3857,6 +3883,49 @@ LAYOUTS.tekstplakat = (uid,f) => {
     + box(660,(S.ikon && ikonSvg(S.ikon)) ? 130 : 60,520,(S.ikon && ikonSvg(S.ikon)) ? 440 : 510,16,'tp10', brod)
     + (q ? `<div class="qrbox7" style="left:1148px;top:602px;width:88px;height:88px;padding:7px">${q}</div>` : '')
     + `<div class="box" data-base="16" style="left:${q?930:1028}px;top:620px;width:200px;height:66px;justify-content:flex-end">${E('cta','qrt1','div',null,'bold')}</div>`;
+};
+
+
+/* 11 · Inndelt plakat. A4 er målt fra InDesign-fila (mal6_inndelt_plakat.idml): bilde øverst, tittel i blått bølgefelt,
+   brødtekst i to spalter på hvit bunn med tynn ramme som tones ut oppover. Liggende er en tilpasning. */
+const IP11_HVIT = 'M802.4,715.8 C792.1,717.1 782.3,720.3 772.0,721.5 C751.8,723.9 731.3,723.8 711.0,723.1 C711.0,723.1 711.0,723.1 711.0,723.1 C689.2,722.3 667.4,720.3 645.7,718.0 C638.7,717.3 631.8,716.5 624.9,715.7 C605.8,713.6 587.6,710.1 569.1,705.3 C556.1,701.9 543.0,698.8 530.3,694.2 C530.3,694.2 530.3,694.2 530.3,694.2 C530.3,694.2 530.3,694.2 530.3,694.2 C501.3,683.5 472.6,674.8 441.9,670.6 C433.3,669.4 424.6,668.3 416.0,667.3 C390.6,664.3 364.2,669.6 338.9,672.7 C338.9,672.7 338.9,672.7 338.9,672.7 C304.7,676.9 271.6,686.8 237.7,693.3 C228.1,695.1 218.4,696.7 208.7,697.7 C199.2,698.7 189.6,699.3 180.0,699.0 C171.7,698.8 162.9,699.2 154.7,697.7 C139.6,695.1 124.4,687.2 111.2,680.0 C111.2,680.0 111.2,680.0 111.2,680.0 C95.5,671.5 80.5,661.5 66.0,651.2 C55.6,643.8 45.4,635.9 34.0,629.9 C26.0,625.6 17.5,622.3 8.5,621.0 C-15.2,617.5 -37.6,628.7 -60.1,634.1 C-72.8,637.1 -85.6,639.7 -98.4,642.5 C-98.4,642.5 -98.4,642.5 -98.4,642.5 C-116.0,646.3 -133.5,650.4 -151.3,652.9 C-159.3,654.1 -167.2,655.0 -175.2,655.8 C-175.2,655.8 -175.2,655.8 -175.2,655.8 C-183.8,656.6 -131.0,1252.7 -112.8,1250.9 C173.5,1223.3 459.8,1195.8 746.2,1168.2 C766.5,1166.2 786.7,1164.3 807.0,1162.3 C814.3,1161.6 821.7,1160.9 829.0,1160.2 C830.5,1160.1 833.2,1160.3 834.6,1159.7 C836.8,1158.8 836.2,1158.2 837.8,1156.4 C839.3,1155.3 840.8,1154.1 842.3,1152.9';
+LAYOUTS.inndelt = (uid,f) => {
+  const c = SLOR[S.slor], A = f==='a4', W = A?794:1280, H = A?1123:720;
+  const pn = A ? {x0:28.7,y0:28.7,x1:765,y1:1094,r:54.5} : {x0:20,y0:20,x1:1260,y1:700,r:40};
+  const panelD = rrect(pn.x0,pn.y0,pn.x1,pn.y1,pn.r);
+  const tf = A ? '' : 'matrix(1.6121,0,0,0.6875,0,-56)';   // liggende: A4-formene presses inn i lavere felt
+  const ramme = A ? rrect(29.3,579.5,766.3,1097.3,60.5) : rrect(20.3,340,1259.7,699.7,40);
+  const rg = A ? [1097,790] : [700,480];
+  const fotoH = A ? 489.3 : 300;
+  const svg = `<svg class="bg" viewBox="0 0 ${W} ${H}"><defs>
+      <linearGradient id="${uid}sl" gradientUnits="userSpaceOnUse" x1="459.1" y1="745.8" x2="471" y2="817.9"><stop offset="0" stop-color="${c.c}" stop-opacity=".75"/><stop offset="1" stop-color="${c.c}" stop-opacity="0"/></linearGradient>
+      <linearGradient id="${uid}rm" gradientUnits="userSpaceOnUse" x1="0" y1="${rg[0]}" x2="0" y2="${rg[1]}"><stop offset="0" stop-color="${NAVY}"/><stop offset="1" stop-color="${NAVY}" stop-opacity="0"/></linearGradient>
+      <clipPath id="${uid}pc"><path d="${panelD}"/></clipPath>
+    </defs>
+    <rect width="${W}" height="${H}" fill="#fff"/>
+    ${imageIn(uid, panelD, pn.x0, pn.y0, pn.x1-pn.x0, fotoH, 0)}
+    <g clip-path="url(#${uid}pc)" pointer-events="none"><g transform="${tf}">
+      <g transform="translate(0,-404.35)"><path d="${FS8.gronn}" fill="url(#${uid}sl)"/><path d="${FS8.navy}" fill="${NAVY}"/></g>
+      <path d="${IP11_HVIT}" fill="#fff"/>
+      ${A ? '' : ''}
+    </g>${A ? '' : `<rect x="0" y="560" width="${W}" height="${H}" fill="#fff"/>`}</g>
+    <path d="${ramme}" fill="none" stroke="url(#${uid}rm)" stroke-width=".5" pointer-events="none"/>
+    <g pointer-events="none" transform="${A?'':'scale(.75)'}"><path d="${FS8.hvit}" fill="#fff"/><path d="${FS8.hale}" fill="#fff"/></g>
+  </svg>`;
+  const q = S.qr ? qrSvg() : '';
+  const ki = S.ki ? `<div class="ki" style="right:${A?44:36}px;top:${A?44:30}px">${KI_ICON}KI-generert bilde</div>` : '';
+  const topp = E('stikk','stikk') + E('tittel','tittel') + E('ingress','ingress');
+  const brod = E('ut1','h11') + E('tx1','p11') + E('ut2','h11') + E('tx2','p11') + E('pTittel','h11') + E('pIntro','p11') + E('punkter','liste') + E('ut3','h11') + E('tx3','p11');
+  if(A) return svg + logo(87.5,48.5,89) + ki
+    + box(176,437,513,200,20,'ip11', topp)
+    + box(105,757,584,252,16,'', `<div class="body7 b11">${brod}</div><div class="rule7 r11"></div>`)
+    + (q ? `<div class="qr11" style="left:681px;top:1012px;width:85.5px;height:85.5px">${q}</div>` : '')
+    + `<div class="box" data-base="18.22" style="left:${q?443:556}px;top:985px;width:210px;height:80px;justify-content:flex-end">${E('cta','qrt11','div',null,'bold')}</div>`;
+  return svg + logo(63,34,66) + ki
+    + box(420,240,800,150,17,'ip11', topp)
+    + box(80,458,1020,210,15,'', `<div class="body7 b11 k3">${brod}</div>`)
+    + (q ? `<div class="qr11" style="left:1150px;top:604px;width:80px;height:80px">${q}</div>` : '')
+    + `<div class="box" data-base="15" style="left:${q?950:1050}px;top:600px;width:185px;height:84px;justify-content:flex-end">${E('cta','qrt11','div',null,'bold')}</div>`;
 };
 
 /* ═════════ RENDER ═════════ */
@@ -3960,7 +4029,7 @@ function syncFields(){
     f.classList.toggle('hide', !used.includes(k));
   });
 }
-const TEXT_KEYS = ['merkeTx','bs1','bs2','bs3','stikk','tittel','ingress','ut1','tx1','pTittel','punkter','ut2','tx2','praktisk','cta','url','qrTekst','s2Tittel','s2Ut1','s2Tx1','s2Ut2','s2Tx2','s2Tx3','s2Slutt','s2Merknad','s2Kontakt','merke','avslutt'];
+const TEXT_KEYS = ['pIntro','ut3','tx3','merkeTx','bs1','bs2','bs3','stikk','tittel','ingress','ut1','tx1','pTittel','punkter','ut2','tx2','praktisk','cta','url','qrTekst','s2Tittel','s2Ut1','s2Tx1','s2Ut2','s2Tx2','s2Tx3','s2Slutt','s2Merknad','s2Kontakt','merke','avslutt'];
 function fillForm(){
   TEXT_KEYS.forEach(k => { $(k).value = S[k] || ''; });
   $('urlqr').value = S.url || '';
