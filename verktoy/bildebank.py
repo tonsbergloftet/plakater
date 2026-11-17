@@ -31,7 +31,7 @@ def lag_id(navn: str) -> str:
 
 
 def les_info() -> dict:
-    """bildeinfo.csv: fil;beskrivelse;fotograf;utloper;fokus_x;fokus_y  (semikolon eller komma)"""
+    """bildeinfo.csv: fil;beskrivelse;fotograf;utloper;fokus_x;fokus_y;standard  (semikolon eller komma)"""
     f = KILDE / 'bildeinfo.csv'
     if not f.exists():
         return {}
@@ -93,6 +93,7 @@ def main():
             'utloper': i.get('utloper', ''),
             'fx': tall(i.get('fokus_x'), 50),
             'fy': tall(i.get('fokus_y'), 45),
+            'standard': i.get('standard', ''),
         })
         print(f'{f.name} -> {bid} ({stor.width}x{stor.height})')
     (SITE / 'bilder' / 'bilder.json').write_text(json.dumps(liste, ensure_ascii=False, indent=1), encoding='utf-8')
