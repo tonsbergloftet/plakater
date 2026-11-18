@@ -4142,8 +4142,8 @@ function opplosning(page){
     if(!I || !I.src || I.ex || !im) return;
     const pr = I.w / (+im.getAttribute('width') || 1); // bildepiksler per plakatpiksel
     const nr = n === 4 ? 3 : n + 1;
-    if(S.fmt === 'a4'){ const ppi = Math.round(pr * 96); if(ppi < 150) ut.push(`Bilde ${nr} har lav oppløsning (ca. ${ppi} ppi) og kan bli uskarpt på trykk. Bruk et større bilde eller zoom mindre inn.`); }
-    else if(pr / FMT[S.fmt].ratio < .6) ut.push(`Bilde ${nr} er lite for denne skjermstørrelsen og kan se uskarpt ut. Bruk et større bilde eller zoom mindre inn.`);
+    if(S.fmt === 'a4'){ const ppi = Math.round(pr * 96); if(ppi < 80) ut.push(`Bilde ${nr} har for lav oppløsning (ca. ${ppi} ppi) og blir synlig uskarpt på trykk. Zoom mindre inn eller bruk et større bilde.`); } // 80 ppi: grensen for synlig uskarphet på plakat sett på litt avstand
+    else if(pr / FMT[S.fmt].ratio < .5) ut.push(`Bilde ${nr} er lite for denne skjermstørrelsen og kan se uskarpt ut. Bruk et større bilde eller zoom mindre inn.`);
   });
   return ut;
 }
@@ -4539,7 +4539,8 @@ function initUI(){
   $('tour').addEventListener('click', e => { if(e.target.classList.contains('dim')) lukkTour(); });
   document.addEventListener('keydown', e => { if(e.key === 'Escape' && $('tour').classList.contains('on')) lukkTour(); });
   let sett = false; try{ sett = localStorage.getItem(TOUR_KEY) === '1'; }catch(e){}
-  if(!sett) setTimeout(() => apneStart(true), 500);
+  // Valget av mal vises hver gang siden åpnes; veiledningen bare første gang
+  if(!window.__ingenStart) setTimeout(() => apneStart(!sett), 500);
   document.querySelectorAll('#zoom button').forEach(b => b.onclick = () => { S.zoom = b.dataset.z === 'fit' ? 'fit' : +b.dataset.z; render(); });
   $('dlpdf').onclick = () => exportFile('pdf');
   $('dlpng').onclick = () => exportFile('png');
