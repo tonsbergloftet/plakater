@@ -3906,10 +3906,8 @@ LAYOUTS.inndelt = (uid,f) => {
     ${imageIn(uid, panelD, pn.x0, pn.y0, pn.x1-pn.x0, fotoH, 0)}
     <g clip-path="url(#${uid}pc)" pointer-events="none"><g transform="${tf}">
       <g transform="translate(0,-404.35)"><path d="${FS8.gronn}" fill="url(#${uid}sl)"/><path d="${FS8.navy}" fill="${NAVY}"/></g>
-      <path d="${IP11_HVIT}" fill="#fff"/>
-      ${A ? '' : ''}
-    </g>${A ? '' : `<rect x="0" y="560" width="${W}" height="${H}" fill="#fff"/>`}</g>
-    <path d="${ramme}" fill="none" stroke="url(#${uid}rm)" stroke-width=".5" pointer-events="none"/>
+    </g></g>
+    <g pointer-events="none"><g transform="${tf}"><path d="${IP11_HVIT}" fill="#fff"/></g>${A ? '' : `<rect x="0" y="560" width="${W}" height="${H}" fill="#fff"/>`}</g>
     <g pointer-events="none" transform="${A?'':'scale(.75)'}"><path d="${FS8.hvit}" fill="#fff"/><path d="${FS8.hale}" fill="#fff"/></g>
   </svg>`;
   const q = S.qr ? qrSvg() : '';
