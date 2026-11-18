@@ -62,7 +62,25 @@ aside{background:#fff;border-right:1px solid var(--line);overflow-y:auto}
 .sbody{overflow:auto;padding-bottom:12px}
 .sintro{padding:12px 18px 0;font-size:14px;color:var(--ink)}
 #bytt{position:fixed;z-index:40;display:none;background:var(--navy);color:#fff;border:0;border-radius:999px;padding:9px 16px;font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.25)}
-#bytt.on{display:block}
+#bytt.on{display:flex}
+#bytt{gap:4px;padding:5px;background:var(--navy);border-radius:999px}
+#bytt button{background:none;border:0;color:#fff;font-family:var(--font);font-size:14px;font-weight:700;padding:6px 12px;border-radius:999px;cursor:pointer}
+#bytt button:hover,#bytt button:focus-visible{background:rgba(255,255,255,.18)}
+#juster{position:fixed;z-index:41;display:none;align-items:center;gap:10px;background:#fff;border-radius:999px;padding:7px 8px 7px 16px;box-shadow:0 6px 18px rgba(0,0,0,.25);font-size:13px;color:var(--ink)}
+#juster.on{display:flex}
+#juster input{width:130px}
+#juster .btn{padding:6px 14px}
+.stage.justerer .klikkbilde{cursor:grab}
+.stage.justerer.drar .klikkbilde{cursor:grabbing}
+.stage.justerer .page .box,.stage.justerer .page .ed{pointer-events:none}
+.sidehint{font-size:12px;color:var(--muted);white-space:nowrap}
+.seg button:disabled{opacity:.45;cursor:not-allowed}
+.startvalg{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:14px 18px 4px}
+.startvalg .sv{border:2px solid var(--line);border-radius:10px;padding:14px 16px;background:#fafbfb;font-family:var(--font);text-align:left;cursor:pointer;display:block}
+.startvalg .sv:hover,.startvalg .sv:focus-within{border-color:var(--navy)}
+.startvalg .sv b{display:block;color:var(--navy);font-size:15px;margin-bottom:3px}
+.startvalg .sv span{font-size:13px;color:var(--muted)}
+.startvalg .sv.aktiv{border-color:var(--navy);background:#fff}
 .sidetabs{display:none;white-space:nowrap}
 .sidetabs.on{display:flex}
 .qrforklar{font-size:12.5px;color:var(--muted);margin:-2px 0 10px;line-height:1.45}
@@ -521,7 +539,7 @@ details[open] .sumh{margin-bottom:12px}
 <div class="stagecol">
 <div class="tools">
   <span class="hint">Klikk på tekst i plakaten for å skrive</span>
-  <div class="seg sidetabs" id="sidetabs"><button data-side="1">Forside</button><button data-side="2">Bakside</button></div>
+  <div class="seg sidetabs" id="sidetabs"><button data-side="1">Forside</button><button data-side="2">Bakside</button></div><span class="sidehint" id="sidehint"></span>
   <button class="hjelpbtn" id="allemaler">Alle maler</button>
   <button class="hjelpbtn" id="hjelp">Slik virker det</button>
   <label class="chk mini"><input type="checkbox" id="skjultom"> Skjul tomme felt</label>
@@ -531,7 +549,7 @@ details[open] .sumh{margin-bottom:12px}
 </div>
 <div class="tour" id="tour" role="dialog" aria-modal="true" aria-label="Slik virker plakatgeneratoren">
   <div class="dim"></div>
-  <div class="kort k1"><b>Sidepanelet</b>Her kan du bytte mal når som helst – teksten blir med. Her velger du også format, farge, QR-kode og laster ned.</div>
+  <div class="kort k1"><b>Sidepanelet</b>Her kan du bytte mal når som helst – teksten blir med. Her velger du også format, farge og QR-kode. Lagre ved å laste ned PDF – den kan åpnes her igjen senere for å redigere videre.</div>
   <div class="ring r1"></div><div class="ring r2"></div><div class="ring r3"></div>
   <div class="kort k2"><b>Skriv rett i plakaten</b>Klikk på en tekst for å endre den. Eksempelteksten forteller hva som passer i feltet. Grå tekst er tomme felt – de kommer ikke med på plakaten.</div>
   <div class="kort k3"><b>Bytt bilde</b>Klikk på bildet og velg «Bytt bilde». Du kan velge fra bildebanken eller laste opp ditt eget.</div>
@@ -541,12 +559,16 @@ details[open] .sumh{margin-bottom:12px}
   <div class="mbox">
     <div class="mhead"><b id="startt">Hva skal plakaten gjøre?</b><span style="flex:1"></span><button class="btn" id="startlukk">Lukk</button></div>
     <div class="sbody">
-      <p class="sintro">Velg en mal å starte med. <b>Du kan alltid bytte mal underveis</b> – teksten og bildene blir med.</p>
+      <div class="startvalg">
+        <div class="sv aktiv" id="svny"><b>Lag en ny plakat</b><span>Velg en mal nedenfor. Du kan alltid bytte mal underveis – teksten og bildene blir med.</span></div>
+        <label class="sv" id="svapne"><b>Åpne en plakat du har laget før</b><span>Velg en PDF du har lastet ned fra generatoren, så kan du redigere videre.</span><input type="file" accept=".pdf,.json" id="startapne" style="display:none"></label>
+      </div>
       <div id="startgrp"></div>
     </div>
   </div>
 </div>
-<button id="bytt" type="button">Bytt bilde</button>
+<div id="bytt" role="toolbar" aria-label="Bilde"><button type="button" id="byttbilde">Bytt bilde</button><button type="button" id="byttjuster">Flytt og zoom</button></div>
+<div id="juster" role="toolbar" aria-label="Juster bildet"><span>Dra i bildet for å flytte det</span><label style="display:flex;align-items:center;gap:6px">Zoom<input type="range" id="justerz" min="1" max="3" step="0.02"></label><button class="btn pri" id="justerok">Ferdig</button></div>
 <div class="modal" id="kispm" role="dialog" aria-modal="true" aria-labelledby="kispmt">
   <div class="mbox" style="width:min(420px,100%);padding:22px 22px 18px">
     <b id="kispmt" style="font-size:17px">Er bildet laget med KI?</b>
@@ -3470,6 +3492,7 @@ function urlBreak(u){ return esc(u||'').replace(/([\/.])/g,'$1<wbr>'); }
    og tomme felt vises med grå hjelpetekst. Miniatyrer og nedlasting bygges uten. */
 let EDIT = false;
 let visTourExt = () => {};
+const TOUR_KEY_G = 'tk-plakat-sett-forklaring-2';
 const PH = {pIntro:'Innledning til punktlista (valgfri)', ut3:'Underoverskrift', tx3:'Skriv brødtekst',
   stikk:'Tema', tittel:'Skriv en tittel', ingress:'Skriv en kort ingress',
   ut1:'Underoverskrift', tx1:'Skriv brødtekst', pTittel:'Overskrift over punktene',
@@ -4093,8 +4116,15 @@ function fillForm(){
   $('visurl').checked = S.visUrl !== false;
   $('visurlrad').style.display = ['forklaring','delt','tekst','bilder','bildetekst'].includes(S.tpl) ? '' : 'none';
   $('qrapner').textContent = has('url') ? 'Når noen skanner koden med mobilkameraet, åpnes: ' + (/^https?:\/\//i.test(S.url.trim()) ? '' : 'https://') + S.url.trim() : '';
-  $('sidetabs').classList.toggle('on', hasSide2());
-  document.querySelectorAll('#sidetabs button').forEach(b => b.classList.toggle('on', +b.dataset.side === S.side));
+  // Forside/bakside vises alltid; bakside er bare aktiv når malen har en
+  const kanBak = S.tpl === 'bildetekst' && S.fmt === 'a4';
+  if(!hasSide2()) S.side = 1;
+  $('sidetabs').classList.add('on');
+  document.querySelectorAll('#sidetabs button').forEach(b => {
+    b.classList.toggle('on', +b.dataset.side === S.side);
+    if(b.dataset.side === '2'){ b.disabled = !kanBak; b.title = kanBak ? '' : 'Denne malen har ingen bakside'; }
+  });
+  $('sidehint').textContent = kanBak ? (S.side2 ? '' : 'Baksiden er slått av') : S.tpl === 'bildetekst' ? 'Bakside finnes bare i A4' : 'Malen har ingen bakside';
   $('ogsa').classList.remove('on');
   $('sec-merke').classList.toggle('hide', !TPLS[S.tpl].felt.includes('merke'));
   $('merkeh').textContent = S.tpl === 'bymobel' ? 'Merke (blå sirkel)' : 'Gult merke';
@@ -4156,11 +4186,12 @@ function initUI(){
     $('start').classList.remove('on'); velgMal(b.dataset.tpl);
     if(forste) setTimeout(visTourExt, 350);
   });
+  $('startapne').onchange = e => { const forste = $('start').dataset.forste === '1'; $('start').classList.remove('on'); loadDraft(e); try{ localStorage.setItem(TOUR_KEY_G, '1'); }catch(_){} };
   $('startlukk').onclick = () => { const forste = $('start').dataset.forste === '1'; $('start').classList.remove('on'); if(forste) setTimeout(visTourExt, 200); };
   $('allemaler').onclick = () => apneStart(false);
   $('visurl').onchange = () => { S.visUrl = $('visurl').checked; render(); };
   $('dlwide').onclick = async () => { const f = S.fmt; S.fmt = 'wide'; try{ await exportFile('png', true); } finally { S.fmt = f; fillForm(); render(); } };
-  document.querySelectorAll('#sidetabs button').forEach(b => b.onclick = () => { S.side = +b.dataset.side; fillForm(); render(); });
+  document.querySelectorAll('#sidetabs button').forEach(b => b.onclick = () => { if(b.disabled) return; S.side = +b.dataset.side; if(S.side === 2) S.side2 = true; fillForm(); render(); });
   const sw = $('swatches');
   Object.entries(SLOR).forEach(([k,c]) => {
     const b = document.createElement('button');
@@ -4275,11 +4306,45 @@ function initUI(){
     const blk = document.querySelector(`.imgblk[data-n="${n}"]`); const inp = blk && blk.querySelector('input[type=file]');
     if(inp) inp.click();
   };
-  bytt.onclick = () => { skjulBytt(); apneBilde(byttN); };
+  $('byttbilde').onclick = () => { skjulBytt(); apneBilde(byttN); };
+  // Flytt og zoom direkte i plakaten
+  const jl = $('juster'), stage = $('stage'); let jN = null, drag = null, raf = 0;
+  const avsluttJuster = () => { jN = null; jl.classList.remove('on'); stage.classList.remove('justerer','drar'); fillForm(); };
+  $('byttjuster').onclick = () => {
+    skjulBytt(); jN = byttN; const I = S.imgs[jN]; if(!I || !I.src){ apneBilde(byttN); return; }
+    $('justerz').value = I.z || 1;
+    jl.style.left = Math.max(12, Math.min(parseFloat(bytt.style.left), innerWidth - 470)) + 'px'; jl.style.top = bytt.style.top;
+    jl.classList.add('on'); stage.classList.add('justerer');
+  };
+  $('justerz').oninput = () => { if(jN === null) return; S.imgs[jN].z = +$('justerz').value; render(); };
+  $('justerok').onclick = avsluttJuster;
+  wrap.addEventListener('pointerdown', e => {
+    if(jN === null) return;
+    const g = e.target.closest('[data-img]'); if(!g || +g.dataset.img !== jN) return;
+    const im = g.querySelector('image'), svg = g.ownerSVGElement; if(!im || !svg) return;
+    e.preventDefault();
+    const k = svg.getBoundingClientRect().width / svg.viewBox.baseVal.width; // skjerm-px per plakat-px
+    const cp = document.getElementById(((g.getAttribute('clip-path')||'').match(/#([^)]+)/)||[])[1]);
+    const bb = cp && cp.firstElementChild ? cp.firstElementChild.getBBox() : g.getBBox();
+    const ox = Math.max(1, +im.getAttribute('width') - bb.width), oy = Math.max(1, +im.getAttribute('height') - bb.height);
+    drag = {x:e.clientX, y:e.clientY, fx:S.imgs[jN].fx, fy:S.imgs[jN].fy, k, ox, oy};
+    stage.classList.add('drar'); wrap.setPointerCapture(e.pointerId);
+  });
+  wrap.addEventListener('pointermove', e => {
+    if(!drag) return;
+    const I = S.imgs[jN];
+    I.fx = Math.max(0, Math.min(100, drag.fx - (e.clientX - drag.x) / drag.k / drag.ox * 100));
+    I.fy = Math.max(0, Math.min(100, drag.fy - (e.clientY - drag.y) / drag.k / drag.oy * 100));
+    if(!raf) raf = requestAnimationFrame(() => { raf = 0; render(); });
+  });
+  const slipp = () => { if(drag){ drag = null; stage.classList.remove('drar'); } };
+  wrap.addEventListener('pointerup', slipp); wrap.addEventListener('pointercancel', slipp);
+  document.addEventListener('keydown', e => { if(e.key === 'Escape' && jN !== null) avsluttJuster(); });
   document.addEventListener('click', e => { if(!e.target.closest('#bytt') && !e.target.closest('#wrap')) skjulBytt(); });
   $('stage').addEventListener('scroll', skjulBytt);
   wrap.addEventListener('click', e => {
     skjulBytt();
+    if(jN !== null) return; // justerer bildet
     if(e.target.closest('.ed')) return;
     if(e.target.closest('[data-ikon]')){ apneIkoner(); return; }
     if(e.target.closest('.qr, .qrbadge, .qrbox7, .qr9, .qr11')){ tilPanel($('sec-qr'), $('urlqr')); return; }
@@ -4296,11 +4361,11 @@ function initUI(){
     if(bi){
       byttN = bi.classList.contains('avatar-img') ? 3 : +bi.dataset.img;
       bytt.style.left = Math.min(e.clientX + 8, innerWidth - 140) + 'px'; bytt.style.top = (e.clientY + 8) + 'px';
-      bytt.classList.add('on'); bytt.focus();
+      bytt.classList.add('on'); $('byttbilde').focus();
     }
   });
   // Forklaring ved første besøk, og ved klikk på «Slik virker det»
-  const TOUR_KEY = 'tk-plakat-sett-forklaring';
+  const TOUR_KEY = 'tk-plakat-sett-forklaring-2'; // ny versjon: alle ser den nye oppstarten én gang
   const bildeRekt = g => {
     const svg = g.ownerSVGElement, page = g.closest('.page'); if(!svg || !page) return null;
     let bb;
