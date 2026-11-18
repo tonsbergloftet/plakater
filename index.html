@@ -161,7 +161,14 @@ body.har-bank .bankbtn{display:block}
 .warn.on{display:block}
 .note{font-size:12px;color:var(--muted);line-height:1.45;margin-top:8px}
 
-.stagecol{display:flex;flex-direction:column;min-height:0;min-width:0}
+.stagecol{display:flex;flex-direction:column;min-height:0;min-width:0;position:relative}
+.tips{display:none;position:absolute;left:50%;transform:translateX(-50%);top:62px;z-index:30;max-width:min(640px,90%);background:#fff8e6;border:1.5px solid #f1be48;border-radius:10px;padding:9px 12px;font-size:13.5px;color:var(--ink);box-shadow:0 6px 18px rgba(0,0,0,.12)}
+.tips.on{display:block}
+.tips .tip{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.tips .tip + .tip{margin-top:6px;padding-top:6px;border-top:1px solid #f3dca0}
+.tips .tip span{flex:1;min-width:200px}
+.tips .btn{padding:5px 12px;font-size:13px}
+.tips .lukk{background:none;border:0;font-size:18px;line-height:1;color:var(--muted);cursor:pointer;padding:0 2px}
 .tools{display:flex;align-items:center;gap:14px;padding:10px 18px;background:#fff;border-bottom:1px solid var(--line);flex-wrap:wrap}
 .tools .hint{font-size:13px;color:var(--navy);font-weight:600;margin-right:auto}
 .chk.mini{margin:0;font-size:13px}
@@ -239,6 +246,8 @@ details[open] .sumh{margin-bottom:12px}
 .tour .kort.ph::before{content:'';position:absolute;right:-12px;top:22px;border:12px solid transparent;border-right:0;border-left-color:#fff}
 .tour .pil{position:absolute;color:#fff;font-weight:800;font-size:13px;letter-spacing:.06em;text-transform:uppercase}
 .tour .kort .tsteg{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#8a6d1c;margin-bottom:6px}
+.tour .kort .tpdf{display:block;margin-top:10px;padding:9px 11px 9px 12px;background:#fdf3db;border-left:4px solid #f1be48;border-radius:6px;font-size:13.5px}
+.tour .kort .tpdf b{display:block;font-size:14px;margin-bottom:2px;color:var(--navy)}
 .tour .kort .tknapper{display:flex;justify-content:space-between;align-items:center;margin-top:14px;gap:10px}
 .tour .kort .tknapper .lnk{font-size:13px}
 .tour .kort .tneste{background:#f1be48;color:#1d1d1b;border:0;border-radius:999px;padding:8px 18px;font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer}
@@ -539,7 +548,7 @@ details[open] .sumh{margin-bottom:12px}
 
   <div class="sec">
     <h2>Fortsett på en plakat</h2>
-    <label class="btn" style="text-align:center;display:block">Åpne PDF for å redigere<input type="file" accept=".pdf,.json" id="load" style="display:none"></label>
+    <label class="btn" style="text-align:center;display:block">Åpne en plakat du har laget før<input type="file" accept=".pdf,.json" id="load" style="display:none"></label>
     <p class="note">PDF-er du laster ned herfra kan åpnes igjen, så kan du redigere videre.</p>
   </div>
 </aside>
@@ -553,11 +562,12 @@ details[open] .sumh{margin-bottom:12px}
   <label class="chk mini"><input type="checkbox" id="skjultom"> Skjul tomme felt</label>
   <div class="seg zoomseg" id="zoom"><button data-z="fit" class="on">Tilpass</button><button data-z="1">100 %</button><button data-z="1.5">150 %</button></div>
 </div>
+<div class="tips" id="tips" role="status" aria-live="polite"></div>
 <main class="stage" id="stage"><div class="stagewrap" id="wrap"></div></main>
 </div>
 <div class="tour" id="tour" role="dialog" aria-modal="true" aria-label="Veiledning: slik virker plakatgeneratoren">
   <div class="dim"></div>
-  <div class="kort k1"><span class="tsteg">Veiledning · 3 av 3</span><b>Resten finner du her</b>Bytt mal når som helst – teksten blir med. Her velger du også format, farge og QR-kode, og laster ned. Ta vare på PDF-en: den kan åpnes her igjen hvis du vil endre plakaten senere.<span class="tknapper"><button class="lnk" data-t="tilbake">Tilbake</button><button class="tneste" data-t="neste">Kom i gang</button></span></div>
+  <div class="kort k1"><span class="tsteg">Veiledning · 3 av 3</span><b>Resten finner du her</b>Bytt mal når som helst – teksten blir med. Her velger du også format, farge og QR-kode, og laster ned.<span class="tpdf"><b>Ta vare på PDF-en</b>Den kan åpnes her igjen hvis du vil endre plakaten senere – velg «Åpne en plakat du har laget før».</span><span class="tknapper"><button class="lnk" data-t="tilbake">Tilbake</button><button class="tneste" data-t="neste">Kom i gang</button></span></div>
   <div class="ring r1"></div><div class="ring r2"></div><div class="ring r3"></div>
   <div class="kort k2"><span class="tsteg">Veiledning · 1 av 3</span><b>Skriv rett i plakaten</b>Klikk på en tekst og skriv. Eksempelteksten forteller hva som passer i feltet. Grå tekst er tomme felt – de kommer ikke med på plakaten.<span class="tknapper"><button class="lnk" data-t="hopp">Hopp over</button><button class="tneste" data-t="neste">Neste</button></span></div>
   <div class="kort k3"><span class="tsteg">Veiledning · 2 av 3</span><b>Bytt eller juster bildet</b>Klikk på bildet. Velg «Bytt bilde» for bildebanken eller ditt eget, eller «Flytt og zoom» for å justere utsnittet.<span class="tknapper"><button class="lnk" data-t="tilbake">Tilbake</button><button class="tneste" data-t="neste">Neste</button></span></div>
@@ -3775,6 +3785,8 @@ const INV7 = {"gronn": "M-124.6,537.3 C-114.4,538.0 -104.4,540.5 -94.1,541.1 C-7
 
 /* 7 · Invitasjon. A4 er målt fra InDesign-fila (mal1_invitasjon.idml), 1 pt = 4/3 px.
    Liggende versjon er en tilpasning laget her. */
+// Standardikon i det gule merket når ingen ikon er valgt (turistinformasjon fra ikonbiblioteket)
+const IKON_STD = "<svg fill=\"currentColor\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 53.700 53.700\"><path style=\"fill:currentColor\" d=\"M23.190,17.527c.2070312,0,.375-.1679688.375-.375v-2.035h.9555664v1.020c0,.2070312.167.375.375.375h1.087c.2070312,0,.375-.1679688.375-.375s-.1679688-.375-.375-.375h-.7124023v-1.020c0-.2070312-.1679688-.375-.375-.375h-1.705c-.2070312,0-.375.167-.375.375v2.410c0,.2070312.167.375.375.375Z\"/><path style=\"fill:currentColor\" d=\"M27.133,16.511h.6650391c.2070312,0,.375-.1679688.375-.375s-.1679688-.375-.375-.375h-.6650391c-.2070312,0-.375.167-.375.375s.1679688.375.375.375Z\"/><path style=\"fill:currentColor\" d=\"M28.913,16.511h.6230469c.2070312,0,.375-.1679688.375-.375v-1.020h.9550781v2.035c0,.2070312.167.375.375.375h1.055c.2070312,0,.375-.1679688.375-.375s-.1679688-.375-.375-.375h-.6801758v-2.035c0-.2070312-.1679688-.375-.375-.375h-1.705c-.2070312,0-.375.167-.375.375v1.020h-.2480469c-.2070312,0-.375.167-.375.375s.1679688.375.375.375Z\"/><path style=\"fill:currentColor\" d=\"M35.789,36.978l-2.660-.6518555v-3.221c0-.2070312-.1679688-.375-.375-.375h-1.138v-13.432h.4677734c.3452148,0,.625-.2797852.625-.625s-.2797852-.625-.625-.625h-9.625v-.8955078c0-.4140625-.3359375-.75-.75-.75s-.75.335-.75.75v1.732c0,.203125.082.3974609.228.5390625.145.140625.334.2167969.545.2104492l.2885742-.0092773v12.729h-.7709961c-.4140625,0-.75.335-.75.75v3.428c0,.0441284.017.0823975.025.1243896l-2.510.6124268c-.2011719.048-.324707.251-.2753906.453.0415039.171.1953125.286.3637695.286.0297852,0,.0595703-.003418.089-.0107422l2.989-.729187c.0237427.002.0442505.013.0685425.013.4140625,0,.75-.3359375.75-.75v-2.678h.7709961c.4140625,0,.75-.3359375.75-.75v-13.807h7.344v13.807c0,.2070312.167.375.375.375h1.138v3.140c0,.1728516.118.3232422.285.3642578l2.945.7216797c.0302734.007.0600586.010.0898438.010.168457,0,.3217773-.1147461.363-.2856445.049-.2011719-.0737305-.4042969-.2749023-.4536133Z\"/><path style=\"fill:currentColor\" d=\"M38.014,37.746l-1.169-.3828125c-.1958008-.0639648-.4086914.042-.4731445.239s.0429688.408.2397461.473l1.169.3828125c.0385742.012.078125.018.1166992.018.1577148,0,.3046875-.1000977.356-.2583008.064-.1967773-.0429688-.4086914-.2397461-.4731445Z\"/><path style=\"fill:currentColor\" d=\"M39.419,38.304l-.4428711-.1494141c-.1967773-.0654297-.4091797.040-.4755859.235-.065918.195.0395508.408.2353516.475l.4428711.149c.0400391.013.0805664.019.1201172.019.1567383,0,.3027344-.0986328.355-.2553711.065-.1958008-.0395508-.4086914-.2353516-.4750977Z\"/><path style=\"fill:currentColor\" d=\"M17.034,37.600l-1.270.4047852c-.1972656.062-.3066406.273-.2436523.471.0507812.159.1982422.261.3574219.261.0375977,0,.0761719-.0058594.113-.0175781l1.270-.4047852c.1972656-.0629883.306-.2739258.243-.4711914-.0629883-.1977539-.2739258-.3061523-.4711914-.2436523Z\"/><path style=\"fill:currentColor\" d=\"M14.805,38.404l-.5371094.202c-.1938477.073-.2915039.289-.21875.483.0566406.150.199707.242.3510742.242.0439453,0,.0888672-.0078125.132-.0239258l.5371094-.2026367c.1938477-.0732422.291-.2895508.218-.4833984-.0727539-.1933594-.2885742-.2890625-.4833984-.21875Z\"/><path style=\"fill:currentColor\" d=\"M26.259,22.181c.2070312,0,.375-.1679688.375-.375v-1.467c0-.2070312-.1679688-.375-.375-.375s-.375.167-.375.375v1.467c0,.2070312.167.375.375.375Z\"/><path style=\"fill:currentColor\" d=\"M28.678,21.806v-1.467c0-.2070312-.1679688-.375-.375-.375s-.375.167-.375.375v1.467c0,.2070312.167.375.375.375s.375-.1679688.375-.375Z\"/><path style=\"fill:currentColor\" d=\"M27.906,26.180v-.7700195c0-.3452148-.2797852-.625-.625-.625s-.625.279-.625.625v.7700195c0,.3452148.279.625.625.625s.625-.2797852.625-.625Z\"/><path style=\"fill:currentColor\" d=\"M29.950,31.137v-1.467c0-.3452148-.2797852-.625-.625-.625s-.625.279-.625.625v1.467c0,.3452148.279.625.625.625s.625-.2797852.625-.625Z\"/><path style=\"fill:currentColor\" d=\"M25.862,31.137v-1.467c0-.3452148-.2797852-.625-.625-.625s-.625.279-.625.625v1.467c0,.3452148.279.625.625.625s.625-.2797852.625-.625Z\"/><path style=\"fill:currentColor\" d=\"M31.575,35.852c-.9979248-.1605835-1.983-.2503052-2.896-.2844238v-1.979c0-.2070312-.1679688-.375-.375-.375h-2.124c-.067627-.0250244-.138855-.043457-.21521-.043457-.3452148,0-.625.279-.625.625v1.995l-2.174.1574097c-.206543.014-.3623047.193-.3476562.400.0136719.197.1787109.348.3735352.348.0087891,0,.0180664-.0004883.026-.0009766l2.569-.1858521c.0574341.017.1148071.035.1779175.035.3452148,0,.625-.2797852.625-.625v-1.958h1.339v1.958c0,.0233154.009.0436401.013.0657959.004.026001.005.0531006.015.0769653.008.0214233.024.0380249.037.057251.013.0211792.024.0444336.042.0623779.016.0168457.038.0269165.057.0404053.020.013916.037.0308838.060.0407104.022.0096436.047.0106812.071.0159302.023.005127.045.0150757.070.015564.972.0175781,2.064.1201172,3.159.2958984.020.003418.040.0048828.060.0048828.180,0,.340332-.1313477.369-.3154297.033-.2045898-.105957-.3969727-.3105469-.4296875Z\"/><\/svg>";
 const MEGAFON = '<svg viewBox="0 0 48 40" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 15h5l14-8v26l-14-8h-5a3 3 0 0 1-3-3v-4a3 3 0 0 1 3-3z"/><path d="M19 25l2 9h5l-2-9"/><path d="M33 10v20"/><path d="M38 20h6M37 13l5-3M37 27l5 3M4 16l3 1M3 21h3M4 26l3-1"/></svg>';
 // Ikon i plakaten. farge = ikonfarge, bunn = flaten bak (brukes til «utsparinger» i ikonet)
 function ikonHer(x,y,str,farge,bunn){
@@ -3824,12 +3836,12 @@ LAYOUTS.invitasjon = (uid,f) => {
     ? `<div class="merke7${has('merke')?'':' tom'}" style="left:604px;top:465px;width:124px;height:95px;transform:rotate(2deg)">
          <svg viewBox="0 0 124 95" style="position:absolute;inset:0;overflow:visible"><defs><linearGradient id="${uid}gl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".6"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>
          <ellipse cx="62" cy="47.5" rx="62" ry="47.5" fill="#f1be48" filter="url(#${uid}sh)"/><ellipse cx="62" cy="47.5" rx="62" ry="47.5" fill="url(#${uid}gl)"/></svg>
-         ${S.ikon && ikonSvg(S.ikon) ? `<div${EDIT?' data-ikon="1"':''} style="position:absolute;left:27px;top:-6px;width:70px;height:70px;color:${NAVY};--ikbg:#f4cf72">${ikonSvg(S.ikon)}</div>` : `<div${EDIT?' data-ikon="1"':''} style="position:absolute;left:37px;top:7px;width:48px;height:36px">${MEGAFON}</div>`}
+         ${S.ikon && ikonSvg(S.ikon) ? `<div${EDIT?' data-ikon="1"':''} style="position:absolute;left:27px;top:-6px;width:70px;height:70px;color:${NAVY};--ikbg:#f4cf72">${ikonSvg(S.ikon)}</div>` : `<div${EDIT?' data-ikon="1"':''} style="position:absolute;left:27px;top:-6px;width:70px;height:70px;color:${NAVY};--ikbg:#f4cf72">${IKON_STD}</div>`}
          <div style="position:absolute;left:4px;right:4px;top:46px">${E('merke','mt')}</div></div>`
     : `<div class="merke7${has('merke')?'':' tom'}" style="left:1092px;top:300px;width:124px;height:95px;transform:rotate(2deg)">
          <svg viewBox="0 0 124 95" style="position:absolute;inset:0;overflow:visible"><defs><linearGradient id="${uid}gl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".6"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>
          <ellipse cx="62" cy="47.5" rx="62" ry="47.5" fill="#f1be48" filter="url(#${uid}sh)"/><ellipse cx="62" cy="47.5" rx="62" ry="47.5" fill="url(#${uid}gl)"/></svg>
-         ${S.ikon && ikonSvg(S.ikon) ? `<div${EDIT?' data-ikon="1"':''} style="position:absolute;left:27px;top:-6px;width:70px;height:70px;color:${NAVY};--ikbg:#f4cf72">${ikonSvg(S.ikon)}</div>` : `<div${EDIT?' data-ikon="1"':''} style="position:absolute;left:37px;top:7px;width:48px;height:36px">${MEGAFON}</div>`}
+         ${S.ikon && ikonSvg(S.ikon) ? `<div${EDIT?' data-ikon="1"':''} style="position:absolute;left:27px;top:-6px;width:70px;height:70px;color:${NAVY};--ikbg:#f4cf72">${ikonSvg(S.ikon)}</div>` : `<div${EDIT?' data-ikon="1"':''} style="position:absolute;left:27px;top:-6px;width:70px;height:70px;color:${NAVY};--ikbg:#f4cf72">${IKON_STD}</div>`}
          <div style="position:absolute;left:4px;right:4px;top:46px">${E('merke','mt')}</div></div>`) : '';
   const topp = E('stikk','stikk') + E('tittel','tittel') + E('ingress','ingress');
   const brod = E('ut1','bi') + E('tx1','p') + E('tx2','p') + E('avslutt','bi');
@@ -4072,6 +4084,99 @@ function render(){
   wrap.style.width = (page.offsetWidth*sc) + 'px';
   wrap.style.height = (page.offsetHeight*sc) + 'px';
   renderThumbs();
+  planleggSjekk();
+}
+
+/* ═════════ KVALITETSSJEKK ═════════
+   To små, automatiske sjekker som bare sier fra når noe er galt:
+   1. Lesbarhet i mal 1: leser bildet bak teksten og regner ut kontrasten (WCAG) mot tekstfargen.
+      Velger selv riktig variant når et nytt bilde legges inn, og foreslår bytte ellers.
+   2. Oppløsning: varsler når et bilde er for lite til å bli skarpt på trykk eller skjerm. */
+let sjekkTimer = null, autoVariant = true, tipsLukket = '';
+const bildeCache = {};
+function lastBilde(src){
+  if(!bildeCache[src]) bildeCache[src] = new Promise(ok => { const im = new Image(); im.onload = () => ok(im); im.onerror = () => ok(null); im.src = src; });
+  return bildeCache[src];
+}
+function planleggSjekk(){ clearTimeout(sjekkTimer); sjekkTimer = setTimeout(sjekkKvalitet, 350); }
+const lum = (r,g,b) => { const f = c => { c /= 255; return c <= .03928 ? c/12.92 : Math.pow((c+.055)/1.055, 2.4); }; return .2126*f(r) + .7152*f(g) + .0722*f(b); };
+// Andel av tekstflaten med kontrast under 3:1 for lys (mørk tekst) og mørk (hvit tekst) variant
+async function kontrastMal1(page){
+  const I = S.imgs[0]; if(!I || !I.src) return null;
+  const im = await lastBilde(I.src); if(!im) return null;
+  const A = S.fmt === 'a4', pn = A ? {x:29.3,y:28.9,w:737,h:1063.4} : {x:20,y:20,w:1240,h:680};
+  const sc = Math.max(pn.w/I.w, pn.h/I.h) * (I.z||1), w = I.w*sc, h = I.h*sc;
+  const ix = pn.x + (pn.w-w)*(I.fx/100), iy = pn.y + (pn.h-h)*(I.fy/100);
+  // Tekstlinjene (ikke hele boksen) i plakatens koordinater
+  const pr = page.getBoundingClientRect(), k = pr.width / page.offsetWidth, ruter = [];
+  page.querySelectorAll('.bp1 .ed, .bp1 .stikk, .bp1 .tittel, .bp1 .ingress').forEach(el => {
+    if(!el.textContent.trim() || el.classList.contains('tom')) return;
+    const r = document.createRange(); r.selectNodeContents(el);
+    [...r.getClientRects()].forEach(q => { if(q.width > 2) ruter.push({x:(q.left-pr.left)/k, y:(q.top-pr.top)/k, w:q.width/k, h:q.height/k}); });
+  });
+  if(!ruter.length) return null;
+  const S2 = 0.25, cv = document.createElement('canvas'); cv.width = Math.ceil(page.offsetWidth*S2); cv.height = Math.ceil(page.offsetHeight*S2);
+  const cx = cv.getContext('2d', {willReadFrequently:true});
+  cx.drawImage(im, ix*S2, iy*S2, w*S2, h*S2);
+  const px = cx.getImageData(0, 0, cv.width, cv.height).data;
+  const vg = A ? [638.7,-9.3,497.6,560.9] : [1100,-10,1040,420], vx = vg[2]-vg[0], vy = vg[3]-vg[1], vl = vx*vx + vy*vy;
+  const tLys = lum(0x1d,0x1d,0x1b), tMork = 1;
+  let n = 0, darligLys = 0, darligMork = 0;
+  ruter.forEach(q => {
+    for(let y = q.y; y < q.y + q.h; y += 3) for(let x = q.x; x < q.x + q.w; x += 3){
+      const X = Math.floor(x*S2), Y = Math.floor(y*S2); if(X < 0 || Y < 0 || X >= cv.width || Y >= cv.height) continue;
+      const i = (Y*cv.width + X)*4, t = Math.max(0, Math.min(1, ((x-vg[0])*vx + (y-vg[1])*vy) / vl)), a = .5*(1-t); // vask/mørkning som i malen
+      const r = px[i], g = px[i+1], b = px[i+2];
+      const lL = lum(r + (255-r)*a, g + (255-g)*a, b + (255-b)*a), lM = lum(r*(1-a), g*(1-a), b*(1-a));
+      if((lL + .05) / (tLys + .05) < 3) darligLys++;
+      if((tMork + .05) / (lM + .05) < 3) darligMork++;
+      n++;
+    }
+  });
+  return n ? {lys: darligLys/n, mork: darligMork/n} : null;
+}
+function opplosning(page){
+  const ut = [];
+  page.querySelectorAll('.klikkbilde[data-img]').forEach(g => {
+    const n = +g.dataset.img, I = S.imgs[n], im = g.querySelector('image');
+    if(!I || !I.src || I.ex || !im) return;
+    const pr = I.w / (+im.getAttribute('width') || 1); // bildepiksler per plakatpiksel
+    const nr = n === 4 ? 3 : n + 1;
+    if(S.fmt === 'a4'){ const ppi = Math.round(pr * 96); if(ppi < 150) ut.push(`Bilde ${nr} har lav oppløsning (ca. ${ppi} ppi) og kan bli uskarpt på trykk. Bruk et større bilde eller zoom mindre inn.`); }
+    else if(pr / FMT[S.fmt].ratio < .6) ut.push(`Bilde ${nr} er lite for denne skjermstørrelsen og kan se uskarpt ut. Bruk et større bilde eller zoom mindre inn.`);
+  });
+  return ut;
+}
+let SJEKK = {kontrast:null, opplosning:[]};
+async function sjekkKvalitet(){
+  const page = $('wrap').querySelector('.page'); if(!page) return;
+  const tips = [];
+  SJEKK.opplosning = opplosning(page);
+  SJEKK.kontrast = null;
+  if(S.tpl === 'bildedrevet' && S.imgs[0] && S.imgs[0].src){
+    const k = await kontrastMal1(page);
+    if(k){
+      if(autoVariant){ // nytt bilde: velg varianten som gir best lesbarhet
+        autoVariant = false;
+        const bedre = k.mork < k.lys - .05;
+        if(bedre !== !!S.mork){ S.mork = bedre; fillForm(); render(); return; }
+      }
+      const naa = S.mork ? k.mork : k.lys, annen = S.mork ? k.lys : k.mork;
+      if(naa > .2){
+        SJEKK.kontrast = naa;
+        tips.push(annen < naa - .1
+          ? {id:'kontrast', tekst:'Teksten kan bli vanskelig å lese på dette bildet.', knapp: S.mork ? 'Bytt til mørk tekst' : 'Bytt til hvit tekst', gjor: () => { S.mork = !S.mork; fillForm(); render(); }}
+          : {id:'kontrast', tekst:'Teksten kan bli vanskelig å lese på dette bildet. Prøv å flytte utsnittet (klikk på bildet → «Flytt og zoom») eller velg et roligere bilde.'});
+      }
+    }
+  }
+  SJEKK.opplosning.forEach((t,i) => tips.push({id:'oppl'+i, tekst:t}));
+  const nokkel = tips.map(t => t.id + t.tekst).join('|');
+  const el = $('tips');
+  if(!tips.length || nokkel === tipsLukket){ el.classList.remove('on'); el.innerHTML = ''; return; }
+  el.innerHTML = tips.map((t,i) => `<div class="tip"><span>${esc(t.tekst)}</span>${t.knapp ? `<button class="btn pri" data-tip="${i}">${esc(t.knapp)}</button>` : ''}${i === 0 ? '<button class="lukk" data-tip="x" aria-label="Skjul">×</button>' : ''}</div>`).join('');
+  el.classList.add('on');
+  el.onclick = e => { const b = e.target.closest('[data-tip]'); if(!b) return; if(b.dataset.tip === 'x'){ tipsLukket = nokkel; el.classList.remove('on'); return; } const t = tips[+b.dataset.tip]; if(t && t.gjor) t.gjor(); };
 }
 
 let thumbTimer = null;
@@ -4214,7 +4319,7 @@ function initUI(){
   $('url').addEventListener('input', () => { $('urlqr').value = $('url').value; });
   $('qr').onchange = () => { S.qr = $('qr').checked; syncFields(); render(); };
   $('ki').onchange = () => { S.ki = $('ki').checked; bildeSlots(S.tpl).forEach(i => { if(S.imgs[i]) S.imgs[i].ki = S.ki; }); render(); };
-  $('mork').onchange = () => { S.mork = $('mork').checked; render(); };
+  $('mork').onchange = () => { S.mork = $('mork').checked; autoVariant = false; render(); };
   $('side2').onchange = () => { S.side2 = $('side2').checked; if(!S.side2) S.side = 1; fillForm(); render(); };
   document.querySelectorAll('#sideseg button').forEach(b => b.onclick = () => { S.side = +b.dataset.side; fillForm(); render(); });
   // Når man skriver i et side 2-felt, vis side 2
@@ -4460,6 +4565,7 @@ function loadImage(file, n){
       }
       const png = n===3 || alpha;
       S.imgs[n] = {src: png ? cv.toDataURL('image/png') : cv.toDataURL('image/jpeg', .9), w: cv.width, h: cv.height, ex:false, fx:50, fy:alpha?0:45, z:1, alpha, ki:false};
+      if(n === 0) autoVariant = true;
       fillForm(); render();
       if(n !== 3) spørKi().then(ja => { S.imgs[n].ki = ja; oppdaterKi(); fillForm(); render(); });
     };
@@ -4499,6 +4605,8 @@ async function exportFile(type, stille){
     if(demo.length) varsel.push('Disse feltene har fortsatt eksempeltekst: ' + demo.join(', ') + '.');
     if(urlDemo) varsel.push('QR-koden går fortsatt til eksempeladressen (' + DEMO.url + ').');
     if(usedEx) varsel.push('Plakaten bruker fortsatt et eksempelbilde.');
+    if(SJEKK.kontrast) varsel.push('Teksten kan bli vanskelig å lese på bildet (se tipset over plakaten).');
+    SJEKK.opplosning.forEach(t => varsel.push(t));
     if(varsel.length && !confirm(varsel.join('\n') + '\n\nVil du laste ned likevel?')) return;
   }
   const btns = [$('dlpdf'), $('dlpng')]; btns.forEach(b => b.disabled = true);
@@ -4599,6 +4707,7 @@ function loadDraft(e){
       if(!SLOR[S.slor]) S.slor = 'gronn';
       if(!FMT[S.fmt] || !TPLS[S.tpl].fmts.includes(S.fmt)) S.fmt = TPLS[S.tpl].fmts[0];
       if(!('visUrl' in d)) S.visUrl = true;
+      autoVariant = false; // utkastet har allerede valgt variant
       fillForm(); render();
     }catch(err){ alert('Kunne ikke åpne fila. Er det en PDF lastet ned fra plakatgeneratoren?'); console.error(err); }
   };
@@ -4647,6 +4756,7 @@ async function velgBank(n, b, stille){
   try{
     const src = await tilDataUrl(b.fil);
     S.imgs[n] = {src, w:b.w, h:b.h, fx:b.fx, fy:b.fy, ex:false, bank:b.id, foto:b.fotograf||'', ki:false};
+    if(n === 0 && !stille) autoVariant = true;
     oppdaterKi();
   }catch(e){ if(!stille) alert('Kunne ikke hente bildet fra bildebanken.'); }
 }
