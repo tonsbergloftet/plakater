@@ -49,18 +49,21 @@ aside{background:#fff;border-right:1px solid var(--line);overflow-y:auto}
 .tpls .grp{grid-column:1/-1;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:8px 0 -2px}
 .tpls .grp:first-child{margin-top:0}
 .sider{position:absolute;right:4px;top:4px;background:#f1be48;color:#1d1d1b;font-size:10px;font-weight:700;border-radius:999px;padding:2px 7px;z-index:2}
-#start .mbox{width:min(1100px,100%)}
-.sgrp{padding:6px 18px 4px}
-.sgrp h3{margin:10px 0 2px;font-size:15px;color:var(--navy)}
-.sgrp p{margin:0 0 8px;font-size:13px;color:var(--muted)}
-.srow{display:flex;gap:12px;flex-wrap:wrap}
-.skort{width:150px;border:2px solid var(--line);border-radius:8px;background:#fafbfb;cursor:pointer;padding:6px;display:flex;flex-direction:column;align-items:center;gap:4px;font-family:var(--font);position:relative}
+#start .mbox{width:min(1060px,100%)}
+#start .mhead b{font-size:19px}
+.sgrps{display:flex;flex-wrap:wrap;gap:6px 34px;padding:4px 22px 6px}
+.sgrp h3{margin:12px 0 1px;font-size:14px;color:var(--navy)}
+.sgrp p{margin:0 0 8px;font-size:12.5px;color:var(--muted)}
+.srow{display:flex;gap:10px;flex-wrap:wrap}
+.skort{width:108px;border:2px solid var(--line);border-radius:8px;background:#fafbfb;cursor:pointer;padding:5px 5px 6px;display:flex;flex-direction:column;align-items:center;gap:4px;font-family:var(--font);position:relative}
 .skort:hover,.skort:focus-visible{border-color:var(--navy)}
 .skort .thumb{width:100%;position:relative;overflow:hidden;pointer-events:none;border-radius:4px}
-.skort .lbl{font-size:12px;font-weight:700;color:var(--navy)}
-.skort .sub{font-size:11px;color:var(--muted);text-align:center}
+.skort .lbl{font-size:11.5px;font-weight:700;color:var(--navy);text-align:center;line-height:1.2}
+.skort .sub{display:none}
 .sbody{overflow:auto;padding-bottom:12px}
-.sintro{padding:12px 18px 0;font-size:14px;color:var(--ink)}
+.sintro{padding:14px 22px 0;font-size:14px;color:var(--ink);margin:0}
+.apnelnk{font-family:var(--font);font-size:13.5px;font-weight:600;color:var(--navy);border:1.5px solid var(--line);border-radius:8px;padding:8px 12px;cursor:pointer;background:#fff;white-space:nowrap}
+.apnelnk:hover,.apnelnk:focus-within{border-color:var(--navy)}
 #bytt{position:fixed;z-index:40;display:none;background:var(--navy);color:#fff;border:0;border-radius:999px;padding:9px 16px;font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.25)}
 #bytt.on{display:flex}
 #bytt{gap:4px;padding:5px;background:var(--navy);border-radius:999px}
@@ -235,7 +238,12 @@ details[open] .sumh{margin-bottom:12px}
 .tour .kort.pv::before{content:'';position:absolute;left:-12px;top:22px;border:12px solid transparent;border-left:0;border-right-color:#fff}
 .tour .kort.ph::before{content:'';position:absolute;right:-12px;top:22px;border:12px solid transparent;border-right:0;border-left-color:#fff}
 .tour .pil{position:absolute;color:#fff;font-weight:800;font-size:13px;letter-spacing:.06em;text-transform:uppercase}
-.tour .knapp{position:absolute;left:50%;bottom:48px;transform:translateX(-50%);background:#f1be48;color:#1d1d1b;border:0;border-radius:999px;padding:12px 26px;font-family:var(--font);font-size:15px;font-weight:700;cursor:pointer}
+.tour .kort .tsteg{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#8a6d1c;margin-bottom:6px}
+.tour .kort .tknapper{display:flex;justify-content:space-between;align-items:center;margin-top:14px;gap:10px}
+.tour .kort .tknapper .lnk{font-size:13px}
+.tour .kort .tneste{background:#f1be48;color:#1d1d1b;border:0;border-radius:999px;padding:8px 18px;font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer}
+.tour .kort .tneste:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
+.tour .knapp{display:none;position:absolute;left:50%;bottom:48px;transform:translateX(-50%);background:#f1be48;color:#1d1d1b;border:0;border-radius:999px;padding:12px 26px;font-family:var(--font);font-size:15px;font-weight:700;cursor:pointer}
 .tour .knapp:focus-visible{outline:3px solid #fff;outline-offset:3px}
 .page .push{margin-top:auto}
 .page mark{background:var(--slor-tint);color:inherit;font-weight:700;padding:.04em .1em;margin:0 -.04em;border-radius:.15em;box-decoration-break:clone;-webkit-box-decoration-break:clone}
@@ -547,23 +555,22 @@ details[open] .sumh{margin-bottom:12px}
 </div>
 <main class="stage" id="stage"><div class="stagewrap" id="wrap"></div></main>
 </div>
-<div class="tour" id="tour" role="dialog" aria-modal="true" aria-label="Slik virker plakatgeneratoren">
+<div class="tour" id="tour" role="dialog" aria-modal="true" aria-label="Veiledning: slik virker plakatgeneratoren">
   <div class="dim"></div>
-  <div class="kort k1"><b>Sidepanelet</b>Her kan du bytte mal når som helst – teksten blir med. Her velger du også format, farge og QR-kode. Lagre ved å laste ned PDF – den kan åpnes her igjen senere for å redigere videre.</div>
+  <div class="kort k1"><span class="tsteg">Veiledning · 3 av 3</span><b>Resten finner du her</b>Bytt mal når som helst – teksten blir med. Her velger du også format, farge og QR-kode, og laster ned. Ta vare på PDF-en: den kan åpnes her igjen hvis du vil endre plakaten senere.<span class="tknapper"><button class="lnk" data-t="tilbake">Tilbake</button><button class="tneste" data-t="neste">Kom i gang</button></span></div>
   <div class="ring r1"></div><div class="ring r2"></div><div class="ring r3"></div>
-  <div class="kort k2"><b>Skriv rett i plakaten</b>Klikk på en tekst for å endre den. Eksempelteksten forteller hva som passer i feltet. Grå tekst er tomme felt – de kommer ikke med på plakaten.</div>
-  <div class="kort k3"><b>Bytt bilde</b>Klikk på bildet og velg «Bytt bilde». Du kan velge fra bildebanken eller laste opp ditt eget.</div>
+  <div class="kort k2"><span class="tsteg">Veiledning · 1 av 3</span><b>Skriv rett i plakaten</b>Klikk på en tekst og skriv. Eksempelteksten forteller hva som passer i feltet. Grå tekst er tomme felt – de kommer ikke med på plakaten.<span class="tknapper"><button class="lnk" data-t="hopp">Hopp over</button><button class="tneste" data-t="neste">Neste</button></span></div>
+  <div class="kort k3"><span class="tsteg">Veiledning · 2 av 3</span><b>Bytt eller juster bildet</b>Klikk på bildet. Velg «Bytt bilde» for bildebanken eller ditt eget, eller «Flytt og zoom» for å justere utsnittet.<span class="tknapper"><button class="lnk" data-t="tilbake">Tilbake</button><button class="tneste" data-t="neste">Neste</button></span></div>
   <button class="knapp" id="tourok">Skjønner</button>
 </div>
 <div class="modal" id="start" role="dialog" aria-modal="true" aria-labelledby="startt">
   <div class="mbox">
-    <div class="mhead"><b id="startt">Hva skal plakaten gjøre?</b><span style="flex:1"></span><button class="btn" id="startlukk">Lukk</button></div>
+    <div class="mhead"><b id="startt">Velg mal</b><span style="flex:1"></span>
+      <label class="apnelnk" title="PDF-er lastet ned fra generatoren kan åpnes og redigeres videre">Åpne en plakat du har laget før<input type="file" accept=".pdf,.json" id="startapne" style="display:none"></label>
+      <button class="btn" id="startlukk">Lukk</button></div>
     <div class="sbody">
-      <div class="startvalg">
-        <div class="sv aktiv" id="svny"><b>Lag en ny plakat</b><span>Velg en mal nedenfor. Du kan alltid bytte mal underveis – teksten og bildene blir med.</span></div>
-        <label class="sv" id="svapne"><b>Åpne en plakat du har laget før</b><span>Velg en PDF du har lastet ned fra generatoren, så kan du redigere videre.</span><input type="file" accept=".pdf,.json" id="startapne" style="display:none"></label>
-      </div>
-      <div id="startgrp"></div>
+      <p class="sintro">Hva skal plakaten gjøre? Velg det som passer best – du kan bytte mal når som helst, og teksten blir med.</p>
+      <div class="sgrps" id="startgrp"></div>
     </div>
   </div>
 </div>
@@ -4094,7 +4101,7 @@ function miniatyr(th, k){
 function velgMal(k){ S.tpl = k; S.fmt = fmtFor(k); if(!TPLS[k].fmts.includes(S.fmt)) S.fmt = 'a4'; oppdaterKi(); fillForm(); render(); }
 function apneStart(forsteGang){
   const g = $('startgrp');
-  g.innerHTML = GRUPPER.map(gr => `<div class="sgrp"><h3>${esc(gr.navn)}</h3><p>${esc(gr.tekst)}</p><div class="srow">${gr.maler.map(k => `<button class="skort" data-tpl="${k}"><div class="thumb"></div><span class="lbl">${esc(TPLS[k].navn)}</span><span class="sub">${esc(TPLS[k].sub)}</span></button>`).join('')}</div></div>`).join('');
+  g.innerHTML = GRUPPER.map(gr => `<div class="sgrp"><h3>${esc(gr.navn)}</h3><p>${esc(gr.tekst)}</p><div class="srow">${gr.maler.map(k => `<button class="skort" data-tpl="${k}" title="${esc(TPLS[k].sub)}"><div class="thumb"></div><span class="lbl">${esc(TPLS[k].navn)}</span></button>`).join('')}</div></div>`).join('');
   $('start').classList.add('on');
   $('start').dataset.forste = forsteGang ? '1' : '';
   setTimeout(() => g.querySelectorAll('.skort').forEach(b => miniatyr(b.querySelector('.thumb'), b.dataset.tpl)), 30);
@@ -4400,14 +4407,27 @@ function initUI(){
     t.classList.remove('pv','ph'); if(cls) t.classList.add(cls);
     Object.assign(t.style, {left:x+'px', top:y+'px'});
   };
-  const visTour = () => {
-    $('tour').classList.add('on');
-    plasser('k1', 'r1', document.querySelector('aside'), -4);
-    plasser('k2', 'r2', document.querySelector('#wrap .tittel.ed') || document.querySelector('#wrap .ed'), 6, null, 'right');
-    const kb = document.querySelector('#wrap .klikkbilde'); plasser('k3', 'r3', kb, 4, kb ? bildeRekt(kb) : null, 'left', document.querySelector('.tour .k1').getBoundingClientRect().bottom + 16);
-    $('tourok').focus();
+  // Veiledningen vises ett steg om gangen: tekst → bilde → sidepanelet
+  let tSteg = 0;
+  const tegnSteg = () => {
+    ['k1','k2','k3'].forEach((k,i) => plasser(k, 'r'+(i+1), null));
+    if(tSteg === 0) plasser('k2', 'r2', document.querySelector('#wrap .tittel.ed') || document.querySelector('#wrap .ed'), 6, null, 'right');
+    if(tSteg === 1){ const kb = document.querySelector('#wrap .klikkbilde'); if(!kb){ tSteg = 2; return tegnSteg(); } plasser('k3', 'r3', kb, 4, bildeRekt(kb), 'left'); }
+    if(tSteg === 2) plasser('k1', 'r1', document.querySelector('aside'), -4, null, null, 60);
+    const k = document.querySelector('.tour .' + ['k2','k3','k1'][tSteg]);
+    const harBilde = !!document.querySelector('#wrap .klikkbilde');
+    k.querySelector('.tsteg').textContent = `Veiledning · ${tSteg + 1 - (tSteg === 2 && !harBilde ? 1 : 0)} av ${harBilde ? 3 : 2}`;
+    k.querySelector('.tneste').focus();
   };
-  const lukkTour = () => { $('tour').classList.remove('on'); try{ localStorage.setItem(TOUR_KEY, '1'); }catch(e){} };
+  const visTour = () => { $('tour').classList.add('on'); tSteg = 0; tegnSteg(); };
+  $('tour').addEventListener('click', e => {
+    const t = e.target.closest('[data-t]'); if(!t) return;
+    if(t.dataset.t === 'hopp' || (t.dataset.t === 'neste' && tSteg === 2)){ lukkTour(); return; }
+    if(t.dataset.t === 'neste') tSteg++;
+    if(t.dataset.t === 'tilbake'){ tSteg--; if(tSteg === 1 && !document.querySelector('#wrap .klikkbilde')) tSteg = 0; }
+    tegnSteg();
+  });
+  var lukkTour = () => { $('tour').classList.remove('on'); try{ localStorage.setItem(TOUR_KEY, '1'); }catch(e){} };
   $('hjelp').onclick = visTour;
   visTourExt = visTour;
   $('tourok').onclick = lukkTour;
