@@ -4,11 +4,14 @@ Lag plakater (A4), skjermversjoner (16:9) og innhold til skjermene på bymøblen
 
 ## Slik brukes generatoren
 
-- **Tekst skrives rett i plakaten.** Klikk på en tekst for å endre den. Tomme felt vises med grå hjelpetekst og kommer ikke med på den ferdige plakaten.
-- **Klikk på bildet i plakaten** for å komme til bildevalget (bildebanken eller eget bilde).
-- **Sidepanelet** brukes til mal, format, bilde, farge, QR-kode og nedlasting. Alle tekstfeltene finnes også nederst i sidepanelet.
-- Knappen **«Slik virker det»** over plakaten viser en kort forklaring.
-- Skriv `**ord**` for å utheve ord med farge i brødtekst.
+- **Første gang** vises «Hva skal plakaten gjøre?» med malene gruppert etter formål. Knappen **«Alle maler»** over plakaten viser den igjen. Malen kan byttes når som helst – teksten blir med.
+- **Tekst skrives rett i plakaten.** Klikk på en tekst for å endre den. Eksempelteksten forteller hva som passer i feltet. Tomme felt vises med grå hjelpetekst og kommer ikke med på den ferdige plakaten.
+- **Klikk på bildet** og velg «Bytt bilde» for å velge fra bildebanken eller laste opp eget bilde.
+- **Klikk på QR-koden** for å skrive inn nettsiden koden skal åpne.
+- Nedlastingen varsler hvis plakaten fortsatt har eksempeltekst, eksempeladresse eller eksempelbilde.
+- **PDF-en er også arbeidsfil:** Åpne den under «Fortsett på en plakat» for å redigere videre. QR-koden er klikkbar i PDF-en.
+- Etter nedlasting av A4 tilbys en skjermversjon (16:9) av samme plakat.
+- Skriv `**ord**` for å utheve ord med farge.
 
 ## Maler og formater
 

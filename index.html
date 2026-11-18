@@ -46,6 +46,31 @@ aside{background:#fff;border-right:1px solid var(--line);overflow-y:auto}
 .page{text-align:left;line-height:normal;letter-spacing:normal;white-space:normal}
 .tplbtn .lbl{font-size:12px;font-weight:700;color:var(--navy)}
 .tplbtn .sub{font-size:11px;color:var(--muted);margin-top:-4px}
+.tpls .grp{grid-column:1/-1;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:8px 0 -2px}
+.tpls .grp:first-child{margin-top:0}
+.sider{position:absolute;right:4px;top:4px;background:#f1be48;color:#1d1d1b;font-size:10px;font-weight:700;border-radius:999px;padding:2px 7px;z-index:2}
+#start .mbox{width:min(1100px,100%)}
+.sgrp{padding:6px 18px 4px}
+.sgrp h3{margin:10px 0 2px;font-size:15px;color:var(--navy)}
+.sgrp p{margin:0 0 8px;font-size:13px;color:var(--muted)}
+.srow{display:flex;gap:12px;flex-wrap:wrap}
+.skort{width:150px;border:2px solid var(--line);border-radius:8px;background:#fafbfb;cursor:pointer;padding:6px;display:flex;flex-direction:column;align-items:center;gap:4px;font-family:var(--font);position:relative}
+.skort:hover,.skort:focus-visible{border-color:var(--navy)}
+.skort .thumb{width:100%;position:relative;overflow:hidden;pointer-events:none;border-radius:4px}
+.skort .lbl{font-size:12px;font-weight:700;color:var(--navy)}
+.skort .sub{font-size:11px;color:var(--muted);text-align:center}
+.sbody{overflow:auto;padding-bottom:12px}
+.sintro{padding:12px 18px 0;font-size:14px;color:var(--ink)}
+#bytt{position:fixed;z-index:40;display:none;background:var(--navy);color:#fff;border:0;border-radius:999px;padding:9px 16px;font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+#bytt.on{display:block}
+.sidetabs{display:none;white-space:nowrap}
+.sidetabs.on{display:flex}
+.qrforklar{font-size:12.5px;color:var(--muted);margin:-2px 0 10px;line-height:1.45}
+.qrapner{font-size:12.5px;color:var(--navy);margin:-6px 0 10px;word-break:break-all}
+.ogsa{display:none;margin-top:10px;padding:10px 12px;background:#eef4e7;border-radius:8px;font-size:13px}
+.ogsa.on{display:block}
+.ogsa .btn{margin-top:6px;width:100%}
+.upl.velg input{pointer-events:none}
 .seg{display:flex;border:1.5px solid var(--line);border-radius:8px;overflow:hidden}
 .seg button{flex:1;border:0;background:#fff;padding:8px;font-family:var(--font);font-size:13px;font-weight:600;color:var(--muted);cursor:pointer}
 .seg button.on{background:var(--navy);color:#fff}
@@ -366,7 +391,6 @@ details[open] .sumh{margin-bottom:12px}
     <h2>3 · Bilde</h2>
     <div class="imgblk" data-n="0">
       <div class="imglbl">Bilde 1</div>
-      <button class="btn bankbtn" data-n="0">Velg fra bildebanken</button>
       <div class="upl"><input type="file" accept="image/*"><b>Last opp bilde</b><span class="uplh">JPG eller PNG</span><br><img alt=""></div>
       <div class="rng">Utsnitt ↔<input type="range" data-a="fx" min="0" max="100"></div>
       <div class="rng">Utsnitt ↕<input type="range" data-a="fy" min="0" max="100"></div>
@@ -375,7 +399,6 @@ details[open] .sumh{margin-bottom:12px}
     </div>
     <div class="imgblk" data-n="1">
       <div class="imglbl">Bilde 2</div>
-      <button class="btn bankbtn" data-n="1">Velg fra bildebanken</button>
       <div class="upl"><input type="file" accept="image/*"><b>Last opp bilde</b><span class="uplh">JPG eller PNG</span><br><img alt=""></div>
       <div class="rng">Utsnitt ↔<input type="range" data-a="fx" min="0" max="100"></div>
       <div class="rng">Utsnitt ↕<input type="range" data-a="fy" min="0" max="100"></div>
@@ -384,7 +407,6 @@ details[open] .sumh{margin-bottom:12px}
     </div>
     <div class="imgblk" data-n="4">
       <div class="imglbl">Bilde 3</div>
-      <button class="btn bankbtn" data-n="4">Velg fra bildebanken</button>
       <div class="upl"><input type="file" accept="image/*"><b>Last opp bilde</b><span class="uplh">JPG eller PNG</span><br><img alt=""></div>
       <div class="rng">Utsnitt ↔<input type="range" data-a="fx" min="0" max="100"></div>
       <div class="rng">Utsnitt ↕<input type="range" data-a="fy" min="0" max="100"></div>
@@ -415,7 +437,6 @@ details[open] .sumh{margin-bottom:12px}
       <p class="note" style="margin:-4px 0 12px">Skriv <b>**slik**</b> for å utheve ord med farge.</p>
       <div class="imgblk" data-n="2">
         <div class="imglbl">Illustrasjon øverst</div>
-        <button class="btn bankbtn" data-n="2">Velg fra bildebanken</button>
       <div class="upl"><input type="file" accept="image/*"><b>Last opp bilde</b><span class="uplh">JPG eller PNG</span><br><img alt=""></div>
         <div class="row2" style="margin-top:6px"><button class="btn rm">Fjern</button><button class="btn eks">Bruk eksempel</button></div>
       </div>
@@ -448,9 +469,12 @@ details[open] .sumh{margin-bottom:12px}
   </div>
 
   <div class="sec" id="sec-qr">
-    <h2>5 · QR-kode</h2>
-    <label class="chk"><input type="checkbox" id="qr" checked> Vis QR-kode til nettadressen</label>
-    <div class="f"><label>Nettadresse i QR-koden</label><input type="text" id="urlqr"></div>
+    <h2>5 · Lenke og QR-kode</h2>
+    <p class="qrforklar">QR-koden er en strekkode for mobilen. Skriv inn nettsiden folk skal komme til, for eksempel et påmeldingsskjema eller en side på kommunens nettsted. Siden må finnes fra før – generatoren lager den ikke.</p>
+    <div class="f"><label>Nettsiden QR-koden skal åpne</label><input type="text" id="urlqr" placeholder="f.eks. tonsberg.kommune.no/kurs"></div>
+    <p class="qrapner" id="qrapner"></p>
+    <label class="chk"><input type="checkbox" id="qr" checked> Vis QR-kode på plakaten</label>
+    <label class="chk" id="visurlrad"><input type="checkbox" id="visurl" checked> Skriv adressen som tekst også</label>
     <div class="f" data-k="qrTekst" id="f-qrtekst"><label>Tekst i QR-merket</label><input type="text" id="qrTekst"></div>
   </div>
 
@@ -460,6 +484,7 @@ details[open] .sumh{margin-bottom:12px}
     <div style="height:8px"></div>
     <div class="row2"><button class="btn" id="dlpng">Last ned PNG</button></div>
     <p class="note" id="dlnote"></p>
+    <div class="ogsa" id="ogsa">Skal plakaten også vises på en infoskjerm?<button class="btn" id="dlwide">Last ned skjermversjon (16:9)</button></div>
   </div>
 
   <div class="sec">
@@ -487,18 +512,17 @@ details[open] .sumh{margin-bottom:12px}
   </div>
 
   <div class="sec">
-    <h2>Utkast</h2>
-    <div class="row2">
-      <button class="btn" id="save">Lagre utkast</button>
-      <label class="btn" style="text-align:center">Åpne utkast<input type="file" accept=".json" id="load" style="display:none"></label>
-    </div>
-    <p class="note">Utkastet lagres som en fil på maskinen din, med bilde.</p>
+    <h2>Fortsett på en plakat</h2>
+    <label class="btn" style="text-align:center;display:block">Åpne PDF for å redigere<input type="file" accept=".pdf,.json" id="load" style="display:none"></label>
+    <p class="note">PDF-er du laster ned herfra kan åpnes igjen, så kan du redigere videre.</p>
   </div>
 </aside>
 
 <div class="stagecol">
 <div class="tools">
-  <span class="hint">Klikk på tekst i plakaten for å skrive · klikk på bildet for å bytte det</span>
+  <span class="hint">Klikk på tekst i plakaten for å skrive</span>
+  <div class="seg sidetabs" id="sidetabs"><button data-side="1">Forside</button><button data-side="2">Bakside</button></div>
+  <button class="hjelpbtn" id="allemaler">Alle maler</button>
   <button class="hjelpbtn" id="hjelp">Slik virker det</button>
   <label class="chk mini"><input type="checkbox" id="skjultom"> Skjul tomme felt</label>
   <div class="seg zoomseg" id="zoom"><button data-z="fit" class="on">Tilpass</button><button data-z="1">100 %</button><button data-z="1.5">150 %</button></div>
@@ -507,12 +531,22 @@ details[open] .sumh{margin-bottom:12px}
 </div>
 <div class="tour" id="tour" role="dialog" aria-modal="true" aria-label="Slik virker plakatgeneratoren">
   <div class="dim"></div>
-  <div class="kort k1"><b>Sidepanelet</b>Her velger du mal og format, bytter bilde, velger farge og laster ned plakaten.</div>
+  <div class="kort k1"><b>Sidepanelet</b>Her kan du bytte mal når som helst – teksten blir med. Her velger du også format, farge, QR-kode og laster ned.</div>
   <div class="ring r1"></div><div class="ring r2"></div><div class="ring r3"></div>
-  <div class="kort k2"><b>Skriv rett i plakaten</b>Klikk på en tekst for å endre den. Grå tekst viser felt som er tomme – de kommer ikke med på den ferdige plakaten.</div>
-  <div class="kort k3"><b>Klikk på bildet</b>Da kommer du rett til bildevalget i sidepanelet. Det samme gjelder QR-koden.</div>
+  <div class="kort k2"><b>Skriv rett i plakaten</b>Klikk på en tekst for å endre den. Eksempelteksten forteller hva som passer i feltet. Grå tekst er tomme felt – de kommer ikke med på plakaten.</div>
+  <div class="kort k3"><b>Bytt bilde</b>Klikk på bildet og velg «Bytt bilde». Du kan velge fra bildebanken eller laste opp ditt eget.</div>
   <button class="knapp" id="tourok">Skjønner</button>
 </div>
+<div class="modal" id="start" role="dialog" aria-modal="true" aria-labelledby="startt">
+  <div class="mbox">
+    <div class="mhead"><b id="startt">Hva skal plakaten gjøre?</b><span style="flex:1"></span><button class="btn" id="startlukk">Lukk</button></div>
+    <div class="sbody">
+      <p class="sintro">Velg en mal å starte med. <b>Du kan alltid bytte mal underveis</b> – teksten og bildene blir med.</p>
+      <div id="startgrp"></div>
+    </div>
+  </div>
+</div>
+<button id="bytt" type="button">Bytt bilde</button>
 <div class="modal" id="kispm" role="dialog" aria-modal="true" aria-labelledby="kispmt">
   <div class="mbox" style="width:min(420px,100%);padding:22px 22px 18px">
     <b id="kispmt" style="font-size:17px">Er bildet laget med KI?</b>
@@ -534,8 +568,9 @@ details[open] .sumh{margin-bottom:12px}
 <div class="modal" id="bank" role="dialog" aria-modal="true" aria-label="Bildebank">
   <div class="mbox">
     <div class="mhead">
-      <b>Bildebank</b>
+      <b>Velg bilde</b>
       <input type="search" id="banksok" placeholder="Søk i bildebanken">
+      <label class="btn pri" style="flex:0 0 auto">Last opp eget bilde<input type="file" accept="image/*" id="bankopp" style="display:none"></label>
       <button class="btn" id="banklukk">Lukk</button>
     </div>
     <p class="mnote" id="banknote"></p>
@@ -3280,7 +3315,7 @@ const TPLS = {
     felt:['stikk','tittel','ingress','ut1','tx1','ut2','tx2','pTittel','punkter','praktisk','cta','url']},
   bilder:{navn:'5 · Flere bilder', sub:'To bilder og tekst', bilder:2,
     felt:['stikk','tittel','ingress','ut1','tx1','ut2','tx2','punkter','cta','url']},
-  bildetekst:{navn:'6 · Bilde og QR', sub:'Som ICDP-plakaten', bilder:1,
+  bildetekst:{navn:'6 · Bilde og QR', sub:'Forside og bakside', bilder:1,
     felt:['stikk','tittel','ingress','tx1','praktisk','cta','url','qrTekst']},
   invitasjon:{navn:'7 · Invitasjon', sub:'Fagdag og arrangement', bilder:1,
     felt:['stikk','tittel','ingress','praktisk','ut1','tx1','tx2','avslutt','cta','url','merke']},
@@ -3294,28 +3329,41 @@ const TPLS = {
     felt:['stikk','tittel','ingress','ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','ut3','tx3','cta','url']},
 };
 Object.values(TPLS).forEach(t => { t.fmts = t.fmts || ['a4','wide']; });
+// Malene gruppert etter hva plakaten skal gjøre (innhold først)
+const GRUPPER = [
+  {navn:'Vise fram noe med et stort bilde', tekst:'Kort budskap der bildet gjør mye av jobben.', maler:['bildedrevet','forside','inndelt']},
+  {navn:'Forklare og informere', tekst:'Når leseren trenger litt mer tekst, punkter eller fakta.', maler:['forklaring','delt','bilder','tekst','tekstplakat']},
+  {navn:'Invitere til noe', tekst:'Kurs, møter og arrangementer. Mal 6 har bakside.', maler:['invitasjon','bildetekst']},
+  {navn:'Skjermene på bymøblene', tekst:'Eget stående skjermformat (9:16).', maler:['bymobel']},
+];
 const fmtFor = k => TPLS[k].fmts.includes(S.fmt) ? S.fmt : TPLS[k].fmts[0];
 const bildeSlots = k => TPLS[k].bilder === 3 ? [0,1,4] : [0,1].slice(0, TPLS[k].bilder);
 const FMT = {a4:{W:794,H:1123,ratio:3,navn:'-a4'}, wide:{W:1280,H:720,ratio:1.5,navn:'-skjerm'}, bym:{W:720,H:1280,ratio:3,navn:'-bymobel'}};
 
+// Eksempeltekst: forteller hva feltet skal formidle. Brukes som starttekst, og nedlastingen varsler hvis den står igjen.
+const DEMO = {
+  stikk:'Tema',
+  tittel:'En skikkelig **fengende** tittel',
+  ingress:'En ingress som vekker interesse og sier det viktigste på én–to linjer.',
+  ut1:'Hva handler det om?',
+  tx1:'Forklar kort hva saken gjelder. Skriv som du snakker, og ta bare med det leseren trenger å vite.',
+  pTittel:'Dette får du',
+  punkter:'Korte punkter blir lest først\nHøyst fem punkter\nBegynn gjerne med et verb',
+  ut2:'Hvem gjelder det?',
+  tx2:'Fortell hvem dette er for, og hva de bør gjøre. Ett budskap per avsnitt holder lenge.',
+  praktisk:'Tid: Dag, dato og klokkeslett\nSted: Hvor det skjer\nPåmelding: Hvordan man melder seg på',
+  cta:'Skann koden og les mer',
+  url:'tonsberg.kommune.no',
+  merke:'Kort og\nviktig!', merkeTx:'Litt mer tekst',
+  avslutt:'En hyggelig avslutning, for eksempel «Velkommen!»',
+  ut3:'Noe mer?', tx3:'Plass til litt ekstra informasjon som ikke er like viktig.',
+};
 const S = {
   tpl:'bildedrevet', fmt:'a4', slor:'gronn',
-  stikk:'Foreldrekurs',
-  tittel:'Vil du bli tryggere som forelder?',
-  ingress:'En kveld med tips, prat og påfyll for deg med barn i barnehage.',
-  ut1:'Hva handler kurset om?',
-  tx1:'Vi deler gode råd for hverdagen og snakker om hvordan du kan forstå og møte barnets behov.',
-  pTittel:'Dette tar vi opp',
-  punkter:'Mer ro i hverdagskaoset\nSmå grep som styrker parforholdet\nBarnets behov – og hvordan møte dem',
-  ut2:'Hvem kan bli med?',
-  tx2:'Alle med barn i barnehage, eller som venter barn. Det er gratis å delta.',
-  praktisk:'Tid: 24. november kl. 18–20\nSted: Familiehuset i Tønsberg\nPåmelding: Skann QR-koden',
-  cta:'Les mer og meld deg på',
-  url:'tonsberg.kommune.no/foreldrekurs',
-  qr:true, qrTekst:'SKANN MEG!', merke:'Arrangementet\ner gratis!', avslutt:'Vi gleder oss til å se deg!',
+  ...DEMO,
+  qr:true, visUrl:true, qrTekst:'SKANN MEG!',
   imgs:[], ki:false, zoom:'fit', skjulTomme:false, ikon:null, mork:false,
-  merkeTx:'Kortfattet tekst', bs1:'', bs2:'', bs3:'',
-  pIntro:'', ut3:'Hvem kan delta?', tx3:'Kurset er gratis og åpent for alle foreldre.',
+  bs1:'', bs2:'', bs3:'', pIntro:'',
   side2:true, side:1,
   s2Tittel:'Et foreldrekurs for migrasjonsfamilier',
   s2Ut1:'Hva er ICDP-kurs?',
@@ -3421,6 +3469,7 @@ function urlBreak(u){ return esc(u||'').replace(/([\/.])/g,'$1<wbr>'); }
    EDIT er sann bare når forhåndsvisningen bygges. Da blir alle tekstfelt redigerbare,
    og tomme felt vises med grå hjelpetekst. Miniatyrer og nedlasting bygges uten. */
 let EDIT = false;
+let visTourExt = () => {};
 const PH = {pIntro:'Innledning til punktlista (valgfri)', ut3:'Underoverskrift', tx3:'Skriv brødtekst',
   stikk:'Tema', tittel:'Skriv en tittel', ingress:'Skriv en kort ingress',
   ut1:'Underoverskrift', tx1:'Skriv brødtekst', pTittel:'Overskrift over punktene',
@@ -3466,7 +3515,7 @@ function praktisk(){ return E('praktisk','praktisk'); }
 function cta(withQr, mode){
   if(!hasE('url') && !hasE('cta')) return '';
   const q = withQr && S.qr ? qrSvg() : '';
-  const C = E('cta','ctx','span'), U = E('url','u','b');
+  const C = E('cta','ctx','span'), U = S.visUrl ? E('url','u','b') : '';
   if(mode==='bar') // pil | Les mer på adresse  (som i eksempelmalene)
     return `<div class="cta bar"><div class="pil">${ARROW}</div><div class="skille"></div><div class="ct">${C} ${U}</div>${q?`<div class="qr">${q}</div>`:''}</div>`;
   if(mode==='kort') // lys boks med QR til venstre
@@ -3999,23 +4048,33 @@ let thumbTimer = null;
 function renderThumbs(){
   clearTimeout(thumbTimer);
   thumbTimer = setTimeout(() => {
-    document.querySelectorAll('.tplbtn').forEach(btn => {
-      const th = btn.querySelector('.thumb');
-      th.innerHTML = '';
-      const tw = th.clientWidth || 130;
-      const p = buildPage(btn.dataset.tpl, fmtFor(btn.dataset.tpl));
-      const holder = document.createElement('div');
-      holder.style.position = 'relative'; holder.style.overflow = 'hidden';
-      th.appendChild(holder);
-      holder.appendChild(p);
-      fit(p);
-      p.querySelectorAll('.box.over').forEach(b => b.classList.remove('over'));
-      const sc = Math.min(tw / p.offsetWidth, tw*1.415 / p.offsetHeight);
-      if(p.offsetHeight > p.offsetWidth*1.5) p.style.left = ((tw - p.offsetWidth*sc)/2) + 'px';
-      p.style.position = 'absolute'; p.style.transformOrigin = '0 0'; p.style.transform = `scale(${sc})`;
-      holder.style.width = tw + 'px'; holder.style.height = (p.offsetHeight*sc) + 'px';
-    });
+    document.querySelectorAll('.tplbtn').forEach(btn => miniatyr(btn.querySelector('.thumb'), btn.dataset.tpl));
   }, 250);
+}
+function miniatyr(th, k){
+  th.innerHTML = '';
+  const tw = th.clientWidth || 130;
+  const p = buildPage(k, fmtFor(k));
+  const holder = document.createElement('div');
+  holder.style.position = 'relative'; holder.style.overflow = 'hidden';
+  th.appendChild(holder);
+  holder.appendChild(p);
+  fit(p);
+  p.querySelectorAll('.box.over').forEach(b => b.classList.remove('over'));
+  const sc = Math.min(tw / p.offsetWidth, tw*1.415 / p.offsetHeight);
+  if(p.offsetHeight > p.offsetWidth*1.5) p.style.left = ((tw - p.offsetWidth*sc)/2) + 'px';
+  p.style.position = 'absolute'; p.style.transformOrigin = '0 0'; p.style.transform = `scale(${sc})`;
+  holder.style.width = tw + 'px'; holder.style.height = (p.offsetHeight*sc) + 'px';
+  if(k === 'bildetekst') th.insertAdjacentHTML('beforeend', '<span class="sider">2 sider</span>');
+}
+// Startskjermen: «Hva skal plakaten gjøre?»
+function velgMal(k){ S.tpl = k; S.fmt = fmtFor(k); if(!TPLS[k].fmts.includes(S.fmt)) S.fmt = 'a4'; oppdaterKi(); fillForm(); render(); }
+function apneStart(forsteGang){
+  const g = $('startgrp');
+  g.innerHTML = GRUPPER.map(gr => `<div class="sgrp"><h3>${esc(gr.navn)}</h3><p>${esc(gr.tekst)}</p><div class="srow">${gr.maler.map(k => `<button class="skort" data-tpl="${k}"><div class="thumb"></div><span class="lbl">${esc(TPLS[k].navn)}</span><span class="sub">${esc(TPLS[k].sub)}</span></button>`).join('')}</div></div>`).join('');
+  $('start').classList.add('on');
+  $('start').dataset.forste = forsteGang ? '1' : '';
+  setTimeout(() => g.querySelectorAll('.skort').forEach(b => miniatyr(b.querySelector('.thumb'), b.dataset.tpl)), 30);
 }
 
 /* ═════════ SIDEPANEL ═════════ */
@@ -4031,6 +4090,12 @@ const TEXT_KEYS = ['pIntro','ut3','tx3','merkeTx','bs1','bs2','bs3','stikk','tit
 function fillForm(){
   TEXT_KEYS.forEach(k => { $(k).value = S[k] || ''; });
   $('urlqr').value = S.url || '';
+  $('visurl').checked = S.visUrl !== false;
+  $('visurlrad').style.display = ['forklaring','delt','tekst','bilder','bildetekst'].includes(S.tpl) ? '' : 'none';
+  $('qrapner').textContent = has('url') ? 'Når noen skanner koden med mobilkameraet, åpnes: ' + (/^https?:\/\//i.test(S.url.trim()) ? '' : 'https://') + S.url.trim() : '';
+  $('sidetabs').classList.toggle('on', hasSide2());
+  document.querySelectorAll('#sidetabs button').forEach(b => b.classList.toggle('on', +b.dataset.side === S.side));
+  $('ogsa').classList.remove('on');
   $('sec-merke').classList.toggle('hide', !TPLS[S.tpl].felt.includes('merke'));
   $('merkeh').textContent = S.tpl === 'bymobel' ? 'Merke (blå sirkel)' : 'Gult merke';
   $('morkrad').style.display = TPLS[S.tpl].mork ? '' : 'none';
@@ -4056,8 +4121,10 @@ function fillForm(){
     const up = b.querySelector('.upl');
     if(I.src){ im.src = I.src; up.classList.add('has'); } else { im.removeAttribute('src'); up.classList.remove('has'); }
     up.classList.toggle('ex', !!I.ex);
-    up.querySelector('b').textContent = I.src && !I.ex ? 'Last opp et annet bilde' : 'Last opp eget bilde';
-    up.querySelector('.uplh').textContent = I.ex ? EKS[n].txt : I.bank ? 'Fra bildebanken' + (I.foto ? ' · Foto: ' + I.foto : '') : (n===3 ? 'PNG med gjennomsiktig bakgrunn' : 'JPG eller PNG');
+    const medBank = BANK.length && n !== 3;
+    up.classList.toggle('velg', !!medBank);
+    up.querySelector('b').textContent = medBank ? (I.src ? 'Bytt bilde' : 'Velg bilde') : (I.src && !I.ex ? 'Last opp et annet bilde' : 'Last opp eget bilde');
+    up.querySelector('.uplh').textContent = I.ex ? EKS[n].txt : I.bank ? 'Fra bildebanken' + (I.foto ? ' · Foto: ' + I.foto : '') : medBank ? 'Fra bildebanken eller ditt eget' : (n===3 ? 'PNG med gjennomsiktig bakgrunn' : 'JPG eller PNG');
     b.querySelector('.eks').style.display = I.ex ? 'none' : '';
   });
   $('sec-s2').classList.toggle('hide', !(S.tpl==='bildetekst' && S.fmt==='a4'));
@@ -4073,13 +4140,27 @@ function fillForm(){
 
 function initUI(){
   const tp = $('tpls');
-  Object.entries(TPLS).forEach(([k,t]) => {
-    const b = document.createElement('button');
-    b.className = 'tplbtn'; b.dataset.tpl = k;
-    b.innerHTML = `<div class="thumb"></div><span class="lbl">${t.navn}</span><span class="sub">${t.sub}</span>`;
-    b.onclick = () => { S.tpl = k; S.fmt = fmtFor(k); oppdaterKi(); if(!TPLS[k].fmts.includes(S.fmt)) S.fmt = 'a4'; fillForm(); render(); };
-    tp.appendChild(b);
+  GRUPPER.forEach(gr => {
+    tp.insertAdjacentHTML('beforeend', `<div class="grp">${esc(gr.navn)}</div>`);
+    gr.maler.forEach(k => {
+      const t = TPLS[k], b = document.createElement('button');
+      b.className = 'tplbtn'; b.dataset.tpl = k;
+      b.innerHTML = `<div class="thumb"></div><span class="lbl">${t.navn}</span><span class="sub">${t.sub}</span>`;
+      b.onclick = () => velgMal(k);
+      tp.appendChild(b);
+    });
   });
+  $('startgrp').addEventListener('click', e => {
+    const b = e.target.closest('.skort'); if(!b) return;
+    const forste = $('start').dataset.forste === '1';
+    $('start').classList.remove('on'); velgMal(b.dataset.tpl);
+    if(forste) setTimeout(visTourExt, 350);
+  });
+  $('startlukk').onclick = () => { const forste = $('start').dataset.forste === '1'; $('start').classList.remove('on'); if(forste) setTimeout(visTourExt, 200); };
+  $('allemaler').onclick = () => apneStart(false);
+  $('visurl').onchange = () => { S.visUrl = $('visurl').checked; render(); };
+  $('dlwide').onclick = async () => { const f = S.fmt; S.fmt = 'wide'; try{ await exportFile('png', true); } finally { S.fmt = f; fillForm(); render(); } };
+  document.querySelectorAll('#sidetabs button').forEach(b => b.onclick = () => { S.side = +b.dataset.side; fillForm(); render(); });
   const sw = $('swatches');
   Object.entries(SLOR).forEach(([k,c]) => {
     const b = document.createElement('button');
@@ -4091,7 +4172,7 @@ function initUI(){
   document.querySelectorAll('#fmtseg button').forEach(b => b.onclick = () => { S.fmt = b.dataset.fmt; fillForm(); render(); });
   let t = null;
   TEXT_KEYS.forEach(k => $(k).addEventListener('input', () => { S[k] = $(k).value; clearTimeout(t); t = setTimeout(render, 120); }));
-  $('urlqr').addEventListener('input', () => { S.url = $('urlqr').value; $('url').value = S.url; clearTimeout(t); t = setTimeout(render, 200); });
+  $('urlqr').addEventListener('input', () => { S.url = $('urlqr').value; $('url').value = S.url; $('qrapner').textContent = has('url') ? 'Når noen skanner koden med mobilkameraet, åpnes: ' + (/^https?:\/\//i.test(S.url.trim()) ? '' : 'https://') + S.url.trim() : ''; clearTimeout(t); t = setTimeout(render, 200); });
   $('url').addEventListener('input', () => { $('urlqr').value = $('url').value; });
   $('qr').onchange = () => { S.qr = $('qr').checked; syncFields(); render(); };
   $('ki').onchange = () => { S.ki = $('ki').checked; bildeSlots(S.tpl).forEach(i => { if(S.imgs[i]) S.imgs[i].ki = S.ki; }); render(); };
@@ -4104,6 +4185,8 @@ function initUI(){
   document.querySelectorAll('.imgblk').forEach(b => {
     const n = +b.dataset.n;
     b.querySelector('input[type=file]').onchange = e => { const f = e.target.files[0]; if(f) loadImage(f, n); e.target.value=''; };
+    // Med bildebank: klikk åpner velgeren (bildebank + «Last opp eget bilde»)
+    b.querySelector('.upl').addEventListener('click', e => { if(BANK.length && n !== 3){ e.preventDefault(); apneBank(n); } });
     b.querySelectorAll('input[type=range]').forEach(r => r.oninput = () => { S.imgs[n][r.dataset.a] = +r.value; render(); });
     if(n >= 2) b.querySelector('input[type=file]').addEventListener('change', () => { S.side = 2; });
     b.querySelector('.rm').onclick = () => { S.imgs[n].src = null; S.imgs[n].ex = false; S.imgs[n].ki = false; oppdaterKi(); fillForm(); render(); };
@@ -4111,12 +4194,13 @@ function initUI(){
   });
   document.querySelectorAll('.bankbtn').forEach(b => b.onclick = () => apneBank(+b.dataset.n));
   $('banklukk').onclick = lukkBank;
+  $('bankopp').onchange = e => { const f = e.target.files[0]; e.target.value = ''; if(!f) return; lukkBank(); if(bankN >= 2 && bankN !== 4) S.side = 2; loadImage(f, bankN); };
   // Ikonbibliotek
   $('velgikon').onclick = apneIkoner;
   $('fjernikon').onclick = () => { S.ikon = null; fillForm(); render(); };
   $('ikonlukk').onclick = lukkIkoner;
   $('ikonvelger').onclick = e => { if(e.target.id === 'ikonvelger') lukkIkoner(); };
-  document.addEventListener('keydown', e => { if(e.key === 'Escape') lukkIkoner(); });
+  document.addEventListener('keydown', e => { if(e.key === 'Escape'){ lukkIkoner(); $('bytt').classList.remove('on'); if($('start').classList.contains('on')) $('startlukk').click(); } });
   $('ikonsok').oninput = tegnIkoner;
   $('ikongrid').onclick = e => { const it = e.target.closest('.iitem'); if(!it) return; S.ikon = it.dataset.id; lukkIkoner(); fillForm(); render(); };
   $('bank').onclick = e => { if(e.target.id === 'bank') lukkBank(); };
@@ -4126,7 +4210,7 @@ function initUI(){
   $('bankgrid').onclick = async e => {
     const it = e.target.closest('.bitem'); if(!it) return;
     const b = BANK.find(x => x.id === it.dataset.id); if(!b) return;
-    lukkBank(); await velgBank(bankN, b); if(bankN >= 2) S.side = 2; fillForm(); render();
+    lukkBank(); await velgBank(bankN, b); if(bankN === 2) S.side = 2; fillForm(); render();
   };
   // Redigering direkte i plakaten
   const wrap = $('wrap');
@@ -4183,17 +4267,37 @@ function initUI(){
     sec.classList.remove('blink'); void sec.offsetWidth; sec.classList.add('blink');
     if(fokus) setTimeout(() => fokus.focus({preventScroll:true}), 350);
   };
+  // Bytt bilde: liten knapp der man klikket, i stedet for å hoppe rett til sidepanelet
+  const bytt = $('bytt'); let byttN = 0;
+  const skjulBytt = () => bytt.classList.remove('on');
+  const apneBilde = n => {
+    if(BANK.length && n !== 3){ apneBank(n); return; }
+    const blk = document.querySelector(`.imgblk[data-n="${n}"]`); const inp = blk && blk.querySelector('input[type=file]');
+    if(inp) inp.click();
+  };
+  bytt.onclick = () => { skjulBytt(); apneBilde(byttN); };
+  document.addEventListener('click', e => { if(!e.target.closest('#bytt') && !e.target.closest('#wrap')) skjulBytt(); });
+  $('stage').addEventListener('scroll', skjulBytt);
   wrap.addEventListener('click', e => {
+    skjulBytt();
     if(e.target.closest('.ed')) return;
     if(e.target.closest('[data-ikon]')){ apneIkoner(); return; }
+    if(e.target.closest('.qr, .qrbadge, .qrbox7, .qr9, .qr11')){ tilPanel($('sec-qr'), $('urlqr')); return; }
+    // Bommet litt på en tekst? Gå til nærmeste tekstfelt hvis det er innenfor 26 px
+    let best = null, bd = 26;
+    wrap.querySelectorAll('.ed').forEach(el => {
+      if(!el.offsetParent) return;
+      const r = el.getBoundingClientRect();
+      const dx = Math.max(r.left - e.clientX, 0, e.clientX - r.right), dy = Math.max(r.top - e.clientY, 0, e.clientY - r.bottom);
+      const d = Math.hypot(dx, dy); if(d < bd){ bd = d; best = el; }
+    });
+    if(best){ best.focus(); return; }
     const bi = e.target.closest('[data-img], .avatar-img');
     if(bi){
-      const n = bi.classList.contains('avatar-img') ? 3 : +bi.dataset.img;
-      const blk = document.querySelector(`.imgblk[data-n="${n}"]`);
-      tilPanel(n >= 2 ? blk : $('sec-img'), blk && blk.querySelector('.bankbtn:not([style*="none"])') || blk && blk.querySelector('.upl input'));
-      return;
+      byttN = bi.classList.contains('avatar-img') ? 3 : +bi.dataset.img;
+      bytt.style.left = Math.min(e.clientX + 8, innerWidth - 140) + 'px'; bytt.style.top = (e.clientY + 8) + 'px';
+      bytt.classList.add('on'); bytt.focus();
     }
-    if(e.target.closest('.qr, .qrbadge')) tilPanel($('sec-qr'), $('qr'));
   });
   // Forklaring ved første besøk, og ved klikk på «Slik virker det»
   const TOUR_KEY = 'tk-plakat-sett-forklaring';
@@ -4240,15 +4344,15 @@ function initUI(){
   };
   const lukkTour = () => { $('tour').classList.remove('on'); try{ localStorage.setItem(TOUR_KEY, '1'); }catch(e){} };
   $('hjelp').onclick = visTour;
+  visTourExt = visTour;
   $('tourok').onclick = lukkTour;
   $('tour').addEventListener('click', e => { if(e.target.classList.contains('dim')) lukkTour(); });
   document.addEventListener('keydown', e => { if(e.key === 'Escape' && $('tour').classList.contains('on')) lukkTour(); });
   let sett = false; try{ sett = localStorage.getItem(TOUR_KEY) === '1'; }catch(e){}
-  if(!sett) setTimeout(visTour, 600);
+  if(!sett) setTimeout(() => apneStart(true), 500);
   document.querySelectorAll('#zoom button').forEach(b => b.onclick = () => { S.zoom = b.dataset.z === 'fit' ? 'fit' : +b.dataset.z; render(); });
   $('dlpdf').onclick = () => exportFile('pdf');
   $('dlpng').onclick = () => exportFile('png');
-  $('save').onclick = saveDraft;
   $('load').onchange = loadDraft;
   window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(render, 150); });
 }
@@ -4294,10 +4398,24 @@ function oppdaterKi(){
 }
 
 /* ═════════ EKSPORT ═════════ */
-async function exportFile(type){
+// Felt i malen som fortsatt har eksempelteksten
+const NAVN_FELT = {stikk:'tema', tittel:'tittel', ingress:'ingress', ut1:'underoverskrift 1', tx1:'brødtekst 1', ut2:'underoverskrift 2', tx2:'brødtekst 2', ut3:'underoverskrift 3', tx3:'brødtekst 3', pTittel:'overskrift over punktene', punkter:'punktliste', praktisk:'praktisk informasjon', cta:'tekst ved QR-koden', merke:'merket', merkeTx:'merket', avslutt:'avslutning'};
+function demoIgjen(){
+  const f = TPLS[S.tpl].felt.filter(k => k in DEMO && k !== 'url' && S[k] === DEMO[k]);
+  return [...new Set(f.map(k => NAVN_FELT[k] || k))];
+}
+async function exportFile(type, stille){
   const slots = bildeSlots(S.tpl).map(i => S.imgs[i]);
-  const usedEx = slots.some(I => I.ex) || (hasSide2() && S.imgs.slice(2,4).some(I => I.ex));
-  if(usedEx && !confirm('Plakaten bruker fortsatt et eksempelbilde. Vil du laste ned likevel?')) return;
+  if(!stille){
+    const usedEx = slots.some(I => I.ex) || (hasSide2() && S.imgs.slice(2,4).some(I => I.ex));
+    const demo = demoIgjen();
+    const urlDemo = S.qr && TPLS[S.tpl].felt.includes('url') && (S.url||'').trim() === DEMO.url;
+    const varsel = [];
+    if(demo.length) varsel.push('Disse feltene har fortsatt eksempeltekst: ' + demo.join(', ') + '.');
+    if(urlDemo) varsel.push('QR-koden går fortsatt til eksempeladressen (' + DEMO.url + ').');
+    if(usedEx) varsel.push('Plakaten bruker fortsatt et eksempelbilde.');
+    if(varsel.length && !confirm(varsel.join('\n') + '\n\nVil du laste ned likevel?')) return;
+  }
   const btns = [$('dlpdf'), $('dlpng')]; btns.forEach(b => b.disabled = true);
   try{
     await document.fonts.ready;
@@ -4305,12 +4423,15 @@ async function exportFile(type){
     host.style.cssText = 'position:fixed;left:-20000px;top:0;';
     document.body.appendChild(host);
     const ratio = FMT[S.fmt].ratio; // A4 ≈ 290 dpi, skjerm = 1920×1080, bymøbel = 2160×3840
+    const qrRuter = []; // QR-kodens plassering per side (andel av siden), for klikkbar lenke i PDF-en
     const snap = async side => {
       const page = buildPage(S.tpl, S.fmt, side);
       page.classList.add('export');
       host.innerHTML = ''; host.appendChild(page);
       fit(page);
       await Promise.all([...page.querySelectorAll('img')].map(i => i.decode().catch(()=>{})));
+      const qe = page.querySelector('.qr svg, .qrbadge svg, .qrbox7 svg, .qr9 svg, .qr11 svg');
+      if(qe){ const p = page.getBoundingClientRect(), r = qe.getBoundingClientRect(); qrRuter.push({side, x:(r.left-p.left)/p.width, y:(r.top-p.top)/p.height, w:r.width/p.width, h:r.height/p.height}); }
       return htmlToImage.toCanvas(page, {pixelRatio: ratio, backgroundColor:'#ffffff', width: page.offsetWidth, height: page.offsetHeight});
     };
     // PDF: begge sider når side 2 er på. PNG: siden som vises.
@@ -4331,26 +4452,51 @@ async function exportFile(type){
         : S.fmt==='bym' ? new jsPDF({orientation:'portrait', unit:'px', format:[2160,3840], hotfixes:['px_scaling']})
         : new jsPDF({orientation:'landscape', unit:'px', format:[1920,1080], hotfixes:['px_scaling']});
       const w = S.fmt==='a4' ? 210 : S.fmt==='bym' ? 2160 : 1920, h = S.fmt==='a4' ? 297 : S.fmt==='bym' ? 3840 : 1080;
-      canvases.forEach((cv, i) => { if(i) pdf.addPage(); pdf.addImage(cv.toDataURL('image/jpeg', .93), 'JPEG', 0, 0, w, h); });
+      let lenke = (S.url||'').trim(); if(lenke && !/^https?:\/\//i.test(lenke)) lenke = 'https://' + lenke;
+      canvases.forEach((cv, i) => {
+        if(i) pdf.addPage();
+        pdf.addImage(cv.toDataURL('image/jpeg', .93), 'JPEG', 0, 0, w, h);
+        const q = qrRuter.find(r => r.side === sides[i]);
+        if(q && lenke) pdf.link(q.x*w, q.y*h, q.w*w, q.h*h, {url: lenke}); // QR-koden er klikkbar i PDF-en
+      });
+      // Arbeidsfil: hele oppsettet legges inn i PDF-en, så den kan åpnes i generatoren igjen
+      const arbeid = b64utf8(JSON.stringify(utkastData()));
+      pdf.internal.events.subscribe('putCatalog', () => pdf.internal.write('/TkPlakat (' + arbeid + ')'));
+      pdf.setProperties({title: (S.tittel||'Plakat').replace(/\*\*/g,''), creator: 'Plakatgenerator – Tønsberg kommune'});
       pdf.save(name + '.pdf');
     }
+    if(S.fmt === 'a4' && !stille && TPLS[S.tpl].fmts.includes('wide')) $('ogsa').classList.add('on');
   }catch(err){ alert('Eksporten feilet: ' + err.message); console.error(err); }
   btns.forEach(b => b.disabled = false);
 }
 function download(href, name){ const a = document.createElement('a'); a.href = href; a.download = name; document.body.appendChild(a); a.click(); a.remove(); }
 
 /* ═════════ UTKAST ═════════ */
-function saveDraft(){
-  const data = {type:'tk-plakat', v:3, ...S, imgs: S.imgs.map(I => I.ex ? {ex:true, fx:I.fx, fy:I.fy, z:I.z} : I.bank ? {bank:I.bank, fx:I.fx, fy:I.fy, z:I.z} : I)};
-  const blob = new Blob([JSON.stringify(data)], {type:'application/json'});
-  const u = URL.createObjectURL(blob); download(u, 'plakat-utkast.json'); setTimeout(() => URL.revokeObjectURL(u), 1000);
+function utkastData(){
+  // Bare bildene malen bruker tas med (holder PDF-en mindre)
+  const brukes = new Set(bildeSlots(S.tpl).concat(hasSide2() ? [2,3] : []));
+  return {type:'tk-plakat', v:4, ...S, imgs: S.imgs.map((I,n) => !brukes.has(n) ? {ex:!!I.ex, fx:I.fx, fy:I.fy, z:I.z} : I.ex ? {ex:true, fx:I.fx, fy:I.fy, z:I.z} : I.bank ? {bank:I.bank, fx:I.fx, fy:I.fy, z:I.z, ki:false} : I)};
 }
+function b64utf8(t){
+  const b = new TextEncoder().encode(t); let s = '';
+  for(let i = 0; i < b.length; i += 0x8000) s += String.fromCharCode.apply(null, b.subarray(i, i + 0x8000));
+  return btoa(s);
+}
+function utf8b64(t){ const s = atob(t), b = new Uint8Array(s.length); for(let i = 0; i < s.length; i++) b[i] = s.charCodeAt(i); return new TextDecoder().decode(b); }
 function loadDraft(e){
   const f = e.target.files[0]; if(!f) return;
   const r = new FileReader();
   r.onload = async () => {
     try{
-      const d = JSON.parse(r.result);
+      const buf = new Uint8Array(r.result);
+      let tekst;
+      if(buf[0] === 0x25 && buf[1] === 0x50 && buf[2] === 0x44 && buf[3] === 0x46){ // %PDF
+        const pdfTekst = new TextDecoder('latin1').decode(buf);
+        const m = pdfTekst.match(/\/TkPlakat \(([A-Za-z0-9+\/=]+)\)/);
+        if(!m){ alert('Denne PDF-en kan ikke redigeres her. Det går bare med PDF-er som er lastet ned fra plakatgeneratoren etter november 2026.'); return; }
+        tekst = utf8b64(m[1]);
+      } else tekst = new TextDecoder().decode(buf);
+      const d = JSON.parse(tekst);
       if(d.type !== 'tk-plakat') throw new Error('ukjent fil');
       Object.keys(S).forEach(k => { if(k in d) S[k] = d[k]; });
       if(d.img && !d.imgs) S.imgs[0] = {src:d.img, w:d.imgW, h:d.imgH, fx:d.fx??50, fy:d.fy??40}; // eldre utkast
@@ -4361,16 +4507,17 @@ function loadDraft(e){
         if(I.bank && !I.src){
           const b = BANK.find(x => x.id === I.bank);
           if(b){ await velgBank(n, b, true); S.imgs[n].fx = I.fx ?? b.fx; S.imgs[n].fy = I.fy ?? b.fy; S.imgs[n].z = I.z || 1; }
-          else S.imgs[n] = {...EKS[n], ex:true}; // bildet finnes ikke lenger i banken
+          else S.imgs[n] = {src:null, fx:I.fx??50, fy:I.fy??45, z:I.z||1}; // bildet finnes ikke (lenger) i banken
         }
       }
       if(!TPLS[S.tpl]) S.tpl = 'bildedrevet';
       if(!SLOR[S.slor]) S.slor = 'gronn';
       if(!FMT[S.fmt] || !TPLS[S.tpl].fmts.includes(S.fmt)) S.fmt = TPLS[S.tpl].fmts[0];
+      if(!('visUrl' in d)) S.visUrl = true;
       fillForm(); render();
-    }catch(err){ alert('Kunne ikke åpne utkastet. Er det en fil laget med plakatgeneratoren?'); }
+    }catch(err){ alert('Kunne ikke åpne fila. Er det en PDF lastet ned fra plakatgeneratoren?'); console.error(err); }
   };
-  r.readAsText(f); e.target.value = '';
+  r.readAsArrayBuffer(f); e.target.value = '';
 }
 
 /* ═════════ BILDEBANK ═════════
