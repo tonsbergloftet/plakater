@@ -367,6 +367,13 @@ details[open] .sumh{margin-bottom:12px}
 .page .tp10 .liste .li{padding-left:.756em;line-height:1.2;margin:0}
 .page .tp10 .liste .li::before{content:'•';background:none;width:auto;height:auto;border-radius:0;left:.19em;top:0;color:inherit}
 .page .tp10 .praktisk{margin:1.2em 0 0;line-height:1.4}
+/* 5 · Tre bilder (fra designerens InDesign-fil mal7_plakat_3_bilder): som tekstplakaten, men smalere tekst og mindre brødtekst */
+.page .tp10.tb5 .stikk{color:var(--slor)}
+.page .tp10.tb5 .tittel{font-size:2.267em;line-height:1.059}
+.page .tp10.tb5 .p10,.page .tp10.tb5 .liste,.page .tp10.tb5 .praktisk{font-size:.8em}
+.page .tp10.tb5 .praktisk{margin-top:1.2em}
+.page .tp10.tb5 .ingress{margin-top:.5em}
+.page .tp10.tb5 .gap10{height:1.85em}
 /* 11 · Inndelt plakat (fra designerens InDesign-fil mal6_inndelt_plakat) */
 .page .ip11{color:#fff;text-align:right}
 .page .ip11 .stikk{display:block;color:var(--slor);font-weight:700;font-size:1em;letter-spacing:.3em;text-transform:uppercase;line-height:1.2;margin:0 0 .5em}
@@ -3362,16 +3369,22 @@ const TPLS = {
     felt:['stikk','tittel','ingress']},
   bymobel:{navn:'9 · Bymøbel', sub:'Bymøbelskjerm, 9:16', bilder:3, fmts:['bym'],
     felt:['stikk','tittel','ingress','cta','url','merke','merkeTx','bs1','bs2','bs3'], mork:'Mørk bunn'},
-  tekstplakat:{navn:'10 · Tekstplakat', sub:'Tekst, punkter og QR', bilder:0,
+  tekstplakat:{navn:'4 · Tekstplakat', sub:'Tekst, punkter og QR', bilder:0,
     felt:['stikk','tittel','ingress','ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk','cta','url']},
-  inndelt:{navn:'11 · Inndelt plakat', sub:'Bilde, tittel og to spalter', bilder:1,
+  trebilder:{navn:'5 · Tre bilder', sub:'Tekst og tre bilder', bilder:3,
+    felt:['stikk','tittel','ingress','ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk','cta','url']},
+  hoydebilde:{navn:'10 · Høydebilde', sub:'Høyt bilde og tekst ved siden av', bilder:1,
+    felt:['stikk','tittel','ingress','ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk','cta','url']},
+  inndelt:{navn:'2 · Inndelt plakat', sub:'Bilde, tittel og to spalter', bilder:1,
     felt:['stikk','tittel','ingress','ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','ut3','tx3','cta','url']},
 };
 Object.values(TPLS).forEach(t => { t.fmts = t.fmts || ['a4','wide']; });
+// Maler som er erstattet av designerens nye versjoner. De vises ikke lenger, men gamle PDF-er åpnes i erstatteren.
+const ERSTATTET = {forklaring:'inndelt', tekst:'tekstplakat', bilder:'trebilder'};
 // Malene gruppert etter hva plakaten skal gjøre (innhold først)
 const GRUPPER = [
-  {navn:'Vise fram noe med et stort bilde', tekst:'Kort budskap der bildet gjør mye av jobben.', maler:['bildedrevet','forside','inndelt']},
-  {navn:'Forklare og informere', tekst:'Når leseren trenger litt mer tekst, punkter eller fakta.', maler:['forklaring','delt','bilder','tekst','tekstplakat']},
+  {navn:'Vise fram noe med et stort bilde', tekst:'Kort budskap der bildet gjør mye av jobben.', maler:['bildedrevet','forside']},
+  {navn:'Forklare og informere', tekst:'Når leseren trenger litt mer tekst, punkter eller fakta.', maler:['inndelt','delt','hoydebilde','trebilder','tekstplakat']},
   {navn:'Invitere til noe', tekst:'Kurs, møter og arrangementer. Mal 6 har bakside.', maler:['invitasjon','bildetekst']},
   {navn:'Skjermene på bymøblene', tekst:'Eget stående skjermformat (9:16).', maler:['bymobel']},
 ];
@@ -4017,6 +4030,107 @@ LAYOUTS.inndelt = (uid,f) => {
     + `<div class="box" data-base="15" style="left:${q?950:1050}px;top:600px;width:185px;height:84px;justify-content:flex-end">${E('cta','qrt11','div',null,'bold')}</div>`;
 };
 
+
+/* 5 · Tre bilder. A4 er målt fra InDesign-fila (mal7_plakat_3_bilder.idml): samme flate og bølger som tekstplakaten,
+   tekst til venstre og tre bilder med skrå kanter og avrundede hjørner til høyre. Liggende er en tilpasning. */
+const TB5 = [ // hjørnene i bilderammene (A4, px); nederste bilde ligger under bølgen
+  [[430.9,37.4],[757.8,37.4],[757.8,334.7],[430.9,371.0]],
+  [[430.9,380.2],[757.8,343.8],[757.8,677.8],[430.9,646.8]],
+  [[430.9,656.6],[757.8,687.8],[757.8,990.2],[430.9,990.2]],
+];
+function rundPoly(p, r){ // mangekant med avrundede hjørner (samme kurvetype som rrect)
+  const n = p.length, pt = (a,b,d) => { const dx = b[0]-a[0], dy = b[1]-a[1], l = Math.hypot(dx,dy); return [a[0]+dx/l*d, a[1]+dy/l*d]; };
+  let d = '';
+  for(let i = 0; i < n; i++){
+    const a = p[(i-1+n)%n], b = p[i], c = p[(i+1)%n];
+    const r1 = Math.min(r, Math.hypot(b[0]-a[0], b[1]-a[1])/2), r2 = Math.min(r, Math.hypot(c[0]-b[0], c[1]-b[1])/2);
+    const s1 = pt(b,a,r1), s2 = pt(b,c,r2);
+    d += (i ? ' L' : 'M') + s1[0].toFixed(1) + ',' + s1[1].toFixed(1) + ` Q${b[0]},${b[1]} ` + s2[0].toFixed(1) + ',' + s2[1].toFixed(1);
+  }
+  return d + ' Z';
+}
+LAYOUTS.trebilder = (uid,f) => {
+  const c = SLOR[S.slor], A = f==='a4', W = A?794:1280, H = A?1123:720;
+  const pn = A ? {x0:28.7,y0:28.7,x1:765,y1:1094,r:54.5} : {x0:20,y0:20,x1:1260,y1:700,r:40};
+  const panelD = rrect(pn.x0,pn.y0,pn.x1,pn.y1,pn.r);
+  const tf = A ? 'translate(0,174.45)' : 'matrix(1.6121,0,0,0.44,0,267)';
+  const map = A ? (q => q) : (q => [700 + (q[0]-430.9)/326.9*540, 22 + (q[1]-37.4)*.66]);
+  const bilder = TB5.map((pts,i) => {
+    const P = pts.map(map), xs = P.map(q => q[0]), ys = P.map(q => q[1]);
+    const d = rundPoly(P, A ? 52.9 : 40);
+    return imageIn(uid, d, Math.min(...xs), Math.min(...ys), Math.max(...xs)-Math.min(...xs), Math.max(...ys)-Math.min(...ys), [0,1,4][i]);
+  });
+  const svg = `<svg class="bg" viewBox="0 0 ${W} ${H}"><defs>
+      <radialGradient id="${uid}rg" gradientUnits="userSpaceOnUse" cx="${W/2}" cy="${H/2}" r="${A?561.3:700}"><stop offset="0" stop-color="#fbfbfb"/><stop offset="1" stop-color="#e2e2e2"/></radialGradient>
+      <linearGradient id="${uid}sl" gradientUnits="userSpaceOnUse" x1="459.1" y1="745.8" x2="471" y2="817.9"><stop offset="0" stop-color="${c.c}" stop-opacity=".75"/><stop offset="1" stop-color="${c.c}" stop-opacity="0"/></linearGradient>
+      <clipPath id="${uid}pc"><path d="${panelD}"/></clipPath>
+    </defs>
+    <rect width="${W}" height="${H}" fill="#fff"/>
+    <g clip-path="url(#${uid}pc)"><rect width="${W}" height="${H}" fill="url(#${uid}rg)" pointer-events="none"/>
+      ${bilder[2]}
+      <g transform="${tf}" pointer-events="none"><path d="${FS8.gronn}" fill="url(#${uid}sl)"/><path d="${FS8.navy}" fill="${NAVY}"/></g>
+      ${bilder[0]}${bilder[1]}
+    </g>
+    <g pointer-events="none" transform="${A?'':'scale(.75)'}"><path d="${FS8.hvit}" fill="#fff"/><path d="${FS8.hale}" fill="#fff"/></g>
+  </svg>`;
+  const q = S.qr ? qrSvg() : '';
+  const topp = E('stikk','stikk') + E('tittel','tittel') + E('ingress','ingress');
+  const brod = E('ut1','h10') + E('tx1','p10','div',null,'rich') + E('ut2','h10') + E('tx2','p10','div',null,'rich')
+    + E('pTittel','h10') + E('pIntro','p10') + E('punkter','liste') + E('praktisk','praktisk');
+  const harBrod = ['ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk'].some(hasE);
+  const ki = S.ki ? `<div class="ki" style="right:${A?50:36}px;top:${A?48:32}px">${KI_ICON}KI-generert bilde</div>` : '';
+  if(A) return svg + logo(87.5,48.5,89) + ki
+    + box(87,257,292,700,20,'tp10 tb5', topp + (harBrod ? '<div class="gap10"></div>' : '') + brod)
+    + (q ? `<div class="qrbox7" style="left:628px;top:959px;width:103.3px;height:103.3px;padding:8px">${q}</div>` : '')
+    + `<div class="box" data-base="18.22" style="left:${q?399:522}px;top:976px;width:210px;height:80.5px;justify-content:flex-end">${E('cta','qrt1','div',null,'bold')}</div>`;
+  return svg + logo(63,34,66) + ki
+    + box(80,150,560,440,17,'tp10 tb5', topp + (harBrod ? '<div class="gap10"></div>' : '') + brod)
+    + (q ? `<div class="qrbox7" style="left:1148px;top:602px;width:88px;height:88px;padding:7px">${q}</div>` : '')
+    + `<div class="box" data-base="16" style="left:${q?930:1028}px;top:620px;width:200px;height:66px;justify-content:flex-end">${E('cta','qrt1','div',null,'bold')}</div>`;
+};
+
+
+/* 10 · Høydebilde. A4 er målt fra InDesign-fila (mal8_plakat_med_hoydebilde.idml): høyt bilde til venstre under bølgen,
+   tekst til høyre med samme stiler som mal 5, valgfritt ikon over teksten. Liggende er en tilpasning. */
+LAYOUTS.hoydebilde = (uid,f) => {
+  const c = SLOR[S.slor], A = f==='a4', W = A?794:1280, H = A?1123:720;
+  const pn = A ? {x0:28.7,y0:28.7,x1:765,y1:1094,r:54.5} : {x0:20,y0:20,x1:1260,y1:700,r:40};
+  const panelD = rrect(pn.x0,pn.y0,pn.x1,pn.y1,pn.r);
+  const tf = A ? 'translate(0,174.45)' : 'matrix(1.6121,0,0,0.44,0,267)';
+  const fb = A ? {x0:42,y0:42,x1:369,y1:1083,r:52.9} : {x0:30,y0:30,x1:560,y1:690,r:40};
+  const fotoD = rrect(fb.x0,fb.y0,fb.x1,fb.y1,fb.r);
+  const svg = `<svg class="bg" viewBox="0 0 ${W} ${H}"><defs>
+      <radialGradient id="${uid}rg" gradientUnits="userSpaceOnUse" cx="${W/2}" cy="${H/2}" r="${A?561.3:700}"><stop offset="0" stop-color="#fbfbfb"/><stop offset="1" stop-color="#e2e2e2"/></radialGradient>
+      <linearGradient id="${uid}sl" gradientUnits="userSpaceOnUse" x1="459.1" y1="745.8" x2="471" y2="817.9"><stop offset="0" stop-color="${c.c}" stop-opacity=".75"/><stop offset="1" stop-color="${c.c}" stop-opacity="0"/></linearGradient>
+      <clipPath id="${uid}pc"><path d="${panelD}"/></clipPath>
+      <linearGradient id="${uid}fg" gradientUnits="userSpaceOnUse" x1="${A?230:350}" y1="${A?420:270}" x2="${A?173:300}" y2="${A?153:100}"><stop offset="0" stop-color="${c.c}" stop-opacity="0"/><stop offset="1" stop-color="${c.c}"/></linearGradient>
+      <clipPath id="${uid}fc"><path d="${fotoD}"/></clipPath>
+    </defs>
+    <rect width="${W}" height="${H}" fill="#fff"/>
+    <g clip-path="url(#${uid}pc)"><rect width="${W}" height="${H}" fill="url(#${uid}rg)" pointer-events="none"/>
+      <path d="${fotoD}" fill="${c.c}" pointer-events="none"/>
+      ${imageIn(uid, fotoD, fb.x0, fb.y0, fb.x1-fb.x0, fb.y1-fb.y0, 0)}
+      <rect x="0" y="0" width="${W}" height="${H}" fill="url(#${uid}fg)" clip-path="url(#${uid}fc)" pointer-events="none"/>
+      <g transform="${tf}" pointer-events="none"><path d="${FS8.gronn}" fill="url(#${uid}sl)"/><path d="${FS8.navy}" fill="${NAVY}"/></g>
+    </g>
+    <g pointer-events="none" transform="${A?'':'scale(.75)'}"><path d="${FS8.hvit}" fill="#fff"/><path d="${FS8.hale}" fill="#fff"/></g>
+  </svg>`;
+  const q = S.qr ? qrSvg() : '';
+  const topp = E('stikk','stikk') + E('tittel','tittel') + E('ingress','ingress');
+  const brod = E('ut1','h10') + E('tx1','p10','div',null,'rich') + E('ut2','h10') + E('tx2','p10','div',null,'rich')
+    + E('pTittel','h10') + E('pIntro','p10') + E('punkter','liste') + E('praktisk','praktisk');
+  const harBrod = ['ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk'].some(hasE);
+  const ki = S.ki ? `<div class="ki" style="left:${A?56:44}px;top:${A?210:150}px">${KI_ICON}KI-generert bilde</div>` : '';
+  if(A) return svg + logo(87.5,48.5,89) + ki + ikonHer(635.5,82,96,NAVY,'#f3f3f3')
+    + box(431,206,292,720,20,'tp10 tb5', topp + (harBrod ? '<div class="gap10"></div>' : '') + brod)
+    + (q ? `<div class="qrbox7" style="left:628px;top:959px;width:103.3px;height:103.3px;padding:8px">${q}</div>` : '')
+    + `<div class="box" data-base="18.22" style="left:${q?399:522}px;top:976px;width:210px;height:80.5px;justify-content:flex-end">${E('cta','qrt1','div',null,'bold')}</div>`;
+  return svg + logo(63,34,66) + ki + ikonHer(1150,36,64,NAVY,'#f3f3f3')
+    + box(610,100,560,480,16,'tp10 tb5', topp + (harBrod ? '<div class="gap10"></div>' : '') + brod)
+    + (q ? `<div class="qrbox7" style="left:1148px;top:602px;width:88px;height:88px;padding:7px">${q}</div>` : '')
+    + `<div class="box" data-base="16" style="left:${q?930:1028}px;top:620px;width:200px;height:66px;justify-content:flex-end">${E('cta','qrt1','div',null,'bold')}</div>`;
+};
+
 /* ═════════ RENDER ═════════ */
 let uidN = 0;
 const hasSide2 = () => S.tpl==='bildetekst' && S.fmt==='a4' && S.side2;
@@ -4244,7 +4358,7 @@ function fillForm(){
   $('morktxt').textContent = TPLS[S.tpl].mork || '';
   $('mork').checked = !!S.mork;
   document.querySelectorAll('#fmtseg button').forEach(b => b.style.display = TPLS[S.tpl].fmts.includes(b.dataset.fmt) ? '' : 'none');
-  const IKON_TXT = {invitasjon:'Ikonet vises i det gule merket.', tekst:'Ikonet vises øverst til høyre.', tekstplakat:'Ikonet vises øverst til høyre.'};
+  const IKON_TXT = {invitasjon:'Ikonet vises i det gule merket.', tekstplakat:'Ikonet vises øverst til høyre.', hoydebilde:'Ikonet vises over teksten.'};
   $('sec-ikon').classList.toggle('hide', !IKON_TXT[S.tpl]);
   $('ikonnote').textContent = IKON_TXT[S.tpl] || '';
   const sv = ikonSvg(S.ikon);
@@ -4704,6 +4818,7 @@ function loadDraft(e){
           else S.imgs[n] = {src:null, fx:I.fx??50, fy:I.fy??45, z:I.z||1}; // bildet finnes ikke (lenger) i banken
         }
       }
+      if(ERSTATTET[S.tpl]) S.tpl = ERSTATTET[S.tpl];
       if(!TPLS[S.tpl]) S.tpl = 'bildedrevet';
       if(!SLOR[S.slor]) S.slor = 'gronn';
       if(!FMT[S.fmt] || !TPLS[S.tpl].fmts.includes(S.fmt)) S.fmt = TPLS[S.tpl].fmts[0];
