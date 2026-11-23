@@ -411,7 +411,7 @@ details[open] .sumh{margin-bottom:12px}
 .page .praktisk .pb{position:relative;padding-left:.75em;font-style:italic;font-weight:300;font-size:.857em;line-height:1.5}
 .page .praktisk .pb::before{content:'•';position:absolute;left:0;font-style:normal}
 .page .is12{color:#fff;text-align:center;text-shadow:0 0 28px rgba(0,0,0,.55),0 0 8px rgba(0,0,0,.25)}
-.page .is12 .stikk{display:block;color:var(--slor);font-weight:700;font-size:1em;letter-spacing:.3em;text-transform:uppercase;line-height:1.03;margin:0 0 .69em;text-shadow:0 0 18px rgba(0,0,0,.45)}
+.page .is12 .stikk{display:block;color:var(--slor);font-weight:700;font-size:1em;letter-spacing:.3em;text-transform:uppercase;line-height:1.03;margin:0 0 .69em;text-shadow:1.5px 2px 3px rgba(0,0,0,.55)}
 .page .is12 .stikk::before{display:none}
 .page .is12 .tittel{font-weight:700;font-style:normal;font-size:2.171em;line-height:1;letter-spacing:0;margin:0;color:#fff}
 .page .is12 .tittel .tem{font-weight:700;font-style:italic}
@@ -4212,7 +4212,7 @@ LAYOUTS.infoskjerm = (uid) => {
   return svg + logo(73,40,71.5) + ki
     + box(434.5,98,449,580,20.18,'is11', tekst)
     + skjermQr(q, 1099, 503.5, 125.5, SKJ.S9.pil,
-        `<div class="box" data-base="30.6" style="left:1040px;top:633px;width:200px;height:62px;font-size:30.6px">${E('cta','skript','div','line-height:.81')}</div>`);
+        `<div class="box" data-base="30.6" style="left:1040px;top:643px;width:200px;height:62px;font-size:30.6px">${E('cta','skript','div','line-height:.81')}</div>`);
 };
 LAYOUTS.infoskjerm2 = (uid) => {
   const c = SLOR[S.slor], W = 1280, H = 720;
@@ -4244,7 +4244,7 @@ LAYOUTS.infoskjerm2 = (uid) => {
   const ki = S.ki ? `<div class="ki" style="right:40px;top:36px">${KI_ICON}KI-generert bilde</div>` : '';
   return svg + logo(69,40.5,65) + ki
     + box(197.5,92,885,170,23.33,'is12', E('stikk','stikk') + E('tittel','tittel'))
-    + box(87.5,461.5,300,200,26.67,'is12b', E('ut1','h12') + E('tx1','p12') + E('avslutt','a12'))
+    + box(87.5,250,300,371,26.67,'is12b', E('ut1','h12') + E('tx1','p12') + E('avslutt','a12')).replace('font-size:26.67px"','font-size:26.67px;justify-content:flex-end"') // vokser oppover ved mye tekst
     + skjermQr(q, 1077.5, 468, 125.5, SKJ.S10.pil,
         `<div class="box" data-base="36.2" style="left:1022px;top:613px;width:222px;height:72px;font-size:36.2px;transform:rotate(-2deg)">${E('cta','skript','div','line-height:.81')}</div>`);
 };
