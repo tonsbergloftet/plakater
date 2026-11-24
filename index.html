@@ -164,6 +164,27 @@ body.har-bank .bankbtn{display:block}
 .note{font-size:12px;color:var(--muted);line-height:1.45;margin-top:8px}
 
 .stagecol{display:flex;flex-direction:column;min-height:0;min-width:0;position:relative}
+#kimodal .mbox{width:min(760px,100%);max-height:100%}
+.kibody{padding:4px 22px 18px;overflow:auto}
+.kisteg{display:flex;gap:12px;margin-top:16px}
+.kisteg .nr{flex:0 0 28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:14px}
+.kisteg .inn{flex:1;min-width:0}
+.kisteg b.t{display:block;color:var(--navy);font-size:15px;margin-bottom:3px}
+.kisteg p{margin:0 0 8px;font-size:13.5px;color:var(--ink);line-height:1.45}
+.kisteg textarea{width:100%;min-height:110px;border:1.5px solid var(--line);border-radius:8px;padding:8px 10px;font-family:ui-monospace,monospace;font-size:12.5px;resize:vertical}
+.kinote{font-size:12.5px;color:var(--muted);background:#f4f6f7;border-radius:8px;padding:8px 10px;margin:8px 0 0;line-height:1.45}
+.kifeil{color:#8a1f11;font-size:13px;margin-top:6px}
+.kiliste{margin-top:10px;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.kirad{display:grid;grid-template-columns:24px 140px 1fr;gap:8px;padding:9px 10px;border-top:1px solid var(--line);font-size:13px;align-items:start}
+.kirad:first-child{border-top:0}
+.kirad .gml{color:var(--muted);text-decoration:line-through;white-space:pre-line;font-size:12.5px}
+.kirad .ny{white-space:pre-line;color:var(--ink)}
+.kirad .navn{font-weight:700;color:var(--navy)}
+.kirad.lik{opacity:.55}
+.page mark.mangler{background:#ffe58a;color:#1d1d1b;border-radius:3px;padding:0 .15em;text-shadow:none}
+#kitoast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:45;display:none;align-items:center;gap:12px;background:var(--navy);color:#fff;border-radius:999px;padding:9px 10px 9px 18px;font-size:14px;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+#kitoast.on{display:flex}
+#kitoast button{background:#fff;color:var(--navy);border:0;border-radius:999px;padding:6px 14px;font-family:var(--font);font-weight:700;cursor:pointer}
 .tips{display:none;position:absolute;left:50%;transform:translateX(-50%);top:62px;z-index:30;max-width:min(640px,90%);background:#fff8e6;border:1.5px solid #f1be48;border-radius:10px;padding:9px 12px;font-size:13.5px;color:var(--ink);box-shadow:0 6px 18px rgba(0,0,0,.12)}
 .tips.on{display:block}
 .tips .tip{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
@@ -591,6 +612,7 @@ details[open] .sumh{margin-bottom:12px}
 <div class="tools">
   <span class="hint">Klikk på tekst i plakaten for å skrive</span>
   <div class="seg sidetabs" id="sidetabs"><button data-side="1">Forside</button><button data-side="2">Bakside</button></div><span class="sidehint" id="sidehint"></span>
+  <button class="hjelpbtn" id="kiknapp" title="Få hjelp fra et KI-verktøy til å gjøre teksten klar og kort">Forbedre teksten med KI</button>
   <button class="hjelpbtn" id="allemaler">Alle maler</button>
   <button class="hjelpbtn" id="hjelp">Slik virker det</button>
   <label class="chk mini"><input type="checkbox" id="skjultom"> Skjul tomme felt</label>
@@ -620,6 +642,33 @@ details[open] .sumh{margin-bottom:12px}
 </div>
 <div id="bytt" role="toolbar" aria-label="Bilde"><button type="button" id="byttbilde">Bytt bilde</button><button type="button" id="byttjuster">Flytt og zoom</button></div>
 <div id="juster" role="toolbar" aria-label="Juster bildet"><span>Dra i bildet for å flytte det</span><label style="display:flex;align-items:center;gap:6px">Zoom<input type="range" id="justerz" min="1" max="3" step="0.02"></label><button class="btn pri" id="justerok">Ferdig</button></div>
+<div class="modal" id="kimodal" role="dialog" aria-modal="true" aria-labelledby="kimt">
+  <div class="mbox">
+    <div class="mhead"><b id="kimt">Forbedre teksten med KI</b><span style="flex:1"></span><button class="btn" id="kilukk">Lukk</button></div>
+    <div class="kibody">
+      <div class="kisteg"><span class="nr">1</span><div class="inn">
+        <b class="t">Kopier instruksen</b>
+        <p>Instruksen inneholder teksten din, hva hvert felt i malen skal gjøre og hvor langt det kan være. KI-en får beskjed om å skrive klarspråk og ikke finne på noe nytt.</p>
+        <button class="btn pri" id="kikopier">Kopier instruks</button> <span id="kikopiert" style="font-size:13px;color:var(--muted)"></span>
+        <textarea id="kiprompt" readonly style="display:none"></textarea>
+      </div></div>
+      <div class="kisteg"><span class="nr">2</span><div class="inn">
+        <b class="t">Lim den inn i KI-verktøyet</b>
+        <p>Bruk KI-verktøyet kommunen har godkjent, for eksempel Copilot med kommunekontoen din. Lim inn instruksen og send.</p>
+        <p class="kinote">Ikke lim inn personopplysninger som navn på innbyggere, fødselsnummer eller helseopplysninger. Les alltid gjennom svaret – KI kan ta feil.</p>
+      </div></div>
+      <div class="kisteg"><span class="nr">3</span><div class="inn">
+        <b class="t">Lim inn svaret her</b>
+        <p>Kopier hele svaret fra KI-verktøyet og lim det inn. Du får se forslagene før noe endres.</p>
+        <textarea id="kisvar" placeholder="Lim inn svaret fra KI-verktøyet her"></textarea>
+        <div class="kifeil" id="kifeil"></div>
+        <div id="kiforslag"></div>
+        <div style="display:flex;gap:8px;margin-top:10px"><button class="btn" id="kiles">Vis forslagene</button><button class="btn pri" id="kibruk" style="display:none">Bruk valgte endringer</button></div>
+      </div></div>
+    </div>
+  </div>
+</div>
+<div id="kitoast" role="status"><span>Teksten er oppdatert.</span><button id="kiangre">Angre</button></div>
 <div class="modal" id="kispm" role="dialog" aria-modal="true" aria-labelledby="kispmt">
   <div class="mbox" style="width:min(420px,100%);padding:22px 22px 18px">
     <b id="kispmt" style="font-size:17px">Er bildet laget med KI?</b>
@@ -3567,7 +3616,12 @@ const PH = {pIntro:'Innledning til punktlista (valgfri)', ut3:'Underoverskrift',
 const KIND = {tittel:'tit', tx1:'rich', tx2:'rich', tx3:'rich', s2Tx1:'rich', s2Tx2:'rich', s2Tx3:'rich', s2Slutt:'rich', punkter:'list', praktisk:'prak', url:'url'};
 const SINGLE = new Set(['ut3','stikk','ut1','ut2','pTittel','cta','url','qrTekst','s2Ut1','s2Ut2','s2Slutt','bs1','bs2','bs3']);
 const hasE = k => EDIT || has(k);
-function disp(k, kindOverride){
+let EKSPORTERER = false;
+function disp(k, kindOverride){ // [MANGLER] fra KI-forslag markeres i forhåndsvisningen
+  const h = disp0(k, kindOverride);
+  return EKSPORTERER ? h : h.replace(/\[MANGLER\]/g, '<mark class="mangler">[MANGLER]</mark>');
+}
+function disp0(k, kindOverride){
   const v = String(S[k]||''), kind = kindOverride || KIND[k];
   if(kind==='tit') return esc(v).replace(/\*\*(.+?)\*\*/g, '<span class="tem">$1</span>');
   if(kind==='bold') return esc(v).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
@@ -4249,6 +4303,129 @@ LAYOUTS.infoskjerm2 = (uid) => {
         `<div class="box" data-base="36.2" style="left:1022px;top:613px;width:222px;height:72px;font-size:36.2px;transform:rotate(-2deg)">${E('cta','skript','div','line-height:.81')}</div>`);
 };
 
+
+/* ═════════ FORBEDRE TEKSTEN MED KI ═════════
+   Ingen server: generatoren lager en instruks (prompt) brukeren limer inn i et godkjent KI-verktøy,
+   og leser svaret (JSON) tilbake. Brukeren ser forslagene og velger hva som skal brukes. */
+const KI_FELT = { // hva feltet skal gjøre, og omtrent hvor langt det kan være (tegn)
+  stikk:   ['Tema / stikktittel', 'Tema i 1–3 ord. Skrives over tittelen.', 25],
+  tittel:  ['Tittel', 'Fengende hovedtittel på 3–8 ord. Kan utheve 1–2 nøkkelord med **ord**. Bruk linjeskift (\\n) bare hvis det gjør tittelen lettere å lese.', 50],
+  ingress: ['Ingress', '1–2 korte setninger som vekker interesse og sier det viktigste.', 120],
+  ut1:     ['Underoverskrift 1', 'Kort underoverskrift, gjerne et spørsmål leseren har.', 40],
+  tx1:     ['Brødtekst 1', '2–3 korte setninger.', 200],
+  ut2:     ['Underoverskrift 2', 'Kort underoverskrift.', 40],
+  tx2:     ['Brødtekst 2', '2–3 korte setninger.', 200],
+  ut3:     ['Underoverskrift 3', 'Kort underoverskrift.', 40],
+  tx3:     ['Brødtekst 3', '1–3 korte setninger med tilleggsinformasjon.', 160],
+  pTittel: ['Overskrift over punktene', 'Kort overskrift.', 40],
+  pIntro:  ['Innledning til punktlista', 'Én kort setning.', 80],
+  punkter: ['Punktliste', '3–5 punkter, ett per linje (skilles med \\n). Hvert punkt kort, gjerne med verb først.', 160],
+  praktisk:['Praktisk informasjon', 'Én opplysning per linje (\\n) på formen «Tid: …», «Sted: …», «Påmelding: …». En linje som starter med «- » blir et lite tilleggspunkt under linja over.', 260],
+  cta:     ['Tekst ved QR-koden', 'Sier kort hva man får ved å skanne koden, f.eks. «Meld deg på her». Kan utheve med **ord**.', 50],
+  merke:   ['Tekst i merket', '2–4 ord, kan ha linjeskift (\\n).', 25],
+  merkeTx: ['Kort tekst under merket', 'Noen få ord.', 30],
+  avslutt: ['Avsluttende setning', 'Én kort, vennlig setning.', 60],
+  bs1: ['Stikkord på bilde 1', 'Valgfritt stikkord om bildet, maks 4 ord.', 30],
+  bs2: ['Stikkord på bilde 2', 'Valgfritt stikkord om bildet, maks 4 ord.', 30],
+  bs3: ['Stikkord på bilde 3', 'Valgfritt stikkord om bildet, maks 4 ord.', 30],
+};
+// Mal-spesifikke lengder der feltet har mindre plass enn vanlig
+const KI_LENGDE = {
+  bymobel: {cta:60, tittel:40, ingress:60},
+  infoskjerm2: {tittel:60, ut1:40, tx1:90, avslutt:40},
+  infoskjerm: {tx1:90, praktisk:300},
+  bildedrevet: {ingress:60, cta:45},
+  forside: {ingress:70},
+  hoydebilde: {tx1:150, tx2:150},
+  trebilder: {tx1:150, tx2:150},
+};
+const kiFelt = () => TPLS[S.tpl].felt.filter(k => KI_FELT[k] && !(/^bs\d$/.test(k) && !has(k)));
+function kiInstruks(){
+  const felt = kiFelt(), L = KI_LENGDE[S.tpl] || {};
+  const inn = {}; felt.forEach(k => inn[k] = String(S[k] || ''));
+  const beskr = felt.map(k => `- "${k}" (${KI_FELT[k][0]}): ${KI_FELT[k][1]} Maks ca. ${L[k] || KI_FELT[k][2]} tegn.`).join('\n');
+  const forLang = $('warn').classList.contains('on') ? '\nNB: Teksten får ikke plass på plakaten nå. Kort den ned.\n' : '';
+  return `Du er kommunikasjonsrådgiver i en norsk kommune og skriver klarspråk på bokmål.
+Forbedre teksten til en plakat (malen «${TPLS[S.tpl].navn}»). Plakaten skal kunne leses raskt, gjerne på avstand.
+
+Regler:
+- Skriv klart og enkelt: du-form, aktive setninger, det viktigste først, korte og vanlige ord.
+- Hold deg innenfor lengden for hvert felt. Kortere er bedre.
+- Ikke finn på nye fakta. Datoer, klokkeslett, steder, priser, navn, telefonnumre og nettadresser skal stå nøyaktig som i originalen.
+- Mangler en opplysning som feltet trenger, skriv [MANGLER] der den skal stå.
+- Felt som er tomme, skal forbli tomme.
+- Behold **ord**-markeringer bare der de er nyttige.
+${forLang}
+Feltene i malen:
+${beskr}
+
+Teksten nå:
+\`\`\`json
+${JSON.stringify(inn, null, 2)}
+\`\`\`
+
+Svar KUN med én JSON-kodeblokk med nøyaktig de samme nøklene. Bruk \\n for linjeskift inne i en verdi. Ingen forklaring før eller etter.`;
+}
+// Leser svaret fra KI-en: tåler kodeblokk, tekst rundt og «nøkkel: verdi»-linjer
+function kiLes(tekst){
+  tekst = String(tekst || '').replace(/[“”«»]/g, m => '"«»'.includes(m) && m !== '"' ? m : '"');
+  const blokk = tekst.match(/```(?:json)?\s*([\s\S]*?)```/i);
+  let kandidat = blokk ? blokk[1] : tekst;
+  const a = kandidat.indexOf('{'), b = kandidat.lastIndexOf('}');
+  if(a >= 0 && b > a){
+    try{ const o = JSON.parse(kandidat.slice(a, b + 1)); if(o && typeof o === 'object') return o; }catch(e){}
+  }
+  const o = {}, felt = kiFelt();
+  kandidat.split('\n').forEach(l => { const m = l.match(/^\s*"?([A-Za-z0-9]+)"?\s*:\s*"?(.*?)"?,?\s*$/); if(m && felt.includes(m[1])) o[m[1]] = m[2].replace(/\\n/g, '\n'); });
+  return Object.keys(o).length ? o : null;
+}
+let kiForslag = null, kiForrige = null, kiToastTimer = null;
+function initKI(){
+  const m = $('kimodal');
+  const lukk = () => m.classList.remove('on');
+  $('kiknapp').onclick = () => {
+    $('kiprompt').value = kiInstruks(); $('kiprompt').style.display = 'none'; $('kikopiert').textContent = '';
+    $('kisvar').value = ''; $('kifeil').textContent = ''; $('kiforslag').innerHTML = ''; $('kibruk').style.display = 'none'; kiForslag = null;
+    m.classList.add('on'); $('kikopier').focus();
+  };
+  $('kilukk').onclick = lukk;
+  m.addEventListener('click', e => { if(e.target === m) lukk(); });
+  document.addEventListener('keydown', e => { if(e.key === 'Escape' && m.classList.contains('on')) lukk(); });
+  $('kikopier').onclick = async () => {
+    const t = kiInstruks(); $('kiprompt').value = t;
+    try{ await navigator.clipboard.writeText(t); $('kikopiert').textContent = 'Kopiert! Lim den inn i KI-verktøyet.'; }
+    catch(e){ // f.eks. når fila er åpnet fra disk: vis teksten så den kan kopieres for hånd
+      const ta = $('kiprompt'); ta.style.display = ''; ta.focus(); ta.select();
+      let ok = false; try{ ok = document.execCommand('copy'); }catch(_){}
+      $('kikopiert').textContent = ok ? 'Kopiert! Lim den inn i KI-verktøyet.' : 'Marker teksten under og kopier den (Ctrl+C).';
+    }
+  };
+  $('kiles').onclick = () => {
+    $('kifeil').textContent = ''; $('kiforslag').innerHTML = ''; $('kibruk').style.display = 'none';
+    const o = kiLes($('kisvar').value);
+    if(!o){ $('kifeil').textContent = 'Fant ingen forslag i teksten. Lim inn hele svaret fra KI-verktøyet, også kodeblokken.'; return; }
+    const felt = kiFelt().filter(k => k in o);
+    if(!felt.length){ $('kifeil').textContent = 'Svaret passer ikke til malen som er valgt nå. Har du byttet mal? Kopier instruksen på nytt.'; return; }
+    kiForslag = {}; felt.forEach(k => kiForslag[k] = String(o[k] ?? '').replace(/\r/g, '').trim());
+    $('kiforslag').innerHTML = '<div class="kiliste">' + felt.map(k => {
+      const gml = String(S[k] || ''), ny = kiForslag[k], lik = gml.trim() === ny;
+      return `<label class="kirad${lik ? ' lik' : ''}"><input type="checkbox" data-k="${k}"${lik ? '' : ' checked'}><span class="navn">${esc(KI_FELT[k][0])}</span><span>${lik ? '<span class="ny">Ingen endring</span>' : `<div class="gml">${esc(gml) || '(tomt)'}</div><div class="ny">${esc(ny) || '(tomt)'}</div>`}</span></label>`;
+    }).join('') + '</div>';
+    $('kibruk').style.display = '';
+  };
+  $('kibruk').onclick = () => {
+    if(!kiForslag) return;
+    kiForrige = {};
+    $('kiforslag').querySelectorAll('input[data-k]:checked').forEach(c => { const k = c.dataset.k; kiForrige[k] = S[k]; S[k] = kiForslag[k]; });
+    lukk(); fillForm(); render();
+    if(Object.keys(kiForrige).length){ $('kitoast').classList.add('on'); clearTimeout(kiToastTimer); kiToastTimer = setTimeout(() => $('kitoast').classList.remove('on'), 15000); }
+  };
+  $('kiangre').onclick = () => {
+    if(kiForrige) Object.entries(kiForrige).forEach(([k,v]) => S[k] = v);
+    kiForrige = null; $('kitoast').classList.remove('on'); fillForm(); render();
+  };
+}
+
 /* ═════════ RENDER ═════════ */
 let uidN = 0;
 const hasSide2 = () => S.tpl==='bildetekst' && S.fmt==='a4' && S.side2;
@@ -4534,6 +4711,7 @@ function initUI(){
   $('startapne').onchange = e => { const forste = $('start').dataset.forste === '1'; $('start').classList.remove('on'); loadDraft(e); try{ localStorage.setItem(TOUR_KEY_G, '1'); }catch(_){} };
   $('startlukk').onclick = () => { const forste = $('start').dataset.forste === '1'; $('start').classList.remove('on'); if(forste) setTimeout(visTourExt, 200); };
   $('allemaler').onclick = () => apneStart(false);
+  initKI();
   $('visurl').onchange = () => { S.visUrl = $('visurl').checked; render(); };
   $('dlwide').onclick = async () => { const f = S.fmt; S.fmt = 'wide'; try{ await exportFile('png', true); } finally { S.fmt = f; fillForm(); render(); } };
   document.querySelectorAll('#sidetabs button').forEach(b => b.onclick = () => { if(b.disabled) return; S.side = +b.dataset.side; if(S.side === 2) S.side2 = true; fillForm(); render(); });
@@ -4841,11 +5019,14 @@ async function exportFile(type, stille){
     if(usedEx) varsel.push('Plakaten bruker fortsatt et eksempelbilde.');
     if(SJEKK.kontrast) varsel.push('Teksten kan bli vanskelig å lese på bildet (se tipset over plakaten).');
     SJEKK.opplosning.forEach(t => varsel.push(t));
+    const mangler = TPLS[S.tpl].felt.filter(k => String(S[k]||'').includes('[MANGLER]'));
+    if(mangler.length) varsel.push('Noen felt inneholder fortsatt [MANGLER] fra KI-forslaget: ' + mangler.map(k => NAVN_FELT[k] || k).join(', ') + '.');
     if(varsel.length && !confirm(varsel.join('\n') + '\n\nVil du laste ned likevel?')) return;
   }
   const btns = [$('dlpdf'), $('dlpng')]; btns.forEach(b => b.disabled = true);
   try{
     await document.fonts.ready;
+    EKSPORTERER = true;
     const host = document.createElement('div');
     host.style.cssText = 'position:fixed;left:-20000px;top:0;';
     document.body.appendChild(host);
@@ -4894,6 +5075,7 @@ async function exportFile(type, stille){
     }
     if(S.fmt === 'a4' && !stille && TPLS[S.tpl].fmts.includes('wide')) $('ogsa').classList.add('on');
   }catch(err){ alert('Eksporten feilet: ' + err.message); console.error(err); }
+  finally{ EKSPORTERER = false; }
   btns.forEach(b => b.disabled = false);
 }
 function download(href, name){ const a = document.createElement('a'); a.href = href; a.download = name; document.body.appendChild(a); a.click(); a.remove(); }
