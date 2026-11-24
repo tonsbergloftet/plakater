@@ -31,6 +31,8 @@ Ikke slett eller endre taggen `v1-for-rydding` eller grenen `stabil-v1`. De er r
 
 Claude skal alltid si tydelig i svaret hvilke filer som er endret, og om de ligger i prod eller staging.
 
+Claude pusher aldri direkte til main. Alle endringer leveres som pull request fra en egen gren. Marius merger.
+
 ## 3. Ting som ikke kan endres
 
 - **Arbeidsfila må virke begge veier.** En PDF eller JSON lagret i prod må kunne åpnes i staging, og omvendt. Malnøklene (`TPLS`), feltnavnene og `/TkPlakat`-formatet i PDF-en skal derfor være like.
@@ -50,6 +52,8 @@ Hvis noe avviker, skal det forklares. Det skal ikke lastes opp før det er forkl
 
 ## 5. Opprykk fra staging til prod (sjekkliste)
 
+Opprykket leveres som en egen pull request, ikke sammen med andre endringer.
+
 1. Lag en ny tagg av dagens prod, for eksempel `v2-for-opprykk`, under Releases → Draft a new release.
 2. Kopier innholdet i `staging/` til rota, slik at det erstatter `index.html` og legger til de nye mappene.
 3. I rotkopien: sett `RESSURS_ROT` til `''`, fjern banneret «TESTVERSJON» og fjern prefikset `staging-`.
@@ -58,6 +62,10 @@ Hvis noe avviker, skal det forklares. Det skal ikke lastes opp før det er forkl
 6. Behold `staging/` som utgangspunkt for neste runde.
 
 ## 6. Hvis prod er ødelagt: gå tilbake
+
+**Førstevalg:** Angre pull requesten som ødela prod. Åpne den mergede PR-en i GitHub og trykk **Revert**. Det lager en ny PR som fjerner endringene. Merge den, så publiserer Pages på nytt.
+
+**Reserveløsning** (hvis Revert ikke går, eller feilen ikke kom fra én PR):
 
 1. Gå til grenen `stabil-v1`, eller den siste taggen, og last ned `index.html`.
 2. Last den opp til rota på `main`, slik at den erstatter den ødelagte. Pages publiserer på nytt i løpet av et par minutter.
