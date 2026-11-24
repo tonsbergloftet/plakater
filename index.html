@@ -181,6 +181,15 @@ body.har-bank .bankbtn{display:block}
 .kirad .ny{white-space:pre-line;color:var(--ink)}
 .kirad .navn{font-weight:700;color:var(--navy)}
 .kirad.lik{opacity:.55}
+.kirad .diff{line-height:1.5;color:var(--ink)}
+.kirad .del{color:#9b2a14;background:#fbe8e3;text-decoration:line-through;border-radius:3px;padding:0 2px}
+.kirad .ins{color:#1f4f14;background:#e2f0d9;border-radius:3px;padding:0 2px}
+.kiopps{background:#eef4f6;border-radius:8px;padding:10px 14px;margin-top:10px;font-size:13.5px;line-height:1.45}
+.kiopps b{color:var(--navy)}
+.kiopps ul{margin:4px 0 0;padding-left:18px}
+.kiuendret{font-size:12.5px;color:var(--muted);padding:8px 10px;border-top:1px solid var(--line)}
+.kilest{font-size:13px;color:var(--muted);margin-top:4px}
+.kilest a{color:var(--navy);cursor:pointer;text-decoration:underline}
 .page mark.mangler{background:#ffe58a;color:#1d1d1b;border-radius:3px;padding:0 .15em;text-shadow:none}
 #kitoast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:45;display:none;align-items:center;gap:12px;background:var(--navy);color:#fff;border-radius:999px;padding:9px 10px 9px 18px;font-size:14px;box-shadow:0 6px 18px rgba(0,0,0,.25)}
 #kitoast.on{display:flex}
@@ -647,23 +656,24 @@ details[open] .sumh{margin-bottom:12px}
     <div class="mhead"><b id="kimt">Forbedre teksten med KI</b><span style="flex:1"></span><button class="btn" id="kilukk">Lukk</button></div>
     <div class="kibody">
       <div class="kisteg"><span class="nr">1</span><div class="inn">
-        <b class="t">Kopier instruksen</b>
-        <p>Instruksen inneholder teksten din, hva hvert felt i malen skal gjøre og hvor langt det kan være. KI-en får beskjed om å skrive klarspråk og ikke finne på noe nytt.</p>
-        <button class="btn pri" id="kikopier">Kopier instruks</button> <span id="kikopiert" style="font-size:13px;color:var(--muted)"></span>
+        <b class="t">Kopier bestillingen</b>
+        <p>Vi har laget en ferdig bestilling til KI-en med teksten din og hvor mye plass hvert felt har. KI-en skal gjøre teksten klar og kort, uten å finne på noe nytt.</p>
+        <button class="btn pri" id="kikopier">Kopier bestillingen</button> <span id="kikopiert" style="font-size:13px;color:var(--muted)"></span>
         <textarea id="kiprompt" readonly style="display:none"></textarea>
       </div></div>
       <div class="kisteg"><span class="nr">2</span><div class="inn">
         <b class="t">Lim den inn i KI-verktøyet</b>
-        <p>Bruk KI-verktøyet kommunen har godkjent, for eksempel Copilot med kommunekontoen din. Lim inn instruksen og send.</p>
+        <p>Åpne KI-verktøyet kommunen har godkjent, for eksempel Copilot med kommunekontoen din. Lim inn og send.</p>
         <p class="kinote">Ikke lim inn personopplysninger som navn på innbyggere, fødselsnummer eller helseopplysninger. Les alltid gjennom svaret – KI kan ta feil.</p>
       </div></div>
       <div class="kisteg"><span class="nr">3</span><div class="inn">
         <b class="t">Lim inn svaret her</b>
-        <p>Kopier hele svaret fra KI-verktøyet og lim det inn. Du får se forslagene før noe endres.</p>
+        <p>Kopier hele svaret og lim det inn i feltet. Du ser forslagene før noe endres på plakaten.</p>
         <textarea id="kisvar" placeholder="Lim inn svaret fra KI-verktøyet her"></textarea>
+        <div class="kilest" id="kilest" style="display:none">Svaret er lest. <a id="kinytt">Lim inn et nytt svar</a></div>
         <div class="kifeil" id="kifeil"></div>
         <div id="kiforslag"></div>
-        <div style="display:flex;gap:8px;margin-top:10px"><button class="btn" id="kiles">Vis forslagene</button><button class="btn pri" id="kibruk" style="display:none">Bruk valgte endringer</button></div>
+        <div style="display:flex;gap:8px;margin-top:10px"><button class="btn pri" id="kibruk" style="display:none">Bruk endringene jeg har valgt</button></div>
       </div></div>
     </div>
   </div>
@@ -4364,7 +4374,7 @@ Teksten nå:
 ${JSON.stringify(inn, null, 2)}
 \`\`\`
 
-Svar KUN med én JSON-kodeblokk med nøyaktig de samme nøklene. Bruk \\n for linjeskift inne i en verdi. Ingen forklaring før eller etter.`;
+Svar KUN med én JSON-kodeblokk med nøyaktig de samme nøklene, pluss nøkkelen "_endringer": en liste med 2–3 korte setninger på enkelt språk om hva du har forbedret og hvorfor (for en leser som ikke er tekstekspert). Bruk \\n for linjeskift inne i en verdi. Ingen forklaring før eller etter kodeblokken.`;
 }
 // Leser svaret fra KI-en: tåler kodeblokk, tekst rundt og «nøkkel: verdi»-linjer
 function kiLes(tekst){
@@ -4379,13 +4389,50 @@ function kiLes(tekst){
   kandidat.split('\n').forEach(l => { const m = l.match(/^\s*"?([A-Za-z0-9]+)"?\s*:\s*"?(.*?)"?,?\s*$/); if(m && felt.includes(m[1])) o[m[1]] = m[2].replace(/\\n/g, '\n'); });
   return Object.keys(o).length ? o : null;
 }
+// Ord-for-ord-forskjell: bare det som faktisk er endret, markeres
+function kiDiff(gml, ny){
+  const tok = t => String(t).replace(/\r/g, '').split(/(\n)/).flatMap(d => d === '\n' ? ['\n'] : d.split(/[ \t]+/).filter(Boolean));
+  const A = tok(gml), B = tok(ny), n = A.length, m = B.length;
+  const L = Array.from({length:n+1}, () => new Int16Array(m+1));
+  for(let i = n-1; i >= 0; i--) for(let j = m-1; j >= 0; j--) L[i][j] = A[i] === B[j] ? L[i+1][j+1] + 1 : Math.max(L[i+1][j], L[i][j+1]);
+  const ops = []; let i = 0, j = 0;
+  while(i < n || j < m){
+    if(i < n && j < m && A[i] === B[j]){ ops.push(['=', A[i]]); i++; j++; }
+    else if(i < n && (j >= m || L[i+1][j] >= L[i][j+1])){ ops.push(['-', A[i]]); i++; } // det som fjernes, vises før det nye
+    else { ops.push(['+', B[j]]); j++; }
+  }
+  // Skrevet mye om? Da er gammel og ny tekst hver for seg lettere å lese enn ord-for-ord
+  const like = ops.filter(o => o[0] === '=' && o[1] !== '\n').length;
+  if(like < 0.5 * Math.max(A.filter(t => t !== '\n').length, B.filter(t => t !== '\n').length)){
+    const vis = t => t.split('\n').map(l => { const st = {b:false}; return l.split('**').map((d, x) => { if(x) st.b = !st.b; return d ? (st.b ? `<b>${esc(d)}</b>` : esc(d)) : ''; }).join(''); }).join('<br>');
+    return `<div class="gml">${vis(gml) || '(tomt)'}</div><div class="ny" style="margin-top:3px">${vis(ny) || '(tomt)'}</div>`;
+  }
+  const gS = {b:false}, nS = {b:false};
+  const fet = (v, st) => v.split('**').map((d, x) => { if(x) st.b = !st.b; return d ? (st.b ? `<b>${esc(d)}</b>` : esc(d)) : ''; }).join('');
+  let h = '', forrige = '\n', apen = '';
+  const lukk = () => { if(apen){ h += '</span>'; apen = ''; } };
+  ops.forEach(([t, v]) => {
+    if(v === '\n'){
+      lukk();
+      h += t === '=' ? '<br>' : t === '+' ? '<span class="ins" title="Nytt linjeskift">↵</span><br>' : '<span class="del" title="Linjeskift fjernet">↵</span> ';
+    } else {
+      const ord = t === '-' ? fet(v, gS) : t === '+' ? fet(v, nS) : (fet(v, gS), fet(v, nS));
+      const mellom = forrige === '\n' ? '' : ' ';
+      if(t === '='){ lukk(); h += mellom + ord; }
+      else { const kl = t === '+' ? 'ins' : 'del'; if(apen === kl) h += mellom + ord; else { lukk(); h += mellom + `<span class="${kl}">` + ord; apen = kl; } }
+    }
+    forrige = v;
+  });
+  lukk();
+  return h;
+}
 let kiForslag = null, kiForrige = null, kiToastTimer = null;
 function initKI(){
   const m = $('kimodal');
   const lukk = () => m.classList.remove('on');
   $('kiknapp').onclick = () => {
     $('kiprompt').value = kiInstruks(); $('kiprompt').style.display = 'none'; $('kikopiert').textContent = '';
-    $('kisvar').value = ''; $('kifeil').textContent = ''; $('kiforslag').innerHTML = ''; $('kibruk').style.display = 'none'; kiForslag = null;
+    $('kisvar').value = ''; $('kisvar').style.display = ''; $('kilest').style.display = 'none'; $('kifeil').textContent = ''; $('kiforslag').innerHTML = ''; $('kibruk').style.display = 'none'; kiForslag = null;
     m.classList.add('on'); $('kikopier').focus();
   };
   $('kilukk').onclick = lukk;
@@ -4400,19 +4447,27 @@ function initKI(){
       $('kikopiert').textContent = ok ? 'Kopiert! Lim den inn i KI-verktøyet.' : 'Marker teksten under og kopier den (Ctrl+C).';
     }
   };
-  $('kiles').onclick = () => {
+  const visForslag = () => {
     $('kifeil').textContent = ''; $('kiforslag').innerHTML = ''; $('kibruk').style.display = 'none';
+    if(!$('kisvar').value.trim()) return;
     const o = kiLes($('kisvar').value);
-    if(!o){ $('kifeil').textContent = 'Fant ingen forslag i teksten. Lim inn hele svaret fra KI-verktøyet, også kodeblokken.'; return; }
+    if(!o){ $('kifeil').textContent = 'Fant ingen forslag i teksten. Lim inn hele svaret fra KI-verktøyet.'; return; }
     const felt = kiFelt().filter(k => k in o);
-    if(!felt.length){ $('kifeil').textContent = 'Svaret passer ikke til malen som er valgt nå. Har du byttet mal? Kopier instruksen på nytt.'; return; }
+    if(!felt.length){ $('kifeil').textContent = 'Svaret passer ikke til malen som er valgt nå. Har du byttet mal? Kopier bestillingen på nytt.'; return; }
     kiForslag = {}; felt.forEach(k => kiForslag[k] = String(o[k] ?? '').replace(/\r/g, '').trim());
-    $('kiforslag').innerHTML = '<div class="kiliste">' + felt.map(k => {
-      const gml = String(S[k] || ''), ny = kiForslag[k], lik = gml.trim() === ny;
-      return `<label class="kirad${lik ? ' lik' : ''}"><input type="checkbox" data-k="${k}"${lik ? '' : ' checked'}><span class="navn">${esc(KI_FELT[k][0])}</span><span>${lik ? '<span class="ny">Ingen endring</span>' : `<div class="gml">${esc(gml) || '(tomt)'}</div><div class="ny">${esc(ny) || '(tomt)'}</div>`}</span></label>`;
-    }).join('') + '</div>';
-    $('kibruk').style.display = '';
+    const endret = felt.filter(k => String(S[k] || '').trim() !== kiForslag[k]);
+    let opps = o._endringer; if(typeof opps === 'string') opps = opps.split(/\n+/);
+    opps = Array.isArray(opps) ? opps.map(t => String(t).replace(/^[-•*\s]+/, '').trim()).filter(Boolean) : [];
+    $('kiforslag').innerHTML =
+      (opps.length ? `<div class="kiopps"><b>Dette har KI-en gjort</b><ul>${opps.map(t => `<li>${esc(t)}</li>`).join('')}</ul></div>` : '') +
+      (endret.length ? '<div class="kiliste">' + endret.map(k => `<label class="kirad"><input type="checkbox" data-k="${k}" checked><span class="navn">${esc(KI_FELT[k][0])}</span><span class="diff">${kiDiff(S[k] || '', kiForslag[k])}</span></label>`).join('')
+        + (felt.length > endret.length ? `<div class="kiuendret">${felt.length - endret.length} felt er ikke endret.</div>` : '') + '</div>'
+        : '<p class="kinote">KI-en foreslo ingen endringer.</p>');
+    $('kisvar').style.display = 'none'; $('kilest').style.display = '';
+    if(endret.length) $('kibruk').style.display = '';
   };
+  $('kisvar').addEventListener('input', () => { clearTimeout($('kisvar')._t); $('kisvar')._t = setTimeout(visForslag, 250); });
+  $('kinytt').onclick = () => { $('kisvar').value = ''; $('kisvar').style.display = ''; $('kilest').style.display = 'none'; $('kiforslag').innerHTML = ''; $('kibruk').style.display = 'none'; $('kisvar').focus(); };
   $('kibruk').onclick = () => {
     if(!kiForslag) return;
     kiForrige = {};
