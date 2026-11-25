@@ -38,7 +38,7 @@ Claude pusher aldri direkte til main. Alle endringer leveres som pull request fr
 - **Arbeidsfila må virke begge veier.** En PDF eller JSON lagret i prod må kunne åpnes i staging, og omvendt. Malnøklene (`TPLS`), feltnavnene og `/TkPlakat`-formatet i PDF-en skal derfor være like.
 - **Ingen byggesteg.** Filene i repoet er kildekoden og publiseres slik de ligger, med vanlige `<script src>` og `<link>`. Ingen npm, ingen bundler og ingen `build.py`.
 - **Staging må ikke forstyrre prod i nettleseren.** I staging skal alle `localStorage`-nøkler ha prefikset `staging-`, og banneret «TESTVERSJON» skal vises.
-- **Bildebanken og ikonene leses fra rota.** Staging bruker `../bilder/bilder.json` og `../ikoner/ikoner.json` via konstanten `RESSURS_ROT`. Ved opprykk endres bare denne ene linja.
+- **Bildebanken og ikonene leses fra rota.** Staging bruker `../bilder/bilder.json` og `../ikoner/ikoner.json` via konstanten `RESSURS_ROT` øverst i `staging/js/oppsett.js`. Ved opprykk endres bare denne ene linja.
 
 ## 4. Test før hver opplasting til staging
 
@@ -62,7 +62,7 @@ Opprykket leveres som en egen pull request, ikke sammen med andre endringer.
 
 1. Lag en ny tagg av dagens prod, for eksempel `v2-for-opprykk`, under Releases → Draft a new release.
 2. Kopier innholdet i `staging/` til rota, slik at det erstatter `index.html` og legger til de nye mappene.
-3. I rotkopien: sett `RESSURS_ROT` til `''`, fjern banneret «TESTVERSJON» og fjern prefikset `staging-`.
+3. I rotkopien: sett `RESSURS_ROT` og `LS_PREFIKS` til `''` (øverst i `js/oppsett.js`), og fjern banneret «TESTVERSJON» (`<div class="testbanner">` i `index.html` og regelen `.testbanner` i `css/ui.css`).
 4. Kjør sammenligningstesten på nytt, nå mellom den nye prod og staging.
 5. Last opp, og sjekk prod på nettet: lag én plakat, eksporter den og åpne en gammel arbeidsfil.
 6. Behold `staging/` som utgangspunkt for neste runde.
@@ -89,8 +89,10 @@ bilder/  ikoner/        bildebank og ikoner (felles for prod og staging)
 staging/
   index.html            bare HTML-skjelett
   css/                  stiler: fonter.css, ui.css, plakat.css (lastes i den rekkefølgen)
-  js/                   kode, delt etter område (maler, redigering, eksport, kvalitet, ki, start)
-                        bølgene tegnes av koden for hver mal og hører hjemme i js/maler, ikke i grafikk/
+  js/                   kode, lastes i denne rekkefølgen (vanlige skript som deler globale navn):
+                        oppsett, maler, ki, tegning, kvalitet, redigering, eksport, bildebank, start
+                        start.js kjører når siden er lastet og må alltid være sist
+                        bølgene tegnes av koden for hver mal og hører hjemme i js/maler.js, ikke i grafikk/
   fonter/               Barlow, Square Peg (woff2)
   grafikk/              logo, eksempelbilder
   lib/                  html-to-image, jsPDF, qrcode-generator
