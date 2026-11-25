@@ -50,6 +50,12 @@ Kjør sammenligningstesten `verktoy/sammenlign.js` (Playwright). Den skal vise:
 
 Hvis noe avviker, skal det forklares. Det skal ikke lastes opp før det er forklart.
 
+Kjente fallgruver:
+- Blandingsmoduser (blend modes) og SVG-masker overlever ikke eksporten.
+- Kopiering til utklippstavlen virker ikke når fila åpnes fra disk (file://).
+- Staging kan ikke eksportere når den åpnes fra disk (file://), fordi html-to-image må hente fontfilene, og det stopper nettleseren. Over nettet virker det. Godkjent av Marius 24.11.2026.
+- Forhåndsvisningen er følsom for hvor plakaten står på skjermen. Testen legger derfor inn en tom stripe i prod, like høy som banneret (28 px). Endres banneret, må testen endres også.
+
 ## 5. Opprykk fra staging til prod (sjekkliste)
 
 Opprykket leveres som en egen pull request, ikke sammen med andre endringer.
@@ -82,9 +88,10 @@ verktoy/                bildebank.py, sammenlign.js
 bilder/  ikoner/        bildebank og ikoner (felles for prod og staging)
 staging/
   index.html            bare HTML-skjelett
-  css/                  stiler
+  css/                  stiler: fonter.css, ui.css, plakat.css (lastes i den rekkefølgen)
   js/                   kode, delt etter område (maler, redigering, eksport, kvalitet, ki, start)
+                        bølgene tegnes av koden for hver mal og hører hjemme i js/maler, ikke i grafikk/
   fonter/               Barlow, Square Peg (woff2)
-  grafikk/              logo, bølger, eksempelbilder
+  grafikk/              logo, eksempelbilder
   lib/                  html-to-image, jsPDF, qrcode-generator
 ```
