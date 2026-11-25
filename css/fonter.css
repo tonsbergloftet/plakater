@@ -1,0 +1,16 @@
+/* Fonter: Barlow og Square Peg (filene ligger i ../fonter/) */
+@font-face{font-family:'Barlow';font-style:normal;font-weight:300;font-display:block;src:url(../fonter/barlow-300.woff2) format('woff2')}
+@font-face{font-family:'Barlow';font-style:italic;font-weight:300;font-display:block;src:url(../fonter/barlow-300-italic.woff2) format('woff2')}
+@font-face{font-family:'Barlow';font-style:normal;font-weight:400;font-display:block;src:url(../fonter/barlow-400.woff2) format('woff2')}
+@font-face{font-family:'Barlow';font-style:italic;font-weight:400;font-display:block;src:url(../fonter/barlow-400-italic.woff2) format('woff2')}
+@font-face{font-family:'Barlow';font-style:normal;font-weight:500;font-display:block;src:url(../fonter/barlow-500.woff2) format('woff2')}
+@font-face{font-family:'Barlow';font-style:italic;font-weight:500;font-display:block;src:url(../fonter/barlow-500-italic.woff2) format('woff2')}
+@font-face{font-family:'Barlow';font-style:normal;font-weight:600;font-display:block;src:url(../fonter/barlow-600.woff2) format('woff2')}
+@font-face{font-family:'Barlow';font-style:italic;font-weight:600;font-display:block;src:url(../fonter/barlow-600-italic.woff2) format('woff2')}
+@font-face{font-family:'Barlow';font-style:normal;font-weight:700;font-display:block;src:url(../fonter/barlow-700.woff2) format('woff2')}
+@font-face{font-family:'Barlow';font-style:italic;font-weight:700;font-display:block;src:url(../fonter/barlow-700-italic.woff2) format('woff2')}
+@font-face{font-family:'Barlow';font-style:normal;font-weight:800;font-display:block;src:url(../fonter/barlow-800.woff2) format('woff2')}
+@font-face{font-family:'Barlow';font-style:italic;font-weight:800;font-display:block;src:url(../fonter/barlow-800-italic.woff2) format('woff2')}
+@font-face{font-family:'Barlow';font-style:normal;font-weight:900;font-display:block;src:url(../fonter/barlow-900.woff2) format('woff2')}
+@font-face{font-family:'Barlow';font-style:italic;font-weight:900;font-display:block;src:url(../fonter/barlow-900-italic.woff2) format('woff2')}
+@font-face{font-family:'Square Peg';font-style:normal;font-weight:400;font-display:block;src:url(../fonter/square-peg-400.woff2) format('woff2')}
