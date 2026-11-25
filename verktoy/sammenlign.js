@@ -135,6 +135,10 @@ async function settTilstand(s, c) {
     fillForm(); render();
   }, c);
   await vent(s);
+  // Tegn én gang til når fontene er klare. Prod kan tilpasse teksten med feil mål rett etter et malbytte hvis en
+  // fontvekt ikke var lastet (rettet i staging, se egen sjekk). Her sammenlignes ferdig tegnet plakat.
+  await s.page.evaluate(() => render());
+  await vent(s);
 }
 async function vent(s) {
   await s.page.evaluate(async () => {
@@ -199,6 +203,31 @@ const godkjent = r => !r.ulikStr && r.prosent < GRENSE;
     }
 
     if (!runde.bank) {
+      // Teksttilpasning ved malbytte: alle fontvarianter skal være lastet etter oppstart, også når fontfilene kommer
+      // sent, så teksten får riktig størrelse med en gang (ikke først ved neste endring).
+      const L = await (async () => {
+        const ctx = await browser.newContext({ viewport: { width: 1800, height: 1500 } });
+        await ctx.addInitScript(() => { window.__ingenStart = true; });
+        await ctx.route('**/bilder/bilder.json', r => r.fulfill({ status: 200, contentType: 'application/json', body: '[]' }));
+        await ctx.route('**/staging/fonter/*.woff2', async r => { await new Promise(ok => setTimeout(ok, 300)); r.continue(); });
+        const page = await ctx.newPage(); await page.goto(base + 'staging/', { waitUntil: 'networkidle' }); await page.evaluate(() => document.fonts.ready);
+        const r = await page.evaluate(async () => {
+          const ulastet = [...document.fonts].filter(f => f.status !== 'loaded').length;
+          const avvik = [];
+          for (const k of Object.keys(TPLS)) {
+            autoVariant = false; velgMal(k);
+            const a = [...document.querySelectorAll('#wrap .box')].map(b => b.style.fontSize).join();
+            await document.fonts.ready; render();
+            const b = [...document.querySelectorAll('#wrap .box')].map(b => b.style.fontSize).join();
+            if (a !== b) avvik.push(k);
+          }
+          return { ulastet, avvik, totalt: document.fonts.size };
+        });
+        await ctx.close(); return r;
+      })();
+      logg('Alle fontvarianter lastet etter oppstart (staging, fonter 300 ms forsinket)', L.ulastet === 0, `${L.totalt - L.ulastet} av ${L.totalt} lastet`);
+      logg('Riktig tekststørrelse rett etter malbytte (staging)', L.avvik.length === 0, L.avvik.length ? 'feil størrelse i: ' + L.avvik.join(', ') : 'lik før og etter ny tegning i alle maler');
+
       // Fontene i eksporten. html-to-image mellomlagrer fontene etter første eksport, så dette gjøres i ferske sider.
       await settTilstand(P, { tpl: 'inndelt', fmt: 'a4' });
       const pdfProd = lesPdf(await eksport(P, 'pdf')).bilder[0];
