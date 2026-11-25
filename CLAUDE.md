@@ -90,7 +90,8 @@ staging/
   index.html            bare HTML-skjelett
   css/                  stiler: fonter.css, ui.css, plakat.css (lastes i den rekkefølgen)
   js/                   kode, lastes i denne rekkefølgen (vanlige skript som deler globale navn):
-                        oppsett, maler, ki, tegning, kvalitet, redigering, eksport, bildebank, start
+                        oppsett, ikoner-reserve, maler, ki, tegning, kvalitet, redigering, eksport, bildebank, start
+                        ikoner-reserve.js er en reserveliste som bare brukes til ikoner/ikoner.json er lastet
                         start.js kjører når siden er lastet og må alltid være sist
                         bølgene tegnes av koden for hver mal og hører hjemme i js/maler.js, ikke i grafikk/
   fonter/               Barlow, Square Peg (woff2)

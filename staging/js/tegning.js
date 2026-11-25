@@ -1,4 +1,4 @@
-/* Tegning: bygger plakaten, tilpasser teksten og skalerer forhåndsvisningen */
+/* Tegning: bygger plakaten, tilpasser teksten, skalerer forhåndsvisningen og lager miniatyrer */
 'use strict';
 /* ═════════ RENDER ═════════ */
 let uidN = 0;
@@ -70,3 +70,28 @@ function render(){
   planleggSjekk();
 }
 
+
+/* Miniatyrene av malene (i sidepanelet og på startskjermen) */
+let thumbTimer = null;
+function renderThumbs(){
+  clearTimeout(thumbTimer);
+  thumbTimer = setTimeout(() => {
+    document.querySelectorAll('.tplbtn').forEach(btn => miniatyr(btn.querySelector('.thumb'), btn.dataset.tpl));
+  }, 250);
+}
+function miniatyr(th, k){
+  th.innerHTML = '';
+  const tw = th.clientWidth || 130;
+  const p = buildPage(k, fmtFor(k));
+  const holder = document.createElement('div');
+  holder.style.position = 'relative'; holder.style.overflow = 'hidden';
+  th.appendChild(holder);
+  holder.appendChild(p);
+  fit(p);
+  p.querySelectorAll('.box.over').forEach(b => b.classList.remove('over'));
+  const sc = Math.min(tw / p.offsetWidth, tw*1.415 / p.offsetHeight);
+  if(p.offsetHeight > p.offsetWidth*1.5) p.style.left = ((tw - p.offsetWidth*sc)/2) + 'px';
+  p.style.position = 'absolute'; p.style.transformOrigin = '0 0'; p.style.transform = `scale(${sc})`;
+  holder.style.width = tw + 'px'; holder.style.height = (p.offsetHeight*sc) + 'px';
+  if(k === 'bildetekst') th.insertAdjacentHTML('beforeend', '<span class="sider">2 sider</span>');
+}

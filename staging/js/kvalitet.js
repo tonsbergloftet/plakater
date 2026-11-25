@@ -1,4 +1,4 @@
-/* Kvalitetssjekk: lesbarhet på bilde, oppløsning og miniatyrer */
+/* Kvalitetssjekk: lesbarhet på bilde og oppløsning */
 'use strict';
 /* ═════════ KVALITETSSJEKK ═════════
    To små, automatiske sjekker som bare sier fra når noe er galt:
@@ -91,38 +91,3 @@ async function sjekkKvalitet(){
   el.classList.add('on');
   el.onclick = e => { const b = e.target.closest('[data-tip]'); if(!b) return; if(b.dataset.tip === 'x'){ tipsLukket = nokkel; el.classList.remove('on'); return; } const t = tips[+b.dataset.tip]; if(t && t.gjor) t.gjor(); };
 }
-
-let thumbTimer = null;
-function renderThumbs(){
-  clearTimeout(thumbTimer);
-  thumbTimer = setTimeout(() => {
-    document.querySelectorAll('.tplbtn').forEach(btn => miniatyr(btn.querySelector('.thumb'), btn.dataset.tpl));
-  }, 250);
-}
-function miniatyr(th, k){
-  th.innerHTML = '';
-  const tw = th.clientWidth || 130;
-  const p = buildPage(k, fmtFor(k));
-  const holder = document.createElement('div');
-  holder.style.position = 'relative'; holder.style.overflow = 'hidden';
-  th.appendChild(holder);
-  holder.appendChild(p);
-  fit(p);
-  p.querySelectorAll('.box.over').forEach(b => b.classList.remove('over'));
-  const sc = Math.min(tw / p.offsetWidth, tw*1.415 / p.offsetHeight);
-  if(p.offsetHeight > p.offsetWidth*1.5) p.style.left = ((tw - p.offsetWidth*sc)/2) + 'px';
-  p.style.position = 'absolute'; p.style.transformOrigin = '0 0'; p.style.transform = `scale(${sc})`;
-  holder.style.width = tw + 'px'; holder.style.height = (p.offsetHeight*sc) + 'px';
-  if(k === 'bildetekst') th.insertAdjacentHTML('beforeend', '<span class="sider">2 sider</span>');
-}
-// Startskjermen: «Hva skal plakaten gjøre?»
-function velgMal(k){ if(TPLS[S.tpl] && TPLS[S.tpl].fmts.length === 1 && TPLS[k].fmts.length > 1) S.fmt = 'a4'; // fra en skjermmal tilbake til plakat
-  S.tpl = k; S.fmt = fmtFor(k); if(!TPLS[k].fmts.includes(S.fmt)) S.fmt = 'a4'; oppdaterKi(); fillForm(); render(); }
-function apneStart(forsteGang){
-  const g = $('startgrp');
-  g.innerHTML = GRUPPER.map(gr => `<div class="sgrp"><h3>${esc(gr.navn)}</h3><p>${esc(gr.tekst)}</p><div class="srow">${gr.maler.map(k => `<button class="skort" data-tpl="${k}" title="${esc(TPLS[k].sub)}"><div class="thumb"></div><span class="lbl">${esc(TPLS[k].navn)}</span></button>`).join('')}</div></div>`).join('');
-  $('start').classList.add('on');
-  $('start').dataset.forste = forsteGang ? '1' : '';
-  setTimeout(() => g.querySelectorAll('.skort').forEach(b => miniatyr(b.querySelector('.thumb'), b.dataset.tpl)), 30);
-}
-

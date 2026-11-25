@@ -1,5 +1,9 @@
-/* Sidepanelet og redigeringen: felt, bilder, mal og forklaringen */
+/* Sidepanelet og redigeringen: felt, bilder, malvalg, startskjermen og forklaringen */
 'use strict';
+// Forklaringen («Slik virker det»): husker om den er vist, og lar startskjermen åpne den
+let visTourExt = () => {};
+const TOUR_KEY_G = LS_PREFIKS + 'tk-plakat-sett-forklaring-2';
+
 /* ═════════ SIDEPANEL ═════════ */
 function syncFields(){
   const used = TPLS[S.tpl].felt;
@@ -378,3 +382,14 @@ function oppdaterKi(){
   S.ki = n.some(i => S.imgs[i] && S.imgs[i].src && S.imgs[i].ki);
 }
 
+
+// Startskjermen: «Hva skal plakaten gjøre?»
+function velgMal(k){ if(TPLS[S.tpl] && TPLS[S.tpl].fmts.length === 1 && TPLS[k].fmts.length > 1) S.fmt = 'a4'; // fra en skjermmal tilbake til plakat
+  S.tpl = k; S.fmt = fmtFor(k); if(!TPLS[k].fmts.includes(S.fmt)) S.fmt = 'a4'; oppdaterKi(); fillForm(); render(); }
+function apneStart(forsteGang){
+  const g = $('startgrp');
+  g.innerHTML = GRUPPER.map(gr => `<div class="sgrp"><h3>${esc(gr.navn)}</h3><p>${esc(gr.tekst)}</p><div class="srow">${gr.maler.map(k => `<button class="skort" data-tpl="${k}" title="${esc(TPLS[k].sub)}"><div class="thumb"></div><span class="lbl">${esc(TPLS[k].navn)}</span></button>`).join('')}</div></div>`).join('');
+  $('start').classList.add('on');
+  $('start').dataset.forste = forsteGang ? '1' : '';
+  setTimeout(() => g.querySelectorAll('.skort').forEach(b => miniatyr(b.querySelector('.thumb'), b.dataset.tpl)), 30);
+}
