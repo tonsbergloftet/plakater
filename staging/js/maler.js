@@ -89,8 +89,6 @@ function urlBreak(u){ return esc(u||'').replace(/([\/.])/g,'$1<wbr>'); }
    EDIT er sann bare når forhåndsvisningen bygges. Da blir alle tekstfelt redigerbare,
    og tomme felt vises med grå hjelpetekst. Miniatyrer og nedlasting bygges uten. */
 let EDIT = false;
-let visTourExt = () => {};
-const TOUR_KEY_G = LS_PREFIKS + 'tk-plakat-sett-forklaring-2';
 const PH = {pIntro:'Innledning til punktlista (valgfri)', ut3:'Underoverskrift', tx3:'Skriv brødtekst',
   stikk:'Tema', tittel:'Skriv en tittel', ingress:'Skriv en kort ingress',
   ut1:'Underoverskrift', tx1:'Skriv brødtekst', pTittel:'Overskrift over punktene',
