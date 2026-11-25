@@ -1,0 +1,250 @@
+/* Selve plakaten: typografi, maler og varianter. Også med i eksporten. */
+/* ───────── PLAKAT ───────── */
+.page{position:relative;overflow:hidden;background:#fff;font-family:'Barlow',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+.page.a4{width:794px;height:1123px}
+.page.wide{width:1280px;height:720px}
+.page.bym{width:720px;height:1280px}
+.page svg.bg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.page .logo{position:absolute;display:block}
+.page .box{position:absolute;overflow:hidden;display:flex;flex-direction:column}
+.page .box.over{outline:3px dashed #d0342c;outline-offset:2px}
+.page.export .box.over{outline:none}
+.page .abs{position:absolute}
+
+/* Typografi – alle mål i em, relativt til boksens grunnstørrelse */
+.page .stikk{font-weight:700;font-size:.78em;letter-spacing:.24em;text-transform:uppercase;line-height:1.3;margin-bottom:.9em;display:flex;align-items:center;gap:.7em}
+.page .stikk::before{content:'';width:2.2em;height:.28em;border-radius:.14em;background:var(--slor);flex-shrink:0}
+.page .tittel{font-weight:800;font-size:2.7em;line-height:1.04;letter-spacing:-.01em;margin-bottom:.32em;overflow-wrap:normal;white-space:pre-line}
+.page .tittel.brk{overflow-wrap:break-word}
+.page .ingress{font-style:italic;font-weight:400;font-size:1.22em;line-height:1.38;margin-bottom:1em}
+.page .h3{font-weight:700;font-size:1.12em;line-height:1.25;margin-bottom:.25em}
+.page .p{font-size:1em;line-height:1.45;margin-bottom:.95em;white-space:pre-line}
+.page .liste{margin-bottom:.95em}
+.page .liste .li{position:relative;padding-left:1.35em;line-height:1.4;margin-bottom:.32em}
+.page .liste .li::before{content:'';position:absolute;left:.2em;top:.48em;width:.56em;height:.56em;border-radius:50%;background:var(--slor-mork)}
+.page .praktisk{margin-bottom:.95em;line-height:1.45}
+.page .praktisk div{margin-bottom:.15em}
+.page .praktisk b{font-weight:700}
+.page .faktaboks{background:var(--slor-tint);border-radius:.9em;padding:1em 1.15em .35em;margin-bottom:1em}
+.page .cta{display:flex;align-items:center;gap:.8em;margin-top:auto}
+.page .cta .pil{width:2.6em;height:2.6em;border-radius:50%;border:.13em solid currentColor;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.page .cta .pil svg{width:1.3em;height:1.3em}
+.page .cta .ct{line-height:1.2;font-size:1.05em;min-width:0}
+.page .cta .ct b{display:block;font-weight:700;font-size:1.12em;overflow-wrap:normal;word-break:normal}
+.page .cta .qr{margin-left:auto;background:#fff;border-radius:.5em;padding:.4em;width:5.8em;height:5.8em;flex-shrink:0}
+.page .qr svg{display:block;width:100%;height:100%}
+.page .spacer{margin-top:auto;flex:1 0 1.1em}
+.page.edit .ed{white-space:pre-line;cursor:text;border-radius:3px;outline:1.5px dashed transparent;outline-offset:3px;transition:outline-color .12s}
+.page.edit .ed:hover{outline-color:rgba(1,57,82,.5)}
+.page.edit .on-navy .ed:hover,.page.edit .qrbadge .ed:hover{outline-color:rgba(255,255,255,.75)}
+.page.edit .ed:focus{outline:2px solid #3d9bd0;outline-offset:3px}
+.page.edit .ed.tom{min-width:3em}
+.page.edit .ed.tom::after{content:attr(data-ph);opacity:.4;white-space:pre-line;pointer-events:none}
+.page.edit .liste.editing{padding-left:1.35em;line-height:1.4}
+.page.edit.skjul-tomme .ed.tom:not(:focus){display:none}
+.page .ctx{display:inline}
+.page.edit .box{pointer-events:none}
+.page.edit .box .ed,.page.edit .box .qr{pointer-events:auto}
+.page.edit svg.bg .klikkbilde{cursor:pointer;transition:filter .15s}
+.page.edit svg.bg .klikkbilde:hover{filter:brightness(1.07) saturate(1.05)}
+.page.edit .qr,.page.edit .qrbadge,.page.edit .avatar-img{cursor:pointer}
+.sec.blink{animation:blink 1.6s ease-out}
+@keyframes blink{0%,40%{background:#fff3d6}100%{background:#fff}}
+@media (prefers-reduced-motion:reduce){.sec.blink{animation:none;outline:3px solid #f1be48}}
+.sumh{cursor:pointer;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.sumh span{text-transform:none;letter-spacing:0;font-weight:400;font-size:12px}
+details[open] .sumh{margin-bottom:12px}
+.hjelpbtn{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:6px 12px;font-family:var(--font);font-size:12px;font-weight:600;color:var(--navy);cursor:pointer}
+.hjelpbtn:hover{border-color:var(--navy)}
+/* Forklaringslag */
+.tour{position:fixed;inset:0;z-index:60;display:none}
+.tour.on{display:block}
+.tour .dim{position:absolute;inset:0;background:rgba(1,30,45,.55)}
+.tour .kort{position:absolute;background:#fff;border-radius:12px;padding:16px 18px;max-width:300px;font-size:14px;line-height:1.45;color:var(--ink);box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.tour .kort b{display:block;color:var(--navy);font-size:15px;margin-bottom:4px}
+.tour .ring{position:absolute;border:3px solid #f1be48;border-radius:10px;box-shadow:0 0 0 4px rgba(241,190,72,.25);pointer-events:none}
+.tour .kort.pv::before{content:'';position:absolute;left:-12px;top:22px;border:12px solid transparent;border-left:0;border-right-color:#fff}
+.tour .kort.ph::before{content:'';position:absolute;right:-12px;top:22px;border:12px solid transparent;border-right:0;border-left-color:#fff}
+.tour .pil{position:absolute;color:#fff;font-weight:800;font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+.tour .kort .tsteg{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#8a6d1c;margin-bottom:6px}
+.tour .kort .tpdf{display:block;margin-top:10px;padding:9px 11px 9px 12px;background:#fdf3db;border-left:4px solid #f1be48;border-radius:6px;font-size:13.5px}
+.tour .kort .tpdf b{display:block;font-size:14px;margin-bottom:2px;color:var(--navy)}
+.tour .kort .tknapper{display:flex;justify-content:space-between;align-items:center;margin-top:14px;gap:10px}
+.tour .kort .tknapper .lnk{font-size:13px}
+.tour .kort .tneste{background:#f1be48;color:#1d1d1b;border:0;border-radius:999px;padding:8px 18px;font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer}
+.tour .kort .tneste:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
+.tour .knapp{display:none;position:absolute;left:50%;bottom:48px;transform:translateX(-50%);background:#f1be48;color:#1d1d1b;border:0;border-radius:999px;padding:12px 26px;font-family:var(--font);font-size:15px;font-weight:700;cursor:pointer}
+.tour .knapp:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.page .push{margin-top:auto}
+.page mark{background:var(--slor-tint);color:inherit;font-weight:700;padding:.04em .1em;margin:0 -.04em;border-radius:.15em;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.page .p.slutt{font-weight:700}
+.page .tittel.m{font-size:1.7em;line-height:1.15;margin-bottom:.7em}
+.page .merknad{position:absolute;font-weight:700;font-size:19px;line-height:1.2;color:#1d1d1b;transform:rotate(-11deg);transform-origin:0 0}
+.page .kontakt{position:absolute;display:flex;align-items:center;border-radius:20px;color:#1d1d1b;font-size:16px;line-height:1.4}
+.page .kontakt .kt{min-width:0}
+.page .avatar{position:absolute;border-radius:50%}
+.page .avatar-img{position:absolute;display:block}
+.page .cta.bar .skille,.page .cta.kort .skille{width:.1em;align-self:stretch;background:currentColor;opacity:.55;margin:.15em .2em}
+.page .cta.bar .ct{font-size:1.25em;line-height:1.25}
+.page .cta.bar .ct b{display:inline;font-size:1.08em}
+.page .cta.kort{background:var(--slor-tint);border-radius:.9em;padding:.9em 1.1em;gap:1em}
+.page .cta.kort .qr{margin-left:0;width:5.2em;height:5.2em;padding:0;background:transparent}
+.page .cta.kort .skille{background:var(--slor-mork);opacity:1}
+.page .cols{display:flex;gap:1.5em;margin-bottom:.8em}
+.page .cols .col{flex:1;min-width:0;display:flex;flex-direction:column}
+.page .cols .col.div{border-left:.12em solid var(--slor-mork);padding-left:1.5em}
+.page .cols .col > :last-child{margin-bottom:0}
+.page .tittel.xl{font-size:3.1em}
+
+/* Fargevarianter */
+.page .on-navy{color:#fff}
+.page .on-navy .stikk{color:var(--slor)}
+.page .on-navy .ingress{color:rgba(255,255,255,.9)}
+.page .on-navy .liste .li::before{background:var(--slor)}
+.page .on-light .stikk{color:var(--navy)}
+.page .on-light .tittel{color:var(--navy)}
+.page .on-light .h3{color:var(--navy)}
+.page .on-light .cta{color:var(--navy)}
+
+/* QR-merke (ICDP-stil) */
+.page .qrbadge{position:absolute;border-radius:50%;background:#f1be48;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6%;transform:rotate(-7deg);color:#1d1d1b}
+.page .qrbadge .qr{width:47%;height:47%}
+.page .qrbadge .qr svg path{fill:#013952}
+.page .qrbadge span{font-weight:800;font-size:var(--qfs);letter-spacing:.02em;line-height:1}
+/* 7 · Invitasjon (fra designerens InDesign-fil mal1_invitasjon) */
+.page .tem{font-style:inherit}
+.page .inv7{color:#fff;text-align:center}
+.page .inv7 .stikk{display:block;color:var(--slor);font-weight:700;font-size:.8667em;letter-spacing:.3em;text-transform:uppercase;line-height:1.3;margin:0 0 .05em}
+.page .inv7 .stikk::before{display:none}
+.page .inv7 .tittel{font-weight:900;font-style:italic;font-size:3.2em;line-height:1.08;letter-spacing:0;margin:0 0 .22em;color:#fff}
+.page .inv7 .tittel .tem{font-weight:inherit}
+.page .inv7 .ingress{font-style:italic;font-weight:400;font-size:1.333em;line-height:1.54;margin:0;color:#fff}
+.page .dline7{font-size:1em;line-height:1.4;white-space:normal;color:#fff}
+.page.edit .dline7.editing{white-space:normal}
+.page .dline7 b{font-weight:700}
+.page .dline7 .sep{color:var(--slor);font-weight:700;margin:0 .55em}
+.page .body7{height:100%;column-count:2;column-gap:37.8px;text-align:left;color:#fff;column-fill:balance}
+.page .body7 .bi{font-weight:700;font-style:italic;font-size:1.091em;line-height:1.2;margin-bottom:.71em}
+.page .body7 .p{font-weight:500;font-size:1em;line-height:1.2;margin-bottom:.77em}
+.page .body7 > :last-child{margin-bottom:0}
+.page .rule7{position:absolute;left:calc(50% - .67px);top:0;width:1.33px;background:var(--slor)}
+.page .fot7{position:absolute;left:0;right:0;text-align:center;color:#fff;font-size:16px;letter-spacing:.15em;text-transform:uppercase;line-height:1}
+.page .fot7 .m{font-weight:500}.page .fot7 .l{font-weight:300}
+.page .qrt7{text-align:center;color:#fff;font-style:italic;font-size:1em;line-height:1.08;text-shadow:0 0 10px rgba(0,0,0,.55),0 0 3px rgba(0,0,0,.35)}
+.page .qrt7 b{font-weight:700}
+.page .qrbox7{position:absolute;background:#fff;border-radius:11.3px;padding:7px}
+.page .qrbox7 svg{display:block;width:100%;height:100%}
+.page .merke7{position:absolute;transform-origin:50% 50%;color:var(--navy);text-align:center}
+.page .merke7 .mt{font-weight:900;font-style:italic;font-size:14.2px;line-height:15.6px;letter-spacing:.02em;white-space:pre-line}
+.page.edit.skjul-tomme .merke7.tom{display:none}
+/* 8 · Forside (fra designerens InDesign-fil mal2_standard_forside) */
+.page .fs8{color:#fff;text-align:center}
+.page .fs8 .stikk{display:block;color:var(--slor);font-weight:700;font-size:1em;letter-spacing:.3em;text-transform:uppercase;line-height:1.3;margin:0 0 .35em}
+.page .fs8 .stikk::before{display:none}
+.page .fs8 .tittel{font-weight:700;font-style:normal;font-size:2em;line-height:1.133;letter-spacing:0;margin:0 0 .08em;color:#fff}
+.page .fs8 .tittel .tem{font-weight:900;font-style:italic}
+.page .fs8 .ingress{font-style:italic;font-weight:400;font-size:1.2em;line-height:1.3;margin:0;color:#fff}
+.page .fot8{position:absolute;left:0;right:0;text-align:center;color:#fff;font-size:14.67px;letter-spacing:.1em;text-transform:uppercase;line-height:1}
+.page .fot8 .m{font-weight:500}.page .fot8 .l{font-weight:300}
+/* 1 · Bildeplakat (fra designerens InDesign-fil mal3_bildeplakat) */
+.page .bp1{text-align:right;color:#1d1d1b}
+.page .bp1 .stikk{display:block;color:var(--navy);font-weight:700;font-size:1em;letter-spacing:.3em;text-transform:uppercase;line-height:1.2;margin:0 0 .43em}
+.page .bp1 .stikk::before{display:none}
+.page .bp1 .tittel{font-weight:900;font-style:italic;font-size:2.667em;line-height:1.02;letter-spacing:0;margin:0}
+.page .bp1 .tittel .tem{font-weight:inherit;color:var(--slor-mork)}
+.page .bp1 .ingress{font-style:italic;font-weight:400;font-size:1.2em;line-height:1.556;margin:.17em 0 0}
+.page .bp1.mork{color:#fff}.page .bp1.mork .stikk{color:var(--slor)}.page .bp1.mork .tittel .tem{color:var(--slor)}
+.page .qrt1{text-align:right;color:#fff;font-style:italic;font-size:1em;line-height:1.0833}
+.page .qrt1 b{font-weight:700}
+/* 9 · Bymøbel (fra designerens InDesign-fil mal4_bymøblene) */
+.page .bym9{text-align:center;color:#1d1d1b}
+.page .bym9 .stikk{display:block;color:var(--slor);font-weight:700;font-size:1em;letter-spacing:.3em;text-transform:uppercase;line-height:1.2;margin:0 0 .26em}
+.page .bym9 .stikk::before{display:none}
+.page .bym9 .tittel{font-weight:700;font-style:normal;font-size:2.35em;line-height:1.1;letter-spacing:0;margin:0}
+.page .bym9 .tittel .tem{font-weight:900;font-style:italic}
+.page .bym9 .ingress{font-style:italic;font-weight:400;font-size:1.275em;line-height:1.55;margin:.13em 0 0}
+.page .bym9.mork{color:#fff}
+.page .ctat9{text-align:right;color:#fff;font-size:1em;line-height:1.2;white-space:pre-line}
+.page .ctat9 b{font-weight:700;font-size:1em;display:block}
+.page .ctat9 .sm{font-size:.694em;line-height:1.2;font-weight:400;display:block;margin-top:-1.5px}
+.page .ctat9.mork{color:#1d1d1b}
+.page .pill9{position:absolute;height:34px;display:flex;align-items:center;padding:0 16.5px;background:#fff;border:1.1px solid var(--slor);border-radius:17px;box-shadow:2px 5px 7px rgba(0,0,0,.3);font-size:12px;color:#666;white-space:nowrap;letter-spacing:.02em}
+.page .merke9{color:#fff;text-align:center;align-items:center;justify-content:center}
+.page .merke9 .mt9{font-weight:900;font-style:italic;font-size:1em;line-height:1.027;white-space:pre-line}
+.page .merke9 .mtx9{font-weight:500;font-size:.577em;line-height:1.113;margin-top:.4em;white-space:pre-line}
+.page .qr9{position:absolute}.page .qr9 svg{display:block;width:100%;height:100%}
+/* 10 · Tekstplakat (fra designerens InDesign-fil mal5_tekstplakat) */
+.page .tp10{color:#1d1d1b;text-align:left}
+.page .tp10 .stikk{display:block;color:var(--navy);font-weight:700;font-size:1em;letter-spacing:.3em;text-transform:uppercase;line-height:1.2;margin:0 0 .43em}
+.page .tp10 .stikk::before{display:none}
+.page .tp10 .tittel{font-weight:700;font-style:normal;font-size:2.667em;line-height:1.02;letter-spacing:0;margin:0}
+.page .tp10 .tittel .tem{font-weight:900;font-style:italic}
+.page .tp10 .ingress{font-style:italic;font-weight:400;font-size:1.2em;line-height:1.556;margin:.315em 0 0}
+.page .tp10 .gap10{height:1.6em;flex-shrink:0}
+.page .tp10 .h10{font-weight:700;font-size:1.067em;line-height:1.2;margin:.71em 0 .177em}
+.page .tp10 .gap10 + .h10{margin-top:0}
+.page .tp10 .p10{font-size:1em;line-height:1.2;margin:0;white-space:pre-line}
+.page .tp10 .liste{margin:0}
+.page .tp10 .liste .li{padding-left:.756em;line-height:1.2;margin:0}
+.page .tp10 .liste .li::before{content:'•';background:none;width:auto;height:auto;border-radius:0;left:.19em;top:0;color:inherit}
+.page .tp10 .praktisk{margin:1.2em 0 0;line-height:1.4}
+/* 5 · Tre bilder (fra designerens InDesign-fil mal7_plakat_3_bilder): som tekstplakaten, men smalere tekst og mindre brødtekst */
+.page .tp10.tb5 .stikk{color:var(--slor)}
+.page .tp10.tb5 .tittel{font-size:2.267em;line-height:1.059}
+.page .tp10.tb5 .p10,.page .tp10.tb5 .liste,.page .tp10.tb5 .praktisk{font-size:.8em}
+.page .tp10.tb5 .praktisk{margin-top:1.2em}
+.page .tp10.tb5 .ingress{margin-top:.5em}
+.page .tp10.tb5 .gap10{height:1.85em}
+/* 11 · Inndelt plakat (fra designerens InDesign-fil mal6_inndelt_plakat) */
+.page .ip11{color:#fff;text-align:right}
+.page .ip11 .stikk{display:block;color:var(--slor);font-weight:700;font-size:1em;letter-spacing:.3em;text-transform:uppercase;line-height:1.2;margin:0 0 .5em}
+.page .ip11 .stikk::before{display:none}
+.page .ip11 .tittel{font-weight:700;font-style:normal;font-size:2.533em;line-height:1.053;letter-spacing:0;margin:0;color:#fff}
+.page .ip11 .tittel .tem{font-weight:900;font-style:italic}
+.page .ip11 .ingress{font-style:italic;font-weight:400;font-size:1.2em;line-height:1.556;margin:.45em 0 0;color:#fff}
+.page .body7.b11{color:#1d1d1b}
+.page .body7.b11 .h11{font-weight:700;font-size:1.333em;line-height:1.2;margin:.71em 0 .177em;break-after:avoid}
+.page .body7.b11 > .h11:first-child{margin-top:0}
+.page .body7.b11 .p11{font-size:1em;line-height:1.2;margin:0;white-space:pre-line}
+.page .body7.b11 .liste{margin:0}
+.page .body7.b11 .liste .li{padding-left:.945em;line-height:1.2;margin:0;break-inside:avoid}
+.page .body7.b11 .liste .li::before{content:'•';background:none;width:auto;height:auto;border-radius:0;left:.24em;top:0;color:inherit}
+.page .body7.b11.k3{column-count:3;column-rule:.5px solid #1d1d1b;height:auto}
+.page .rule7.r11{background:#1d1d1b;width:.5px;left:calc(50% - .25px)}
+.page .qrt11{text-align:right;color:#1d1d1b;font-style:italic;font-size:1em;line-height:1.0833}
+.page .qrt11 b{font-weight:700}
+.page .qr11{position:absolute;background:#fff;border-radius:11px;box-shadow:0 0 8px 5px #fff}
+.page .qr11 svg{display:block;width:100%;height:100%}
+/* 11 og 12 · Infoskjerm (fra designerens InDesign-filer mal9_infoskjerm og mal10_infoskjerm_stort_bilde) */
+.page .skript{font-family:'Square Peg',cursive;color:#fff;text-align:center;font-weight:400;letter-spacing:.02em;white-space:pre-line}
+.page .is11{color:#1d1d1b;text-align:left}
+.page .is11 .stikk{display:block;color:var(--slor);font-weight:700;font-size:1em;letter-spacing:.3em;text-transform:uppercase;line-height:1.03;margin:0 0 .45em}
+.page .is11 .stikk::before{display:none}
+.page .is11 .tittel{font-weight:700;font-style:normal;font-size:2.312em;line-height:1.086;letter-spacing:0;margin:0}
+.page .is11 .tittel .tem{font-weight:700;font-style:italic}
+.page .is11 .regel{height:.6px;background:linear-gradient(90deg,rgba(11,36,51,.45),rgba(11,36,51,.25) 60%,rgba(11,36,51,0));flex-shrink:0}
+.page .is11 .h11b{font-weight:700;font-size:1.123em;line-height:1.2;margin:0}
+.page .is11 .p11b{font-weight:300;font-size:.859em;line-height:1.35;margin:.2em 0 0;white-space:pre-line}
+.page .is11 .praktisk{font-size:.925em;line-height:1.7;margin:0}
+.page .is11 .praktisk b{font-weight:700}
+.page .praktisk .pb{position:relative;padding-left:.75em;font-style:italic;font-weight:300;font-size:.857em;line-height:1.5}
+.page .praktisk .pb::before{content:'•';position:absolute;left:0;font-style:normal}
+.page .is12{color:#fff;text-align:center;text-shadow:0 0 28px rgba(0,0,0,.55),0 0 8px rgba(0,0,0,.25)}
+.page .is12 .stikk{display:block;color:var(--slor);font-weight:700;font-size:1em;letter-spacing:.3em;text-transform:uppercase;line-height:1.03;margin:0 0 .69em;text-shadow:1.5px 2px 3px rgba(0,0,0,.55)}
+.page .is12 .stikk::before{display:none}
+.page .is12 .tittel{font-weight:700;font-style:normal;font-size:2.171em;line-height:1;letter-spacing:0;margin:0;color:#fff}
+.page .is12 .tittel .tem{font-weight:700;font-style:italic}
+.page .is12b{color:#fff;text-align:left;text-shadow:2px 2px 12px rgba(0,0,0,.5)}
+.page .is12b .h12{font-weight:700;font-size:1em;line-height:1.2;margin:0}
+.page .is12b .p12{font-weight:400;font-size:.75em;line-height:1.2;margin:.4em 0 0;white-space:pre-line}
+.page .is12b .a12{font-weight:700;font-style:italic;font-size:.95em;line-height:1.2;margin:.35em 0 0;color:var(--slor)}
+.page .qr12{position:absolute;background:#fff;border-radius:14px;padding:10px;box-shadow:5px 5px 18px rgba(0,0,0,.35)}
+.page .qr12 svg{display:block;width:100%;height:100%}
+/* Ikon fra ikonbiblioteket */
+.page .ikon7{position:absolute;display:block}
+.page .ikon7 svg{display:block;width:100%;height:100%}
+.page.edit [data-ikon]{cursor:pointer}
+.page.edit [data-ikon]:hover{outline:1.5px dashed rgba(1,57,82,.5);outline-offset:4px;border-radius:4px}
+/* KI-merke */
+.page .ki{position:absolute;display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#fff;background:rgba(1,57,82,.62);padding:4px 9px 4px 7px;border-radius:5px}
+.page .ki svg{width:15px;height:15px}
