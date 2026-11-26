@@ -1,0 +1,50 @@
+{
+  "id": "bading",
+  "navn": "Bading",
+  "sub": "Sol, sjø og livbøye",
+  "kategori": "aktivitet",
+  "maaneder": [
+    6,
+    7,
+    8
+  ],
+  "malgrupper": [
+    "barn",
+    "ungdom",
+    "alle"
+  ],
+  "slor": "bla",
+  "motiv": [
+    {
+      "m": "sol",
+      "x": 110,
+      "y": 0,
+      "s": 90
+    },
+    {
+      "m": "livboye",
+      "x": 10,
+      "y": 40,
+      "s": 120
+    },
+    {
+      "m": "vann",
+      "x": 40,
+      "y": 130,
+      "s": 150,
+      "f": [
+        "lysbla"
+      ]
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "prikk"
+    ],
+    "antall": 6,
+    "dekning": 0.35,
+    "farger": [
+      "navy"
+    ]
+  }
+}

@@ -188,3 +188,9 @@ body.har-bank .bankbtn{display:block}
 .stagewrap{position:relative;flex-shrink:0}
 .stagewrap .page{position:absolute;left:0;top:0;transform-origin:0 0;box-shadow:0 8px 30px rgba(1,57,82,.18)}
 
+
+/* Tema (js/tema.js) */
+.temachips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.tchip{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:5px 12px;font-family:var(--font);font-size:13px;font-weight:600;color:var(--navy);cursor:pointer}
+.tchip[aria-pressed=true]{background:var(--navy);border-color:var(--navy);color:#fff}
+.temavalg{width:100%;border:1.5px solid var(--line);border-radius:7px;padding:7px 9px;font-family:var(--font);font-size:14px;color:var(--ink);background:#fff}

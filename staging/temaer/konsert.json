@@ -1,0 +1,54 @@
+{
+  "id": "konsert",
+  "navn": "Musikk og konsert",
+  "sub": "Gitar, mikrofon og noter",
+  "kategori": "aktivitet",
+  "maaneder": [],
+  "malgrupper": [
+    "alle",
+    "senior",
+    "ungdom"
+  ],
+  "slor": "korall",
+  "motiv": [
+    {
+      "m": "gitar",
+      "x": 20,
+      "y": 10,
+      "s": 140
+    },
+    {
+      "m": "mikrofon",
+      "x": 120,
+      "y": 50,
+      "s": 80,
+      "r": 10,
+      "f": [
+        "hvit",
+        "gul"
+      ]
+    },
+    {
+      "m": "note",
+      "x": 140,
+      "y": 0,
+      "s": 50,
+      "r": 8,
+      "f": [
+        "gul"
+      ]
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "note",
+      "prikk"
+    ],
+    "antall": 8,
+    "dekning": 0.35,
+    "farger": [
+      "korall",
+      "navy"
+    ]
+  }
+}

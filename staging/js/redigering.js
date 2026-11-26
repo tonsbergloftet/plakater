@@ -16,6 +16,7 @@ function syncFields(){
 const TEXT_KEYS = ['pIntro','ut3','tx3','merkeTx','bs1','bs2','bs3','stikk','tittel','ingress','ut1','tx1','pTittel','punkter','ut2','tx2','praktisk','cta','url','qrTekst','s2Tittel','s2Ut1','s2Tx1','s2Ut2','s2Tx2','s2Tx3','s2Slutt','s2Merknad','s2Kontakt','merke','avslutt'];
 function fillForm(){
   TEXT_KEYS.forEach(k => { $(k).value = S[k] || ''; });
+  tegnTemavalg();
   $('urlqr').value = S.url || '';
   $('visurl').checked = S.visUrl !== false;
   $('visurlrad').style.display = ['forklaring','delt','tekst','bilder','bildetekst'].includes(S.tpl) ? '' : 'none';
@@ -108,6 +109,7 @@ function initUI(){
   document.querySelectorAll('#fmtseg button').forEach(b => b.onclick = () => { S.fmt = b.dataset.fmt; fillForm(); render(); });
   let t = null;
   TEXT_KEYS.forEach(k => $(k).addEventListener('input', () => { S[k] = $(k).value; clearTimeout(t); t = setTimeout(render, 120); }));
+  initTema();
   $('urlqr').addEventListener('input', () => { S.url = $('urlqr').value; $('url').value = S.url; $('qrapner').textContent = has('url') ? 'Når noen skanner koden med mobilkameraet, åpnes: ' + (/^https?:\/\//i.test(S.url.trim()) ? '' : 'https://') + S.url.trim() : ''; clearTimeout(t); t = setTimeout(render, 200); });
   $('url').addEventListener('input', () => { $('urlqr').value = $('url').value; });
   $('qr').onchange = () => { S.qr = $('qr').checked; syncFields(); render(); };

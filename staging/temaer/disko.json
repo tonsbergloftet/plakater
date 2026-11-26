@@ -1,0 +1,53 @@
+{
+  "id": "disko",
+  "navn": "Disko",
+  "sub": "Diskokule og musikk",
+  "kategori": "aktivitet",
+  "maaneder": [],
+  "malgrupper": [
+    "barn",
+    "ungdom"
+  ],
+  "slor": "bla",
+  "motiv": [
+    {
+      "m": "diskokule",
+      "x": 40,
+      "y": 0,
+      "s": 130
+    },
+    {
+      "m": "note",
+      "x": 0,
+      "y": 110,
+      "s": 60,
+      "r": -10,
+      "f": [
+        "gul"
+      ]
+    },
+    {
+      "m": "note",
+      "x": 140,
+      "y": 120,
+      "s": 54,
+      "r": 12,
+      "f": [
+        "korall"
+      ]
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "stjerne",
+      "prikk"
+    ],
+    "antall": 8,
+    "dekning": 0.35,
+    "farger": [
+      "lysbla",
+      "korall",
+      "gul"
+    ]
+  }
+}

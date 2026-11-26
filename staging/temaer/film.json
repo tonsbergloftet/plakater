@@ -1,0 +1,44 @@
+{
+  "id": "film",
+  "navn": "Film",
+  "sub": "Teaterteppe, lyskaster og popkorn",
+  "kategori": "aktivitet",
+  "maaneder": [],
+  "malgrupper": [
+    "barn",
+    "ungdom",
+    "alle"
+  ],
+  "slor": "gul",
+  "motiv": [
+    {
+      "m": "lysstrale",
+      "x": 90,
+      "y": 10,
+      "s": 110
+    },
+    {
+      "m": "filmrull",
+      "x": 10,
+      "y": 10,
+      "s": 90,
+      "r": -12
+    },
+    {
+      "m": "popkorn",
+      "x": 50,
+      "y": 40,
+      "s": 150
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "stjerne"
+    ],
+    "antall": 6,
+    "dekning": 0.35,
+    "farger": [
+      "gul"
+    ]
+  }
+}

@@ -85,7 +85,9 @@ function download(href, name){ const a = document.createElement('a'); a.href = h
 function utkastData(){
   // Bare bildene malen bruker tas med (holder PDF-en mindre)
   const brukes = new Set(bildeSlots(S.tpl).concat(hasSide2() ? [2,3] : []));
-  return {type:'tk-plakat', v:4, ...S, imgs: S.imgs.map((I,n) => !brukes.has(n) ? {ex:!!I.ex, fx:I.fx, fy:I.fy, z:I.z} : I.ex ? {ex:true, fx:I.fx, fy:I.fy, z:I.z} : I.bank ? {bank:I.bank, fx:I.fx, fy:I.fy, z:I.z, ki:false} : I)};
+  const d = {type:'tk-plakat', v:4, ...S, imgs: S.imgs.map((I,n) => !brukes.has(n) ? {ex:!!I.ex, fx:I.fx, fy:I.fy, z:I.z} : I.ex ? {ex:true, fx:I.fx, fy:I.fy, z:I.z} : I.bank ? {bank:I.bank, fx:I.fx, fy:I.fy, z:I.z, ki:false} : I)};
+  if(!d.tema) delete d.tema; // uten tema er arbeidsfila lik den prod lager
+  return d;
 }
 function b64utf8(t){
   const b = new TextEncoder().encode(t); let s = '';
@@ -123,6 +125,7 @@ function loadDraft(e){
       if(ERSTATTET[S.tpl]) S.tpl = ERSTATTET[S.tpl];
       if(!TPLS[S.tpl]) S.tpl = 'bildedrevet';
       if(!SLOR[S.slor]) S.slor = 'gronn';
+      if(S.tema && !TEMAER[S.tema]) S.tema = null; // ukjent tema (for eksempel fjernet)
       if(!FMT[S.fmt] || !TPLS[S.tpl].fmts.includes(S.fmt)) S.fmt = TPLS[S.tpl].fmts[0];
       if(!('visUrl' in d)) S.visUrl = true;
       autoVariant = false; // utkastet har allerede valgt variant

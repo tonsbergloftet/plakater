@@ -1,0 +1,52 @@
+{
+  "id": "skolestart",
+  "navn": "Skolestart",
+  "sub": "Sekk, blyant og bøker",
+  "kategori": "arshjul",
+  "maaneder": [
+    8
+  ],
+  "malgrupper": [
+    "barn",
+    "alle"
+  ],
+  "slor": "gul",
+  "motiv": [
+    {
+      "m": "sekk",
+      "x": 40,
+      "y": 30,
+      "s": 130
+    },
+    {
+      "m": "blyant",
+      "x": 120,
+      "y": 0,
+      "s": 90,
+      "r": 10
+    },
+    {
+      "m": "bok",
+      "x": 0,
+      "y": 120,
+      "s": 90,
+      "r": -8,
+      "f": [
+        "rod",
+        "hvit",
+        "gul"
+      ]
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "stjerne",
+      "prikk"
+    ],
+    "antall": 8,
+    "dekning": 0.35,
+    "farger": [
+      "navy"
+    ]
+  }
+}

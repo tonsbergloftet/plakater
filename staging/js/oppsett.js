@@ -102,6 +102,7 @@ const S = {
   imgs:[], ki:false, zoom:'fit', skjulTomme:false, ikon:null, mork:false,
   bs1:'', bs2:'', bs3:'', pIntro:'',
   side2:true, side:1,
+  tema:null, // valgfritt tema (se js/tema.js)
   s2Tittel:'Et foreldrekurs for migrasjonsfamilier',
   s2Ut1:'Hva er ICDP-kurs?',
   s2Tx1:'ICDP (International Child Development Programme) er et foreldreveiledningskurs som styrker samspillet mellom foreldre og barn. Kurset tar utgangspunkt i hverdagslige situasjoner og gir konkrete verktøy for å forstå barnets behov, regulere følelser og bygge en trygg og positiv relasjon.',

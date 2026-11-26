@@ -1,0 +1,52 @@
+{
+  "id": "jul",
+  "navn": "Jul",
+  "sub": "Snøfonn og stjernehimmel",
+  "kategori": "arshjul",
+  "maaneder": [
+    11,
+    12
+  ],
+  "malgrupper": [
+    "barn",
+    "alle"
+  ],
+  "slor": "bla",
+  "motiv": [
+    {
+      "m": "juletre",
+      "x": 40,
+      "y": 0,
+      "s": 130
+    },
+    {
+      "m": "gave",
+      "x": 0,
+      "y": 120,
+      "s": 60,
+      "r": -6
+    },
+    {
+      "m": "gave",
+      "x": 140,
+      "y": 124,
+      "s": 56,
+      "r": 6,
+      "f": [
+        "lysbla",
+        "rod"
+      ]
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "snofnugg",
+      "prikk"
+    ],
+    "antall": 8,
+    "dekning": 0.35,
+    "farger": [
+      "navy"
+    ]
+  }
+}
