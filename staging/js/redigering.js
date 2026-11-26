@@ -75,7 +75,7 @@ function fillForm(){
 
 function initUI(){
   const tp = $('tpls');
-  GRUPPER.forEach(gr => {
+  visGrupper().forEach(gr => {
     tp.insertAdjacentHTML('beforeend', `<div class="grp">${esc(gr.navn)}</div>`);
     gr.maler.forEach(k => {
       const t = TPLS[k], b = document.createElement('button');
@@ -389,10 +389,18 @@ function oppdaterKi(){
 
 // Startskjermen: «Hva skal plakaten gjøre?»
 function velgMal(k){ if(TPLS[S.tpl] && TPLS[S.tpl].fmts.length === 1 && TPLS[k].fmts.length > 1) S.fmt = 'a4'; // fra en skjermmal tilbake til plakat
-  S.tpl = k; S.fmt = fmtFor(k); if(!TPLS[k].fmts.includes(S.fmt)) S.fmt = 'a4'; oppdaterKi(); fillForm(); render(); }
+  S.tpl = k; S.fmt = fmtFor(k); if(!TPLS[k].fmts.includes(S.fmt)) S.fmt = 'a4';
+  // Malens egen eksempeltekst brukes i felt som fortsatt har den vanlige eksempelteksten
+  // (felt som fortsatt har eksempeltekst fra DEMO eller fra en annen mal). Brødteksten regnes som eksempel når feltene bak den er det.
+  const eksempel = (f, v) => v == null || v === DEMO[f] || Object.values(TPLS).some(t => t.demo && t.demo[f] === v);
+  if(TPLS[k].demo) Object.entries(TPLS[k].demo).forEach(([f, v]) => {
+    const urort = f === 'innhold' ? INNHOLD_FELT.every(g => !S[g] || eksempel(g, S[g])) || eksempel('innhold', S.innhold) : eksempel(f, S[f]);
+    if(urort) S[f] = v;
+  });
+  oppdaterKi(); fillForm(); render(); }
 function apneStart(forsteGang){
   const g = $('startgrp');
-  g.innerHTML = GRUPPER.map(gr => `<div class="sgrp"><h3>${esc(gr.navn)}</h3><p>${esc(gr.tekst)}</p><div class="srow">${gr.maler.map(k => `<button class="skort" data-tpl="${k}" title="${esc(TPLS[k].sub)}"><div class="thumb"></div><span class="lbl">${esc(TPLS[k].navn)}</span></button>`).join('')}</div></div>`).join('');
+  g.innerHTML = visGrupper().map(gr => `<div class="sgrp"><h3>${esc(gr.navn)}</h3><p>${esc(gr.tekst)}</p><div class="srow">${gr.maler.map(k => `<button class="skort" data-tpl="${k}" title="${esc(TPLS[k].sub)}"><div class="thumb"></div><span class="lbl">${esc(TPLS[k].navn)}</span></button>`).join('')}</div></div>`).join('');
   $('start').classList.add('on');
   $('start').dataset.forste = forsteGang ? '1' : '';
   setTimeout(() => g.querySelectorAll('.skort').forEach(b => miniatyr(b.querySelector('.thumb'), b.dataset.tpl)), 30);

@@ -4,7 +4,8 @@
 // Felt i malen som fortsatt har eksempelteksten
 const NAVN_FELT = {innhold:'brødtekst', stikk:'tema', tittel:'tittel', ingress:'ingress', ut1:'underoverskrift 1', tx1:'brødtekst 1', ut2:'underoverskrift 2', tx2:'brødtekst 2', ut3:'underoverskrift 3', tx3:'brødtekst 3', pTittel:'overskrift over punktene', punkter:'punktliste', praktisk:'praktisk informasjon', cta:'tekst ved QR-koden', merke:'merket', merkeTx:'merket', avslutt:'avslutning'};
 function demoIgjen(){
-  const f = TPLS[S.tpl].felt.filter(k => k in DEMO && k !== 'url' && S[k] === DEMO[k]);
+  const md = TPLS[S.tpl].demo || {};
+  const f = TPLS[S.tpl].felt.filter(k => k !== 'url' && ((k in DEMO && S[k] === DEMO[k]) || (k in md && S[k] === md[k])));
   return [...new Set(f.map(k => NAVN_FELT[k] || k))];
 }
 async function exportFile(type, stille){
