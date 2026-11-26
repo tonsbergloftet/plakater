@@ -27,6 +27,8 @@ Ikke rør disse uten at Marius ber om det, fordi de styrer både prod og staging
 - `bilder/`
 - `ikoner/`
 
+Unntak: når en ny mal er godkjent, skal den legges inn i lista `VIS` øverst i `verktoy/sammenlign.js` (se punkt 8).
+
 Ikke slett eller endre taggen `v1-for-rydding` eller grenen `stabil-v1`. De er reservekopien.
 
 Claude skal alltid si tydelig i svaret hvilke filer som er endret, og om de ligger i prod eller staging.
@@ -42,7 +44,9 @@ Claude pusher aldri direkte til main. Alle endringer leveres som pull request fr
 
 ## 4. Test før hver opplasting til staging
 
-Kjør sammenligningstesten `verktoy/sammenlign.js` (Playwright). Den skal vise:
+Kjør først regelsjekken: `node verktoy/sjekk-regler.js` (og `--prod` ved opprykk). Den trenger bare Node og sjekker designreglene og at malene henger sammen. Den skal være grønn.
+
+Kjør deretter sammenligningstesten `verktoy/sammenlign.js` (Playwright). Den skal vise:
 1. Alle maler i alle formater blir piksellike med prod, med demotekst og eksempelbilde. Tillatt avvik er under 0,5 % av pikslene.
 2. Eksport til PDF og PNG fungerer, og fontene er med i PDF-en.
 3. En arbeidsfil fra prod kan åpnes i staging.
@@ -63,7 +67,7 @@ Opprykket leveres som en egen pull request, ikke sammen med andre endringer.
 1. Lag en ny tagg av dagens prod, for eksempel `v2-for-opprykk`, under Releases → Draft a new release.
 2. Kopier innholdet i `staging/` til rota, slik at det erstatter `index.html` og legger til de nye mappene.
 3. I rotkopien: sett `RESSURS_ROT` og `LS_PREFIKS` til `''` (øverst i `js/oppsett.js`), og fjern banneret «TESTVERSJON» (`<div class="testbanner">` i `index.html` og regelen `.testbanner` i `css/ui.css`).
-4. Kjør sammenligningstesten på nytt, nå mellom den nye prod og staging.
+4. Kjør `node verktoy/sjekk-regler.js --prod` og sammenligningstesten på nytt, nå mellom den nye prod og staging.
 5. Last opp, og sjekk prod på nettet: lag én plakat, eksporter den og åpne en gammel arbeidsfil.
 6. Behold `staging/` som utgangspunkt for neste runde.
 
@@ -82,9 +86,12 @@ Opprykket leveres som en egen pull request, ikke sammen med andre endringer.
 ```
 index.html              prod
 CLAUDE.md               denne fila
+AGENTS.md               peker andre KI-verktøy hit
 README.md
+docs/designregler.md    designreglene for malene
+.claude/skills/ny-mal/  oppskrift for nye og rettede maler
 .github/workflows/      publisering (ikke rør)
-verktoy/                bildebank.py, sammenlign.js
+verktoy/                bildebank.py, sammenlign.js, sjekk-regler.js
 bilder/  ikoner/        bildebank og ikoner (felles for prod og staging)
 staging/
   index.html            bare HTML-skjelett
@@ -98,3 +105,10 @@ staging/
   grafikk/              logo, eksempelbilder
   lib/                  html-to-image, jsPDF, qrcode-generator
 ```
+
+## 8. Nye maler og designregler
+
+- Designreglene står i `docs/designregler.md`. Oppdater fila når designeren avklarer noe eller leverer nye regler.
+- Nye maler, og rettinger av maler, lages etter oppskriften i `.claude/skills/ny-mal/SKILL.md`.
+- Malene settes sammen av låste byggeklosser (ramme, logo, bølgepar, QR) med mål fra designerens IDML-filer. De tegnes aldri på nytt.
+- Unntak fra regelsjekken (en ny godkjent farge, for eksempel) legges inn øverst i `verktoy/sjekk-regler.js` med en kommentar om hvem som godkjente det og hvorfor.
