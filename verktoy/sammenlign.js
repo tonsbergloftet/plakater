@@ -122,7 +122,9 @@ async function apne(browser, base, hvor, medBank) {
   // Chromium tegner kantutjevning og overganger litt ulikt avhengig av hvor på skjermen plakaten står
   // (prod mot prod gir avvik om plakaten flyttes én piksel). Prod får derfor en tom stripe like høy som
   // banneret i staging, så forhåndsvisningen står på nøyaktig samme sted. Påvirker ikke eksporten.
-  if (hvor === 'prod') await page.evaluate(() => { const d = document.createElement('div'); d.style.cssText = 'flex-shrink:0;height:28px'; document.body.prepend(d); render(); });
+  // Prod får tomme striper like høye som det staging har ekstra: banneret (28 px) øverst og temastripa (50 px) under verktøylinja.
+  // Endres høyden på noen av dem, må tallene her endres også.
+  if (hvor === 'prod') await page.evaluate(() => { const d = document.createElement('div'); d.style.cssText = 'flex-shrink:0;height:28px'; document.body.prepend(d); const t = document.createElement('div'); t.style.cssText = 'height:50px;flex:none'; document.querySelector('.tools').after(t); render(); });
   if (medBank) await page.waitForFunction(() => document.body.classList.contains('har-bank'), null, { timeout: 15000 }).catch(() => feil.push('Bildebanken ble ikke lastet'));
   await page.waitForTimeout(400);
   return { ctx, page, feil, nett, hvor };

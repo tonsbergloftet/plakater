@@ -58,7 +58,7 @@ Kjente fallgruver:
 - Blandingsmoduser (blend modes) og SVG-masker overlever ikke eksporten.
 - Kopiering til utklippstavlen virker ikke når fila åpnes fra disk (file://).
 - Staging kan ikke eksportere når den åpnes fra disk (file://), fordi html-to-image må hente fontfilene, og det stopper nettleseren. Over nettet virker det. Godkjent av Marius 24.11.2026.
-- Forhåndsvisningen er følsom for hvor plakaten står på skjermen. Testen legger derfor inn en tom stripe i prod, like høy som banneret (28 px). Endres banneret, må testen endres også.
+- Forhåndsvisningen er følsom for hvor plakaten står på skjermen. Testen legger derfor inn tomme striper i prod, like høye som banneret (28 px) og temastripa (50 px). Endres høyden på noen av dem, må testen endres også.
 
 ## 5. Opprykk fra staging til prod (sjekkliste)
 
