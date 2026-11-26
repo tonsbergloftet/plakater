@@ -108,7 +108,7 @@ function disp(k, kindOverride){ // [MANGLER] fra KI-forslag markeres i forhånds
   return EKSPORTERER ? h : h.replace(/\[MANGLER\]/g, '<mark class="mangler">[MANGLER]</mark>');
 }
 function disp0(k, kindOverride){
-  const v = String(S[k]||''), kind = kindOverride || KIND[k];
+  const v = String(val(k)||''), kind = kindOverride || KIND[k] || (erB(k) && blokk(k) ? BLOKKTYPER[blokk(k).t].kind : undefined);
   if(kind==='tit') return esc(v).replace(/\*\*(.+?)\*\*/g, '<span class="tem">$1</span>');
   if(kind==='bold') return esc(v).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
   if(kind==='dline') return v.split('\n').map(x=>x.trim()).filter(Boolean).map(l => {
@@ -129,7 +129,7 @@ function disp0(k, kindOverride){
 function E(k, cls, tag, style, kind){
   tag = tag || 'div';
   if(!EDIT && !has(k)) return '';
-  const ed = EDIT ? ` data-k="${k}" contenteditable="plaintext-only" spellcheck="true" data-ph="${esc(PH[k]||'')}"${kind?` data-kind="${kind}"`:''}` : '';
+  const ed = EDIT ? ` data-k="${k}" contenteditable="plaintext-only" spellcheck="true" data-ph="${esc(PH[k]||(erB(k) && blokk(k) ? BLOKKTYPER[blokk(k).t].ph : ''))}"${kind?` data-kind="${kind}"`:''}` : '';
   return `<${tag} class="${cls||''}${EDIT?' ed':''}${has(k)?'':' tom'}"${ed}${style?` style="${style}"`:''}>${disp(k, kind)}</${tag}>`;
 }
 function T(k, cls, tag){ return E(k, cls, tag); }
@@ -526,6 +526,14 @@ LAYOUTS.bymobel = (uid) => {
 };
 
 
+/* Innholdsblokker (se BLOKK_MALER i oppsett.js). c = klassene malen bruker for hver blokktype. */
+const BLOKK_H10 = {h:'h10', p:'p10', liste:'liste', etikett:'praktisk', linje:'linje10'};
+function blokkerHtml(c){
+  sikreBlokker();
+  return S.blokker.map((b, i) => b.t === 'linje' ? `<div class="${c.linje}"></div>` : E('B' + i, c[b.t], 'div', null, BLOKKTYPER[b.t].kind)).join('');
+}
+function harBlokker(){ sikreBlokker(); return EDIT ? S.blokker.length > 0 : S.blokker.some((b, i) => b.t !== 'linje' && has('B' + i)); }
+
 /* Liggende versjoner (A4 liggende og 16:9) av malene med lys grå flate (tekstplakat, trebilder).
    Ingen designerfil ennå (designregler, åpent spørsmål 8). Bygget av låste byggeklosser, bare likt skalert:
    - 16:9: ramme, bølgepar, logoutsparing, logo og QR som infoskjermen med stort bilde (SKJ.S10, mal 12).
@@ -573,9 +581,8 @@ LAYOUTS.tekstplakat = (uid,f) => {
   </svg>`;
   const q = S.qr ? qrSvg() : '';
   const topp = E('stikk','stikk') + E('tittel','tittel') + E('ingress','ingress');
-  const brod = E('ut1','h10') + E('tx1','p10','div',null,'rich') + E('ut2','h10') + E('tx2','p10','div',null,'rich')
-    + E('pTittel','h10') + E('pIntro','p10') + E('punkter','liste') + E('praktisk','praktisk');
-  const harBrod = ['ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk'].some(hasE);
+  const brod = blokkerHtml(BLOKK_H10);
+  const harBrod = harBlokker();
   if(A) return svg + logo(87.5,48.5,89) + ikonHer(608,90,98,NAVY,'#f3f3f3')
     + box(105,255,584,670,20,'tp10', topp + (harBrod ? '<div class="gap10"></div>' : '') + brod)
     + (q ? `<div class="qrbox7" style="left:628px;top:959px;width:103.3px;height:103.3px;padding:8px">${q}</div>` : '')
@@ -591,9 +598,8 @@ function tekstplakatLiggende(uid, f){
   </svg>`;
   const q = S.qr ? qrSvg() : '';
   const topp = E('stikk','stikk') + E('tittel','tittel') + E('ingress','ingress');
-  const brod = E('ut1','h10') + E('tx1','p10','div',null,'rich') + E('ut2','h10') + E('tx2','p10','div',null,'rich')
-    + E('pTittel','h10') + E('pIntro','p10') + E('punkter','liste') + E('praktisk','praktisk');
-  const harBrod = ['ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk'].some(hasE);
+  const brod = blokkerHtml(BLOKK_H10);
+  const harBrod = harBlokker();
   const ikon = !!(S.ikon && ikonSvg(S.ikon));
   // To spalter: tittel til venstre, brødtekst til høyre. Uten brødtekst får tittelen hele bredden.
   // Teksten starter under logoutsparingen (som på stående A4), og begge spaltene starter på samme høyde.
@@ -691,9 +697,8 @@ LAYOUTS.trebilder = (uid,f) => {
   </svg>`;
   const q = S.qr ? qrSvg() : '';
   const topp = E('stikk','stikk') + E('tittel','tittel') + E('ingress','ingress');
-  const brod = E('ut1','h10') + E('tx1','p10','div',null,'rich') + E('ut2','h10') + E('tx2','p10','div',null,'rich')
-    + E('pTittel','h10') + E('pIntro','p10') + E('punkter','liste') + E('praktisk','praktisk');
-  const harBrod = ['ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk'].some(hasE);
+  const brod = blokkerHtml(BLOKK_H10);
+  const harBrod = harBlokker();
   const ki = S.ki ? `<div class="ki" style="right:${A?50:36}px;top:${A?48:32}px">${KI_ICON}KI-generert bilde</div>` : '';
   if(A) return svg + logo(87.5,48.5,89) + ki
     + box(87,257,292,700,20,'tp10 tb5', topp + (harBrod ? '<div class="gap10"></div>' : '') + brod)
@@ -721,9 +726,8 @@ function trebilderLiggende(uid, f){
   </svg>`;
   const q = S.qr ? qrSvg() : '';
   const topp = E('stikk','stikk') + E('tittel','tittel') + E('ingress','ingress');
-  const brod = E('ut1','h10') + E('tx1','p10','div',null,'rich') + E('ut2','h10') + E('tx2','p10','div',null,'rich')
-    + E('pTittel','h10') + E('pIntro','p10') + E('punkter','liste') + E('praktisk','praktisk');
-  const harBrod = ['ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk'].some(hasE);
+  const brod = blokkerHtml(BLOKK_H10);
+  const harBrod = harBlokker();
   const ki = S.ki ? `<div class="ki" style="right:${L?50:40}px;top:${L?48:36}px">${KI_ICON}KI-generert bilde</div>` : '';
   const v = L ? {x:105, y:255, b:490, h:400, base:18} : {x:87.5, y:200, b:540, h:420, base:20};
   return svg + ki
@@ -766,9 +770,8 @@ LAYOUTS.hoydebilde = (uid,f) => {
   </svg>`;
   const q = S.qr ? qrSvg() : '';
   const topp = E('stikk','stikk') + E('tittel','tittel') + E('ingress','ingress');
-  const brod = E('ut1','h10') + E('tx1','p10','div',null,'rich') + E('ut2','h10') + E('tx2','p10','div',null,'rich')
-    + E('pTittel','h10') + E('pIntro','p10') + E('punkter','liste') + E('praktisk','praktisk');
-  const harBrod = ['ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk'].some(hasE);
+  const brod = blokkerHtml(BLOKK_H10);
+  const harBrod = harBlokker();
   const ki = S.ki ? `<div class="ki" style="left:${A?56:44}px;top:${A?210:150}px">${KI_ICON}KI-generert bilde</div>` : '';
   if(A) return svg + logo(87.5,48.5,89) + ki + ikonHer(635.5,82,96,NAVY,'#f3f3f3')
     + box(431,206,292,720,20,'tp10 tb5', topp + (harBrod ? '<div class="gap10"></div>' : '') + brod)

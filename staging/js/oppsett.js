@@ -103,6 +103,7 @@ const S = {
   bs1:'', bs2:'', bs3:'', pIntro:'',
   side2:true, side:1,
   tema:null, // valgfritt tema (se js/tema.js)
+  blokker:null, blokkerSync:'', // innholdsblokker (se BLOKK_MALER)
   s2Tittel:'Et foreldrekurs for migrasjonsfamilier',
   s2Ut1:'Hva er ICDP-kurs?',
   s2Tx1:'ICDP (International Child Development Programme) er et foreldreveiledningskurs som styrker samspillet mellom foreldre og barn. Kurset tar utgangspunkt i hverdagslige situasjoner og gir konkrete verktøy for å forstå barnets behov, regulere følelser og bygge en trygg og positiv relasjon.',
@@ -116,5 +117,39 @@ const S = {
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-const has = k => S[k] && String(S[k]).trim() !== '';
+/* ═════════ INNHOLDSBLOKKER ═════════
+   I malene med brødtekst (BLOKK_MALER) bygger brukeren innholdet selv av blokker: mellomtittel, tekst, punktliste,
+   «Etikett: verdi» og skillelinje. Blokkene ligger i S.blokker. De faste feltene (BLOKK_FELT) holdes oppdatert fra
+   blokkene, slik at arbeidsfila fortsatt virker i prod og i maler uten blokker. Blokk-nøklene heter B0, B1, … */
+const BLOKK_MALER = ['tekstplakat','tekstplakatliggende','tekstplakatskjerm','trebilder','trebilderliggende','trebilderskjerm','hoydebilde'];
+const BLOKK_FELT = ['ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk'];
+const BLOKKTYPER = {
+  h:      {navn:'Mellomtittel', ph:'Mellomtittel'},
+  p:      {navn:'Tekst', ph:'Skriv tekst. **ord** gir utheving.', kind:'rich'},
+  liste:  {navn:'Punktliste', ph:'Ett punkt per linje', kind:'list'},
+  etikett:{navn:'Etikett: verdi', ph:'Etikett: verdi (én per linje)', kind:'prak'},
+  linje:  {navn:'Skillelinje'},
+};
+const MAKS_BLOKKER = 10;
+const erB = k => /^B\d+$/.test(k);
+const blokk = k => (S.blokker || [])[+String(k).slice(1)] || null;
+const val = k => erB(k) ? ((blokk(k) || {}).v || '') : S[k];
+function settVerdi(k, v){ if(erB(k)){ const b = blokk(k); if(b) b.v = v; blokkerTilGamle(); } else S[k] = v; }
+const gamleNokkel = () => JSON.stringify(BLOKK_FELT.map(k => S[k] || ''));
+function gamleTilBlokker(){ // fra de faste feltene, i samme rekkefølge som malene viser dem
+  const t = {ut1:'h', tx1:'p', ut2:'h', tx2:'p', pTittel:'h', pIntro:'p', punkter:'liste', praktisk:'etikett'};
+  return BLOKK_FELT.filter(k => String(S[k]||'').trim()).map(k => ({t:t[k], v:S[k]}));
+}
+function sikreBlokker(){ // lag blokker fra feltene første gang, og på nytt hvis feltene er endret et annet sted (annen mal, KI, arbeidsfil fra prod)
+  if(!Array.isArray(S.blokker) || S.blokkerSync !== gamleNokkel()){ S.blokker = gamleTilBlokker(); S.blokkerSync = gamleNokkel(); }
+}
+function blokkerTilGamle(){ // best mulig oversettelse tilbake til de faste feltene
+  const av = t => (S.blokker || []).filter(b => b.t === t && String(b.v||'').trim()).map(b => b.v);
+  const h = av('h'), p = av('p');
+  S.ut1 = h[0] || ''; S.ut2 = h[1] || ''; S.pTittel = h.slice(2).join(' / ');
+  S.tx1 = p[0] || ''; S.tx2 = p.slice(1).join('\n\n'); S.pIntro = '';
+  S.punkter = av('liste').join('\n'); S.praktisk = av('etikett').join('\n');
+  S.blokkerSync = gamleNokkel();
+}
+const has = k => { const v = val(k); return !!v && String(v).trim() !== ''; };
 
