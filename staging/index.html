@@ -32,13 +32,6 @@
     </div>
   </div>
 
-  <div class="sec hide" id="sec-tema">
-    <h2>Tema <span style="font-weight:400;text-transform:none;letter-spacing:0">(valgfritt)</span></h2>
-    <div class="temachips" id="temachips" role="group" aria-label="Velg tema"></div>
-    <select id="temavalg" class="temavalg" aria-label="Flere temaer"></select>
-    <p class="note" id="temanote" style="margin:6px 0 0"></p>
-  </div>
-
   <div class="warn" id="warn">Noe av teksten får ikke plass, selv med minste skriftstørrelse. Kort ned feltene som er markert med rød stiplet ramme i forhåndsvisningen.</div>
 
   <div class="sec" id="sec-img">
@@ -73,6 +66,7 @@
   <div class="sec" id="sec-slor">
     <h2>3 · Slørfarge</h2>
     <div class="swatches" id="swatches"></div>
+    <p class="note hide" id="slortema" style="margin:6px 0 0"></p>
     <label class="chk" id="morkrad" style="margin-top:12px"><input type="checkbox" id="mork"> <span id="morktxt"></span></label>
   </div>
 
@@ -183,6 +177,7 @@
   <label class="chk mini"><input type="checkbox" id="skjultom"> Skjul tomme felt</label>
   <div class="seg zoomseg" id="zoom"><button data-z="fit" class="on">Tilpass</button><button data-z="1">100 %</button><button data-z="1.5">150 %</button></div>
 </div>
+<div class="temastripe hide" id="temastripe" role="group" aria-label="Tema"></div>
 <div class="tips" id="tips" role="status" aria-live="polite"></div>
 <main class="stage" id="stage"><div class="stagewrap" id="wrap"></div></main>
 </div>
@@ -193,6 +188,15 @@
   <div class="kort k2"><span class="tsteg">Veiledning · 1 av 3</span><b>Skriv rett i plakaten</b>Klikk på en tekst og skriv. Eksempelteksten forteller hva som passer i feltet. Grå tekst er tomme felt – de kommer ikke med på plakaten.<span class="tknapper"><button class="lnk" data-t="hopp">Hopp over</button><button class="tneste" data-t="neste">Neste</button></span></div>
   <div class="kort k3"><span class="tsteg">Veiledning · 2 av 3</span><b>Bytt eller juster bildet</b>Klikk på bildet. Velg «Bytt bilde» for bildebanken eller ditt eget, eller «Flytt og zoom» for å justere utsnittet.<span class="tknapper"><button class="lnk" data-t="tilbake">Tilbake</button><button class="tneste" data-t="neste">Neste</button></span></div>
   <button class="knapp" id="tourok">Skjønner</button>
+</div>
+<div class="modal" id="temamodal" role="dialog" aria-modal="true" aria-labelledby="temat">
+  <div class="mbox">
+    <div class="mhead"><b id="temat">Velg tema</b><input type="search" id="temasok" placeholder="Søk: jul, quiz, bading …" aria-label="Søk i temaer"><button class="btn" id="temalukk">Lukk</button></div>
+    <div class="sbody">
+      <p class="sintro">Temaet gir plakaten farge og motiver for en høytid eller aktivitet. Malen og teksten er den samme, og du kan fjerne temaet når som helst.</p>
+      <div class="sgrps" id="temagrp"></div>
+    </div>
+  </div>
 </div>
 <div class="modal" id="start" role="dialog" aria-modal="true" aria-labelledby="startt">
   <div class="mbox">
