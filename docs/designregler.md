@@ -145,7 +145,6 @@ Status fra 19.11.2026. Sjekk med designeren om noe er avklart, og oppdater lista
 
 ---
 
-
 ## 5. Sjekkliste for nye maler
 
 - [ ] Malen er målt fra en IDML-fil fra designeren, eller tydelig merket som forslag som designeren må godkjenne.
