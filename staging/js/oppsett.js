@@ -60,6 +60,19 @@ const TPLS = {
     felt:['stikk','tittel','ut1','tx1','praktisk','cta','url']},
   infoskjerm2:{navn:'Infoskjerm, stort bilde', sub:'Ett stort bilde og lite tekst', bilder:1, fmts:['wide'],
     felt:['stikk','tittel','ut1','tx1','avslutt','cta','url']},
+  // Svømmehallen (ENHETER): forslag, ikke godkjent av designer
+  forbudsskilt:{navn:'Forbudsskilt', sub:'Tre forbudsskilt og tekst på to språk', bilder:0,
+    felt:['tittel','ut1','tx1','ut2','tx2','cta','url'],
+    demo:{tittel:'Ikke tillatt i svømmehallen', ut1:'Mobil, kamera og mat', tx1:'Det er ikke lov å bruke mobil eller kamera, eller å spise, i garderober og ved bassengene.', ut2:'Phones, cameras and food', tx2:'Using phones or cameras, and eating, is not allowed in the changing rooms or by the pools.'}},
+  forbudsskiltliggende:{navn:'Forbudsskilt, liggende', sub:'A4 liggende, tre forbudsskilt og to språk', bilder:0, fmts:['a4l'],
+    felt:['tittel','ut1','tx1','ut2','tx2','cta','url'],
+    demo:{tittel:'Ikke tillatt i svømmehallen', ut1:'Mobil, kamera og mat', tx1:'Det er ikke lov å bruke mobil eller kamera, eller å spise, i garderober og ved bassengene.', ut2:'Phones, cameras and food', tx2:'Using phones or cameras, and eating, is not allowed in the changing rooms or by the pools.'}},
+  qrplakat:{navn:'Stor QR-kode', sub:'Lite tekst og en stor QR-kode', bilder:0,
+    felt:['stikk','tittel','ingress','cta','url'],
+    demo:{stikk:'Svømmehallen', tittel:'Se **åpningstider**', ingress:'Skann koden med mobilkameraet.', cta:'Skann meg!'}},
+  prisliste:{navn:'Prisliste', sub:'Priser med prikker fram til beløpet', bilder:0,
+    felt:['stikk','tittel','ingress','innhold','cta','url'],
+    demo:{stikk:'Svømmehallen', tittel:'Priser', ingress:'Gjelder fra 1. januar.', innhold:'Enkeltbillett\nVoksen: 95 kr\nBarn (4–15 år): 50 kr\nHonnør: 60 kr\n\nKlippekort (10 bad)\nVoksen: 800 kr\nBarn: 400 kr\n\nBarn under 4 år bader gratis.'}},
   inndelt:{navn:'Inndelt plakat', sub:'Bilde, tittel og to spalter', bilder:1,
     felt:['stikk','tittel','ingress','ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','ut3','tx3','cta','url']},
 };
@@ -73,6 +86,13 @@ const GRUPPER = [
   {navn:'Invitere til noe', tekst:'Kurs, møter og arrangementer.', maler:['invitasjon']},
   {navn:'Skjermer', tekst:'Infoskjermer (16:9) og skjermene på bymøblene (9:16).', maler:['infoskjerm','infoskjerm2','tekstplakatskjerm','trebilderskjerm','bymobel']},
 ];
+/* Egne seksjoner for en enhet: vises bare når siden åpnes med ?enhet=… (for eksempel staging/svommehallen/).
+   Malene her ligger ikke i GRUPPER og er derfor ikke en del av testlista før de er godkjent. */
+const ENHETER = {
+  svommehallen:{navn:'Svømmehallen', tekst:'Maler laget for svømmehallen. Forslag, ikke godkjent av designer.', maler:['forbudsskilt','forbudsskiltliggende','qrplakat','prisliste','tekstplakat']},
+};
+const ENHET = (() => { try { const e = new URLSearchParams(location.search).get('enhet') || ''; return ENHETER[e] ? e : ''; } catch(_){ return ''; } })();
+const visGrupper = () => ENHET ? [ENHETER[ENHET], ...GRUPPER] : GRUPPER;
 const fmtFor = k => TPLS[k].fmts.includes(S.fmt) ? S.fmt : TPLS[k].fmts[0];
 const bildeSlots = k => TPLS[k].bilder === 3 ? [0,1,4] : [0,1].slice(0, TPLS[k].bilder);
 const FMT = {a4:{W:794,H:1123,ratio:3,navn:'-a4'}, a4l:{W:1123,H:794,ratio:3,navn:'-a4-liggende'}, wide:{W:1280,H:720,ratio:1.5,navn:'-skjerm'}, bym:{W:720,H:1280,ratio:3,navn:'-bymobel'}};
@@ -123,7 +143,7 @@ const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replac
      «- » gir punkt, «Etikett: verdi» gir fet etikett, «---» gir skillelinje, tom linje gir nytt avsnitt.
    De faste feltene (INNHOLD_FELT) holdes oppdatert fra teksten. Da virker arbeidsfila i prod, og teksten følger med til
    maler som bruker de faste feltene. Endres feltene et annet sted (annen mal, arbeidsfil fra prod), lages teksten på nytt. */
-const INNHOLD_MALER = ['tekstplakat','tekstplakatliggende','tekstplakatskjerm','trebilder','trebilderliggende','trebilderskjerm','hoydebilde'];
+const INNHOLD_MALER = ['prisliste','tekstplakat','tekstplakatliggende','tekstplakatskjerm','trebilder','trebilderliggende','trebilderskjerm','hoydebilde'];
 const INNHOLD_FELT = ['ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk'];
 const INNHOLD_TIPS = 'Tom linje gir nytt avsnitt · kort linje øverst i avsnittet blir mellomtittel · «- » gir punkt · «Etikett: verdi» gir fet etikett · «---» gir linje';
 const erEtikett = l => /^[^:*#\-•\s][^:]{0,22}:\s+\S/.test(l) && !/^https?:/i.test(l);

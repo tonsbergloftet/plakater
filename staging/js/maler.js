@@ -118,6 +118,9 @@ function disp0(k, kindOverride, verdi){ // verdi: vis denne teksten i stedet for
   if(kind==='rich') return rich(v);
   if(kind==='ctab'){ const l = v.split('\n'); return `<b>${esc(l[0])}</b>` + (l.length > 1 ? `<span class="sm">${esc(l.slice(1).join('\n'))}</span>` : ''); }
   if(kind==='url') return urlBreak(v);
+  if(kind==='innholdpris') return lesInnhold(v).map(b => b.t === 'etikett'
+      ? `<div class="prisrader">${b.v.split('\n').map(l => { const i = l.indexOf(':'); return `<div class="prow"><span class="pl">${esc(l.slice(0,i).trim())}</span><span class="pd"></span><span class="pv">${esc(l.slice(i+1).trim())}</span></div>`; }).join('')}</div>`
+      : disp0(null, 'innhold', b.t === 'h' ? '# ' + b.v : b.t === 'liste' ? b.v.split('\n').map(x => '- ' + x).join('\n') : b.t === 'linje' ? '---' : b.v)).join('');
   if(kind==='innhold') return lesInnhold(v).map(b => b.t === 'h' ? `<div class="h10">${esc(b.v)}</div>`
     : b.t === 'p' ? `<div class="p10">${rich(b.v)}</div>`
     : b.t === 'liste' ? `<div class="liste">${disp0(null, 'list', b.v)}</div>`
@@ -560,7 +563,7 @@ function liggende(uid, f){
 
 /* 10 · Tekstplakat. A4 er målt fra InDesign-fila (mal5_tekstplakat.idml): lys grå flate med radial overgang,
    samme bølger som mal 1, all tekst i én spalte, valgfritt ikon øverst til høyre. Liggende er en tilpasning. */
-LAYOUTS.tekstplakat = (uid,f) => {
+LAYOUTS.tekstplakat = (uid,f,valg) => { // valg.pris: brødteksten vises som prisliste (se LAYOUTS.prisliste)
   const c = SLOR[S.slor], A = true, W = 794, H = 1123;
   const pn = {x0:28.7,y0:28.7,x1:765,y1:1094,r:54.5};
   const panelD = rrect(pn.x0,pn.y0,pn.x1,pn.y1,pn.r);
@@ -579,7 +582,8 @@ LAYOUTS.tekstplakat = (uid,f) => {
   </svg>`;
   const q = S.qr ? qrSvg() : '';
   const topp = E('stikk','stikk') + E('tittel','tittel') + E('ingress','ingress');
-  const brod = E('innhold','innhold10','div',null,'innhold');
+  const pris = !!(valg && valg.pris);
+  const brod = E('innhold', pris ? 'innhold10 pris10' : 'innhold10', 'div', null, pris ? 'innholdpris' : 'innhold');
   const harBrod = hasE('innhold');
   if(A) return svg + logo(87.5,48.5,89) + ikonHer(608,90,98,NAVY,'#f3f3f3')
     + box(105,255,584,670,20,'tp10', topp + (harBrod ? '<div class="gap10"></div>' : '') + brod)
@@ -609,6 +613,92 @@ function tekstplakatLiggende(uid, f){
     + g.qrHtml(q);
 }
 
+
+
+/* ═════════ SVØMMEHALLEN (ENHETER i oppsett.js). Forslag, ikke godkjent av designer. ═════════ */
+
+/* Forbudsskilt (som ISO 7010): rød ring og skråstrek over et sort symbol på hvit bunn. Tegnet i en 200 × 200-boks.
+   Rødt er T_rød fra profilen. */
+const FORBUD_ROD = '#923c3d';
+const FORBUD = {
+  mobil:  {navn:'Mobil', d:'<rect x="72" y="42" width="56" height="116" rx="11" fill="#1d1d1b"/><rect x="79" y="55" width="42" height="84" rx="3" fill="#fff"/><circle cx="100" cy="148" r="5" fill="#fff"/>'},
+  kamera: {navn:'Kamera', d:'<rect x="78" y="58" width="44" height="20" rx="5" fill="#1d1d1b"/><rect x="44" y="70" width="112" height="76" rx="12" fill="#1d1d1b"/><circle cx="100" cy="108" r="27" fill="#fff"/><circle cx="100" cy="108" r="16" fill="#1d1d1b"/><rect x="132" y="80" width="14" height="8" rx="2" fill="#fff"/>'},
+  mat:    {navn:'Mat', d:'<rect x="56" y="42" width="7" height="48" rx="3" fill="#1d1d1b"/><rect x="68" y="42" width="7" height="48" rx="3" fill="#1d1d1b"/><rect x="80" y="42" width="7" height="48" rx="3" fill="#1d1d1b"/><rect x="56" y="80" width="31" height="20" rx="8" fill="#1d1d1b"/><rect x="66" y="94" width="11" height="66" rx="5" fill="#1d1d1b"/><path d="M118 42 C140 50 144 92 132 104 L118 104 Z" fill="#1d1d1b"/><rect x="118" y="98" width="12" height="62" rx="5" fill="#1d1d1b"/>'},
+};
+function forbudSkilt(type, x, y, d){
+  const k = 100 - 84 * Math.SQRT1_2, l = 100 + 84 * Math.SQRT1_2;
+  return `<g transform="translate(${x},${y}) scale(${d/200})" role="img" aria-label="Forbudt: ${FORBUD[type].navn}"><circle cx="100" cy="100" r="92" fill="#fff"/>${FORBUD[type].d}`
+    + `<circle cx="100" cy="100" r="84" fill="none" stroke="${FORBUD_ROD}" stroke-width="18"/><path d="M${k.toFixed(1)},${k.toFixed(1)} L${l.toFixed(1)},${l.toFixed(1)}" stroke="${FORBUD_ROD}" stroke-width="18"/></g>`;
+}
+const toSpraak = () => `<div class="fbk"><div class="fsp">${E('ut1','h10')}${E('tx1','p10','div',null,'rich')}</div><div class="fsp">${E('ut2','h10')}${E('tx2','p10','div',null,'rich')}</div></div>`;
+
+/* Forbudsskilt, stående A4: tre forbudsskilt og likestilt tekst på to språk i to spalter. Bygget som Tekstplakat. */
+LAYOUTS.forbudsskilt = (uid) => {
+  const c = SLOR[S.slor], W = 794, H = 1123;
+  const panelD = rrect(28.7,28.7,765,1094,54.5);
+  const svg = `<svg class="bg" viewBox="0 0 ${W} ${H}"><defs>
+      <radialGradient id="${uid}rg" gradientUnits="userSpaceOnUse" cx="${W/2}" cy="${H/2}" r="561.3"><stop offset="0" stop-color="#fbfbfb"/><stop offset="1" stop-color="#e2e2e2"/></radialGradient>
+      <linearGradient id="${uid}sl" gradientUnits="userSpaceOnUse" x1="459.1" y1="745.8" x2="471" y2="817.9"><stop offset="0" stop-color="${c.c}" stop-opacity=".75"/><stop offset="1" stop-color="${c.c}" stop-opacity="0"/></linearGradient>
+      <clipPath id="${uid}pc"><path d="${panelD}"/></clipPath>
+    </defs>
+    <rect width="${W}" height="${H}" fill="#fff"/>
+    <g clip-path="url(#${uid}pc)" pointer-events="none">
+      <rect width="${W}" height="${H}" fill="url(#${uid}rg)"/>
+      <g transform="translate(0,174.45)"><path d="${FS8.gronn}" fill="url(#${uid}sl)"/><path d="${FS8.navy}" fill="${NAVY}"/></g>
+    </g>
+    <g pointer-events="none">${forbudSkilt('mobil',92,330,190)}${forbudSkilt('kamera',302,330,190)}${forbudSkilt('mat',512,330,190)}</g>
+    <g pointer-events="none"><path d="${FS8.hvit}" fill="#fff"/><path d="${FS8.hale}" fill="#fff"/></g>
+  </svg>`;
+  const q = S.qr ? qrSvg() : '';
+  return svg + logo(87.5,48.5,89)
+    + box(105,190,584,125,17,'tp10', E('tittel','tittel')).replace('height:125px;', 'height:125px;justify-content:flex-end;padding-bottom:8px;')
+    + box(105,565,584,360,26,'tp10 fb2', toSpraak())
+    + (q ? `<div class="qrbox7" style="left:628px;top:959px;width:103.3px;height:103.3px;padding:8px">${q}</div>` : '')
+    + `<div class="box" data-base="18.22" style="left:${q?399:522}px;top:976px;width:210px;height:80.5px;justify-content:flex-end">${E('cta','qrt1','div',null,'bold')}</div>`;
+};
+/* Forbudsskilt, A4 liggende: skiltene øverst til høyre for logoen, tittel og to spalter under. Se liggende(). */
+LAYOUTS.forbudsskiltliggende = (uid) => {
+  const g = liggende(uid, 'a4l'), {W, H} = g;
+  const svg = `<svg class="bg" viewBox="0 0 ${W} ${H}"><defs>${g.defs}</defs>
+    <rect width="${W}" height="${H}" fill="#fff"/>
+    <g clip-path="url(#${uid}pc)" pointer-events="none"><rect width="${W}" height="${H}" fill="url(#${uid}rg)"/>${g.bolge}</g>
+    <g pointer-events="none">${forbudSkilt('mobil',440,55,170)}${forbudSkilt('kamera',650,55,170)}${forbudSkilt('mat',860,55,170)}</g>
+    ${g.utsparing}
+  </svg>`;
+  const q = S.qr ? qrSvg() : '';
+  return svg + logo(87.5,48.5,89)
+    + box(105,245,920,95,17,'tp10', E('tittel','tittel')).replace('height:95px;', 'height:95px;justify-content:flex-end;padding-bottom:8px;')
+    + box(105,355,920,265,22,'tp10 fb2', toSpraak())
+    + g.qrHtml(q);
+};
+
+/* Stor QR-kode, stående A4: lite tekst og en stor QR-kode midt på. Bygget som Tekstplakat, men QR-koden er flyttet
+   fra hjørnet til midten og gjort tre ganger større. */
+LAYOUTS.qrplakat = (uid) => {
+  const c = SLOR[S.slor], W = 794, H = 1123;
+  const panelD = rrect(28.7,28.7,765,1094,54.5);
+  const svg = `<svg class="bg" viewBox="0 0 ${W} ${H}"><defs>
+      <radialGradient id="${uid}rg" gradientUnits="userSpaceOnUse" cx="${W/2}" cy="${H/2}" r="561.3"><stop offset="0" stop-color="#fbfbfb"/><stop offset="1" stop-color="#e2e2e2"/></radialGradient>
+      <linearGradient id="${uid}sl" gradientUnits="userSpaceOnUse" x1="459.1" y1="745.8" x2="471" y2="817.9"><stop offset="0" stop-color="${c.c}" stop-opacity=".75"/><stop offset="1" stop-color="${c.c}" stop-opacity="0"/></linearGradient>
+      <clipPath id="${uid}pc"><path d="${panelD}"/></clipPath>
+    </defs>
+    <rect width="${W}" height="${H}" fill="#fff"/>
+    <g clip-path="url(#${uid}pc)" pointer-events="none">
+      <rect width="${W}" height="${H}" fill="url(#${uid}rg)"/>
+      <g transform="translate(0,174.45)"><path d="${FS8.gronn}" fill="url(#${uid}sl)"/><path d="${FS8.navy}" fill="${NAVY}"/></g>
+    </g>
+    <g pointer-events="none"><path d="${FS8.hvit}" fill="#fff"/><path d="${FS8.hale}" fill="#fff"/></g>
+  </svg>`;
+  const q = qrSvg();
+  return svg + logo(87.5,48.5,89)
+    + box(105,215,584,235,20,'tp10 qrp', E('stikk','stikk') + E('tittel','tittel') + E('ingress','ingress'))
+    + `<div class="qrbox7 qrstor" style="left:232px;top:470px;width:330px;height:330px;padding:22px">${q || '<span class="qrtom">Skriv nettadressen under «Lenke og QR-kode», så kommer QR-koden her</span>'}</div>`
+    + box(105,815,584,80,30,'tp10 qrp', E('cta','qrstortekst','div',null,'bold'));
+};
+
+/* Prisliste, stående A4: som Tekstplakat, men «Etikett: verdi» i brødteksten vises som prisrader med prikker
+   fram til beløpet. Samme felt som Tekstplakat, så teksten følger med. */
+LAYOUTS.prisliste = (uid, f) => LAYOUTS.tekstplakat(uid, f, {pris:true}); // logo() tegnes av tekstplakat
 
 /* 11 · Inndelt plakat. A4 er målt fra InDesign-fila (mal6_inndelt_plakat.idml): bilde øverst, tittel i blått bølgefelt,
    brødtekst i to spalter på hvit bunn med tynn ramme som tones ut oppover. Liggende er en tilpasning. */
