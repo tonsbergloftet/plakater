@@ -231,6 +231,22 @@ details[open] .sumh{margin-bottom:12px}
 .page .qrt13{text-align:right;color:#fff;font-style:italic;font-size:1em;line-height:1.08}
 .page .qrt13 b{font-weight:700}
 
+
+/* 13 · Invitasjon – stort bilde (mal15_infoskjerm stort bilde 2.idml) */
+.page .inv15-stikk{text-align:center;color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.65)}
+.page .inv15-stikk .stikk{display:block;color:var(--slor);font-weight:700;font-size:1em;letter-spacing:.3em;text-transform:uppercase;line-height:1.05;margin:0;text-shadow:1px 2px 4px rgba(0,0,0,.65)}
+.page .inv15-stikk .stikk::before{display:none}
+.page .inv15-head{color:#fff;text-align:center;text-shadow:0 2px 18px rgba(0,0,0,.6)}
+.page .inv15-head .tittel{font-weight:400;font-style:italic;font-size:1em;line-height:1.05;letter-spacing:0;margin:0}
+.page .inv15-head .tittel .tem{font-weight:700;font-style:italic}
+.page .inv15-copy{color:#fff;text-align:left;text-shadow:1px 2px 9px rgba(0,0,0,.58)}
+.page .inv15-copy .h15{font-weight:700;font-size:1em;line-height:1.1;margin:0}
+.page .inv15-copy .p15{font-weight:400;font-size:.75em;line-height:1.28;margin:.3em 0 0;white-space:pre-line}
+.page .inv15-copy .a15{font-weight:700;font-style:italic;font-size:.95em;line-height:1.15;margin:.42em 0 0;color:var(--slor)}
+.page .qr15{position:absolute;left:1077.45px;top:468px;width:125.64px;height:125.64px;padding:10px;background:#fff;border-radius:14px;box-shadow:5px 6px 18px rgba(0,0,0,.35)}
+.page .qr15 svg{display:block;width:100%;height:100%}
+.page .inv15-cta{left:0;top:0;pointer-events:none}
+
 /* 11 og 12 · Infoskjerm (fra designerens InDesign-filer mal9_infoskjerm og mal10_infoskjerm_stort_bilde) */
 .page .skript{font-family:'Square Peg',cursive;color:#fff;text-align:center;font-weight:400;letter-spacing:.02em;white-space:pre-line}
 .page .is11{color:#1d1d1b;text-align:left}
