@@ -102,13 +102,13 @@ function temaIkon(t){
 function tegnTemavalg(){
   const stripe = $('temastripe'); if(!stripe) return;
   const kan = !!TEMA_PLASS[S.tpl] && TEMA_REKKE.length > 0;
-  stripe.classList.toggle('hide', !kan);
+  // Stripa står alltid på samme plass (fast høyde), så plakaten ikke flytter seg når man bytter mal
   // Slørfargen styres av temaet: vis det i sidepanelet
   const t = aktivtTema();
   $('sec-slor').classList.toggle('styrt', !!t);
   $('slortema').classList.toggle('hide', !t);
   if(t) $('slortema').textContent = `Slørfargen styres av temaet «${t.navn}». Velg «Ingen» tema over plakaten for å velge selv.`;
-  if(!kan) return;
+  if(!kan){ stripe.innerHTML = `<span class="tl">Tema</span><span class="tingen">${TEMA_REKKE.length ? 'Denne malen har ingen temaer ennå.' : ''}</span>`; return; }
   const aktuelle = TEMA_REKKE.map(id => TEMAER[id]).filter(x => x && x.maaneder.length && temaAvstand(x) <= 1).sort((a, b) => temaAvstand(a) - temaAvstand(b)).slice(0, 4);
   const vis = [{id:'', navn:'Ingen'}, ...aktuelle];
   if(S.tema && TEMAER[S.tema] && !vis.some(c => c.id === S.tema)) vis.push(TEMAER[S.tema]);

@@ -190,9 +190,11 @@ body.har-bank .bankbtn{display:block}
 
 
 /* Tema (js/tema.js): stripe over plakaten og velger i samme stil som «Velg mal» */
-.temastripe{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:8px 18px;border-bottom:1px solid var(--line);background:#fff}
+.temastripe{display:flex;align-items:center;gap:6px;flex-wrap:nowrap;overflow-x:auto;height:50px;box-sizing:border-box;padding:0 18px;border-bottom:1px solid var(--line);background:#fff;flex:none}
+#slortema.hide{display:none}
+.temastripe .tingen{font-size:13px;color:var(--muted)}
 .temastripe .tl{font-size:13px;font-weight:700;color:var(--navy);margin-right:4px}
-.tchip{display:inline-flex;align-items:center;gap:6px;border:2px solid var(--line);background:#fafbfb;border-radius:999px;padding:3px 12px 3px 4px;font-family:var(--font);font-size:13px;font-weight:600;color:var(--navy);cursor:pointer}
+.tchip{flex:none;display:inline-flex;align-items:center;gap:6px;border:2px solid var(--line);background:#fafbfb;border-radius:999px;padding:3px 12px 3px 4px;font-family:var(--font);font-size:13px;font-weight:600;color:var(--navy);cursor:pointer}
 .tchip:hover,.tchip:focus-visible{border-color:var(--navy)}
 .tchip[aria-pressed=true]{border-color:var(--navy);background:#eef4f7}
 .tchip .ti{width:26px;height:26px;border-radius:50%;background:#eef1f3;display:inline-grid;place-items:center;overflow:hidden;flex:none}
