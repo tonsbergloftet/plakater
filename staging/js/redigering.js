@@ -36,7 +36,6 @@ function fillForm(){
   $('morktxt').textContent = TPLS[S.tpl].mork || '';
   $('mork').checked = !!S.mork;
   document.querySelectorAll('#fmtseg button').forEach(b => b.style.display = TPLS[S.tpl].fmts.includes(b.dataset.fmt) ? '' : 'none');
-  $('sec-fmt').style.display = TPLS[S.tpl].fmts.length > 1 ? '' : 'none'; // formatvalget vises bare når malen har flere formater
   const IKON_TXT = {invitasjon:'Ikonet vises i det gule merket.', tekstplakat:'Ikonet vises øverst til høyre.', hoydebilde:'Ikonet vises over teksten.'};
   $('sec-ikon').classList.toggle('hide', !IKON_TXT[S.tpl]);
   $('ikonnote').textContent = IKON_TXT[S.tpl] || '';

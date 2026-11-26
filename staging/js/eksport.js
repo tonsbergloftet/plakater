@@ -74,7 +74,7 @@ async function exportFile(type, stille){
       pdf.setProperties({title: (S.tittel||'Plakat').replace(/\*\*/g,''), creator: 'Plakatgenerator – Tønsberg kommune'});
       pdf.save(name + '.pdf');
     }
-    if((S.fmt === 'a4' || S.fmt === 'a4l') && !stille && TPLS[S.tpl].fmts.includes('wide')) $('ogsa').classList.add('on');
+    if(S.fmt === 'a4' && !stille && TPLS[S.tpl].fmts.includes('wide')) $('ogsa').classList.add('on');
   }catch(err){ alert('Eksporten feilet: ' + err.message); console.error(err); }
   finally{ EKSPORTERER = false; }
   btns.forEach(b => b.disabled = false);

@@ -42,9 +42,17 @@ const TPLS = {
     felt:['stikk','tittel','ingress']},
   bymobel:{navn:'Bymøbel', sub:'Bymøbelskjerm, 9:16', bilder:3, fmts:['bym'],
     felt:['stikk','tittel','ingress','cta','url','merke','merkeTx','bs1','bs2','bs3'], mork:'Mørk bunn'},
-  tekstplakat:{navn:'Tekstplakat', sub:'Tekst, punkter og QR', bilder:0, fmts:['a4','a4l','wide'],
+  tekstplakat:{navn:'Tekstplakat', sub:'Tekst, punkter og QR', bilder:0,
     felt:['stikk','tittel','ingress','ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk','cta','url']},
-  trebilder:{navn:'Tre bilder', sub:'Tekst og tre bilder', bilder:3, fmts:['a4','a4l','wide'],
+  trebilder:{navn:'Tre bilder', sub:'Tekst og tre bilder', bilder:3,
+    felt:['stikk','tittel','ingress','ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk','cta','url']},
+  tekstplakatliggende:{navn:'Tekstplakat, liggende', sub:'A4 liggende, tekst i to spalter', bilder:0, fmts:['a4l'],
+    felt:['stikk','tittel','ingress','ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk','cta','url']},
+  trebilderliggende:{navn:'Tre bilder, liggende', sub:'A4 liggende, tekst og tre bilder', bilder:3, fmts:['a4l'],
+    felt:['stikk','tittel','ingress','ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk','cta','url']},
+  tekstplakatskjerm:{navn:'Tekstplakat, skjerm', sub:'Infoskjerm 16:9, tekst i to spalter', bilder:0, fmts:['wide'],
+    felt:['stikk','tittel','ingress','ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk','cta','url']},
+  trebilderskjerm:{navn:'Tre bilder, skjerm', sub:'Infoskjerm 16:9, tekst og tre bilder', bilder:3, fmts:['wide'],
     felt:['stikk','tittel','ingress','ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk','cta','url']},
   hoydebilde:{navn:'Høydebilde', sub:'Høyt bilde og tekst ved siden av', bilder:1,
     felt:['stikk','tittel','ingress','ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk','cta','url']},
@@ -55,15 +63,15 @@ const TPLS = {
   inndelt:{navn:'Inndelt plakat', sub:'Bilde, tittel og to spalter', bilder:1,
     felt:['stikk','tittel','ingress','ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','ut3','tx3','cta','url']},
 };
-Object.values(TPLS).forEach(t => { t.fmts = t.fmts || ['a4']; }); // tekstplakat og trebilder har også liggende versjoner (a4l, wide); de andre liggende versjonene er skjult
+Object.values(TPLS).forEach(t => { t.fmts = t.fmts || ['a4']; }); // én mal = ett format (liggende plakatversjoner er skjult; liggende og skjerm er egne maler)
 // Maler som er erstattet av designerens nye versjoner. De vises ikke lenger, men gamle PDF-er åpnes i erstatteren.
 const ERSTATTET = {forklaring:'inndelt', tekst:'tekstplakat', bilder:'trebilder', delt:'hoydebilde', bildetekst:'hoydebilde'};
 // Malene gruppert etter hva plakaten skal gjøre (innhold først)
 const GRUPPER = [
   {navn:'Vise fram noe med et stort bilde', tekst:'Kort budskap der bildet gjør mye av jobben.', maler:['bildedrevet','forside']},
-  {navn:'Forklare og informere', tekst:'Når leseren trenger litt mer tekst, punkter eller fakta.', maler:['inndelt','hoydebilde','trebilder','tekstplakat']},
+  {navn:'Forklare og informere', tekst:'Når leseren trenger litt mer tekst, punkter eller fakta.', maler:['inndelt','hoydebilde','trebilder','tekstplakat','trebilderliggende','tekstplakatliggende']},
   {navn:'Invitere til noe', tekst:'Kurs, møter og arrangementer.', maler:['invitasjon']},
-  {navn:'Skjermer', tekst:'Infoskjermer (16:9) og skjermene på bymøblene (9:16).', maler:['infoskjerm','infoskjerm2','bymobel']},
+  {navn:'Skjermer', tekst:'Infoskjermer (16:9) og skjermene på bymøblene (9:16).', maler:['infoskjerm','infoskjerm2','tekstplakatskjerm','trebilderskjerm','bymobel']},
 ];
 const fmtFor = k => TPLS[k].fmts.includes(S.fmt) ? S.fmt : TPLS[k].fmts[0];
 const bildeSlots = k => TPLS[k].bilder === 3 ? [0,1,4] : [0,1].slice(0, TPLS[k].bilder);

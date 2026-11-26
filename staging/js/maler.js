@@ -543,7 +543,7 @@ function liggende(uid, f){
                   : `<g pointer-events="none"><path d="${SKJ.S10.gronn}" fill="url(#${uid}sl)"/><path d="${SKJ.S10.navy}" fill="${NAVY}"/></g>`;
   const utsparing = L ? `<g pointer-events="none"><path d="${FS8.hvit}" fill="#fff"/><path d="${FS8.hale}" fill="#fff"/></g>`
                       : `<g pointer-events="none"><path d="${SKJ.S10.hvit}" fill="#fff"/><path d="${SKJ.S10.hale}" fill="#fff"/></g>`;
-  const logoXYW = L ? [87.5,48.5,89] : [69,40.5,65];
+  const logoXYW = L ? [87.5,48.5,89] : [69,40.5,65]; // logo() kalles i malene
   const qrHtml = q => L
     ? (q ? `<div class="qrbox7" style="left:957.3px;top:630.3px;width:103.3px;height:103.3px;padding:8px">${q}</div>` : '')
       + `<div class="box" data-base="18.22" style="left:${q?727.3:851}px;top:647.3px;width:210px;height:80.5px;justify-content:flex-end">${E('cta','qrt1','div',null,'bold')}</div>`
@@ -555,7 +555,6 @@ function liggende(uid, f){
 /* 10 · Tekstplakat. A4 er målt fra InDesign-fila (mal5_tekstplakat.idml): lys grå flate med radial overgang,
    samme bølger som mal 1, all tekst i én spalte, valgfritt ikon øverst til høyre. Liggende er en tilpasning. */
 LAYOUTS.tekstplakat = (uid,f) => {
-  if(f !== 'a4') return tekstplakatLiggende(uid, f);
   const c = SLOR[S.slor], A = true, W = 794, H = 1123;
   const pn = {x0:28.7,y0:28.7,x1:765,y1:1094,r:54.5};
   const panelD = rrect(pn.x0,pn.y0,pn.x1,pn.y1,pn.r);
@@ -582,7 +581,7 @@ LAYOUTS.tekstplakat = (uid,f) => {
     + (q ? `<div class="qrbox7" style="left:628px;top:959px;width:103.3px;height:103.3px;padding:8px">${q}</div>` : '')
     + `<div class="box" data-base="18.22" style="left:${q?399:522}px;top:976px;width:210px;height:80.5px;justify-content:flex-end">${E('cta','qrt1','div',null,'bold')}</div>`;
 };
-/* 10 · Tekstplakat, liggende (A4 liggende og 16:9). Forslag, ikke godkjent av designer. Se liggende(). */
+/* Tekstplakat, liggende og skjerm: innholdet (logoen legges på i LAYOUTS under). Se liggende(). */
 function tekstplakatLiggende(uid, f){
   const g = liggende(uid, f), {L, W, H} = g;
   const svg = `<svg class="bg" viewBox="0 0 ${W} ${H}"><defs>${g.defs}</defs>
@@ -599,8 +598,7 @@ function tekstplakatLiggende(uid, f){
   // To spalter: tittel til venstre, brødtekst til høyre. Uten brødtekst får tittelen hele bredden.
   const v = L ? {x:105, y:200, b:harBrod?440:760, h:420, base:18} : {x:87.5, y:160, b:harBrod?500:880, h:440, base:18};
   const hy = L ? {x:600, y:ikon?190:80, b:440, h:ikon?320:430, base:16} : {x:650, y:ikon?150:60, b:540, h:ikon?290:380, base:16};
-  const [lx,ly,lw] = g.logoXYW;
-  return svg + logo(lx,ly,lw) + (L ? ikonHer(962,72,98,NAVY,'#f3f3f3') : ikonHer(1140,48,80,NAVY,'#f3f3f3'))
+  return svg + (L ? ikonHer(962,72,98,NAVY,'#f3f3f3') : ikonHer(1140,48,80,NAVY,'#f3f3f3'))
     + box(v.x,v.y,v.b,v.h,v.base,'tp10', topp)
     + (harBrod ? box(hy.x,hy.y,hy.b,hy.h,hy.base,'tp10', brod) : '')
     + g.qrHtml(q);
@@ -667,7 +665,6 @@ function rundPoly(p, r){ // mangekant med avrundede hjørner (samme kurvetype so
   return d + ' Z';
 }
 LAYOUTS.trebilder = (uid,f) => {
-  if(f !== 'a4') return trebilderLiggende(uid, f);
   const c = SLOR[S.slor], A = true, W = 794, H = 1123;
   const pn = {x0:28.7,y0:28.7,x1:765,y1:1094,r:54.5};
   const panelD = rrect(pn.x0,pn.y0,pn.x1,pn.y1,pn.r);
@@ -702,7 +699,7 @@ LAYOUTS.trebilder = (uid,f) => {
     + (q ? `<div class="qrbox7" style="left:628px;top:959px;width:103.3px;height:103.3px;padding:8px">${q}</div>` : '')
     + `<div class="box" data-base="18.22" style="left:${q?399:522}px;top:976px;width:210px;height:80.5px;justify-content:flex-end">${E('cta','qrt1','div',null,'bold')}</div>`;
 };
-/* 13 · Tre bilder, liggende (A4 liggende og 16:9). Forslag, ikke godkjent av designer. Se liggende().
+/* Tre bilder, liggende og skjerm: innholdet (logoen legges på i LAYOUTS under). Se liggende().
    Bilderammene fra A4 (TB5) flyttes til høyre halvdel; nederste bilde ligger under bølgen som på A4. */
 function trebilderLiggende(uid, f){
   const g = liggende(uid, f), {L, W, H} = g;
@@ -725,12 +722,18 @@ function trebilderLiggende(uid, f){
     + E('pTittel','h10') + E('pIntro','p10') + E('punkter','liste') + E('praktisk','praktisk');
   const harBrod = ['ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk'].some(hasE);
   const ki = S.ki ? `<div class="ki" style="right:${L?50:40}px;top:${L?48:36}px">${KI_ICON}KI-generert bilde</div>` : '';
-  const [lx,ly,lw] = g.logoXYW;
   const v = L ? {x:105, y:190, b:440, h:430, base:20} : {x:87.5, y:150, b:540, h:460, base:20};
-  return svg + logo(lx,ly,lw) + ki
+  return svg + ki
     + box(v.x,v.y,v.b,v.h,v.base,'tp10 tb5', topp + (harBrod ? '<div class="gap10"></div>' : '') + brod)
     + g.qrHtml(q);
 }
+
+/* Egne maler for liggende A4 og infoskjerm (forslag, ikke godkjent av designer).
+   Samme innhold og felt som Tekstplakat og Tre bilder, så teksten følger med når brukeren bytter mal. */
+LAYOUTS.tekstplakatliggende = (uid) => tekstplakatLiggende(uid, 'a4l') + logo(87.5,48.5,89);
+LAYOUTS.trebilderliggende = (uid) => trebilderLiggende(uid, 'a4l') + logo(87.5,48.5,89);
+LAYOUTS.tekstplakatskjerm = (uid) => tekstplakatLiggende(uid, 'wide') + logo(69,40.5,65);
+LAYOUTS.trebilderskjerm = (uid) => trebilderLiggende(uid, 'wide') + logo(69,40.5,65);
 
 
 /* 10 · Høydebilde. A4 er målt fra InDesign-fila (mal8_plakat_med_hoydebilde.idml): høyt bilde til venstre under bølgen,
