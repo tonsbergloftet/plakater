@@ -42,9 +42,9 @@ const TPLS = {
     felt:['stikk','tittel','ingress']},
   bymobel:{navn:'Bymøbel', sub:'Bymøbelskjerm, 9:16', bilder:3, fmts:['bym'],
     felt:['stikk','tittel','ingress','cta','url','merke','merkeTx','bs1','bs2','bs3'], mork:'Mørk bunn'},
-  tekstplakat:{navn:'Tekstplakat', sub:'Tekst, punkter og QR', bilder:0,
+  tekstplakat:{navn:'Tekstplakat', sub:'Tekst, punkter og QR', bilder:0, fmts:['a4','a4l','wide'],
     felt:['stikk','tittel','ingress','ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk','cta','url']},
-  trebilder:{navn:'Tre bilder', sub:'Tekst og tre bilder', bilder:3,
+  trebilder:{navn:'Tre bilder', sub:'Tekst og tre bilder', bilder:3, fmts:['a4','a4l','wide'],
     felt:['stikk','tittel','ingress','ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk','cta','url']},
   hoydebilde:{navn:'Høydebilde', sub:'Høyt bilde og tekst ved siden av', bilder:1,
     felt:['stikk','tittel','ingress','ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk','cta','url']},
@@ -55,7 +55,7 @@ const TPLS = {
   inndelt:{navn:'Inndelt plakat', sub:'Bilde, tittel og to spalter', bilder:1,
     felt:['stikk','tittel','ingress','ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','ut3','tx3','cta','url']},
 };
-Object.values(TPLS).forEach(t => { t.fmts = t.fmts || ['a4']; }); // én mal = ett format (liggende plakatversjoner er skjult)
+Object.values(TPLS).forEach(t => { t.fmts = t.fmts || ['a4']; }); // tekstplakat og trebilder har også liggende versjoner (a4l, wide); de andre liggende versjonene er skjult
 // Maler som er erstattet av designerens nye versjoner. De vises ikke lenger, men gamle PDF-er åpnes i erstatteren.
 const ERSTATTET = {forklaring:'inndelt', tekst:'tekstplakat', bilder:'trebilder', delt:'hoydebilde', bildetekst:'hoydebilde'};
 // Malene gruppert etter hva plakaten skal gjøre (innhold først)
@@ -67,7 +67,7 @@ const GRUPPER = [
 ];
 const fmtFor = k => TPLS[k].fmts.includes(S.fmt) ? S.fmt : TPLS[k].fmts[0];
 const bildeSlots = k => TPLS[k].bilder === 3 ? [0,1,4] : [0,1].slice(0, TPLS[k].bilder);
-const FMT = {a4:{W:794,H:1123,ratio:3,navn:'-a4'}, wide:{W:1280,H:720,ratio:1.5,navn:'-skjerm'}, bym:{W:720,H:1280,ratio:3,navn:'-bymobel'}};
+const FMT = {a4:{W:794,H:1123,ratio:3,navn:'-a4'}, a4l:{W:1123,H:794,ratio:3,navn:'-a4-liggende'}, wide:{W:1280,H:720,ratio:1.5,navn:'-skjerm'}, bym:{W:720,H:1280,ratio:3,navn:'-bymobel'}};
 
 // Eksempeltekst: forteller hva feltet skal formidle. Brukes som starttekst, og nedlastingen varsler hvis den står igjen.
 const DEMO = {

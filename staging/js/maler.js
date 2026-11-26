@@ -526,13 +526,40 @@ LAYOUTS.bymobel = (uid) => {
 };
 
 
+/* Liggende versjoner (A4 liggende og 16:9) av malene med lys grå flate (tekstplakat, trebilder).
+   Ingen designerfil ennå (designregler, åpent spørsmål 8). Bygget av låste byggeklosser, bare likt skalert:
+   - 16:9: ramme, bølgepar, logoutsparing, logo og QR som infoskjermen med stort bilde (SKJ.S10, mal 12).
+   - A4 liggende: ramme, logo og QR i samme mm-mål som stående A4 (FS8), bølgeparet fra 16:9 skalert likt
+     til sidebredden (1123/1280) og flyttet ned. Bølgeparet er fra infoskjermen med to bilder (SKJ.S9), fordi det går over hele bredden. QR-koden har samme avstand til panelkanten som på stående A4. */
+function liggende(uid, f){
+  const c = SLOR[S.slor], L = f === 'a4l', W = L ? 1123 : 1280, H = L ? 794 : 720;
+  const panelD = L ? rrect(28.7,28.7,1094.3,765.3,54.5) : rrect4(24,24,1256,696,[53.3,68,53.3,68]);
+  const sk = 1123/1280, bolgeTf = L ? `translate(0,30) scale(${sk})` : '';
+  const defs = `<radialGradient id="${uid}rg" gradientUnits="userSpaceOnUse" cx="${W/2}" cy="${H/2}" r="${L?680:700}"><stop offset="0" stop-color="#fbfbfb"/><stop offset="1" stop-color="#e2e2e2"/></radialGradient>
+      <linearGradient id="${uid}sl" gradientUnits="userSpaceOnUse" ${L ? 'x1="721.3" y1="601.5" x2="743.8" y2="713.3"' : 'x1="845.7" y1="597.5" x2="863.8" y2="687.4"'}><stop offset="0" stop-color="${c.c}" stop-opacity=".75"/><stop offset="1" stop-color="${c.c}" stop-opacity="0"/></linearGradient>
+      <clipPath id="${uid}pc"><path d="${panelD}"/></clipPath>`;
+  // A4 liggende bruker bølgeparet fra infoskjermen med to bilder (S9), som går over hele bredden. 16:9 bruker S10.
+  const bolge = L ? `<g transform="${bolgeTf}" pointer-events="none"><path d="${SKJ.S9.bolge}" fill="url(#${uid}sl)"/><path d="${SKJ.S9.navy}" fill="${NAVY}"/></g>`
+                  : `<g pointer-events="none"><path d="${SKJ.S10.gronn}" fill="url(#${uid}sl)"/><path d="${SKJ.S10.navy}" fill="${NAVY}"/></g>`;
+  const utsparing = L ? `<g pointer-events="none"><path d="${FS8.hvit}" fill="#fff"/><path d="${FS8.hale}" fill="#fff"/></g>`
+                      : `<g pointer-events="none"><path d="${SKJ.S10.hvit}" fill="#fff"/><path d="${SKJ.S10.hale}" fill="#fff"/></g>`;
+  const logoXYW = L ? [87.5,48.5,89] : [69,40.5,65];
+  const qrHtml = q => L
+    ? (q ? `<div class="qrbox7" style="left:957.3px;top:630.3px;width:103.3px;height:103.3px;padding:8px">${q}</div>` : '')
+      + `<div class="box" data-base="18.22" style="left:${q?727.3:851}px;top:647.3px;width:210px;height:80.5px;justify-content:flex-end">${E('cta','qrt1','div',null,'bold')}</div>`
+    : skjermQr(q, 1077.5, 468, 125.5, SKJ.S10.pil,
+        `<div class="box" data-base="36.2" style="left:1022px;top:613px;width:222px;height:72px;font-size:36.2px;transform:rotate(-2deg)">${E('cta','skript','div','line-height:.81')}</div>`);
+  return {L, W, H, c, panelD, defs, bolge, utsparing, logoXYW, qrHtml};
+}
+
 /* 10 · Tekstplakat. A4 er målt fra InDesign-fila (mal5_tekstplakat.idml): lys grå flate med radial overgang,
    samme bølger som mal 1, all tekst i én spalte, valgfritt ikon øverst til høyre. Liggende er en tilpasning. */
 LAYOUTS.tekstplakat = (uid,f) => {
-  const c = SLOR[S.slor], A = f==='a4', W = A?794:1280, H = A?1123:720;
-  const pn = A ? {x0:28.7,y0:28.7,x1:765,y1:1094,r:54.5} : {x0:20,y0:20,x1:1260,y1:700,r:40};
+  if(f !== 'a4') return tekstplakatLiggende(uid, f);
+  const c = SLOR[S.slor], A = true, W = 794, H = 1123;
+  const pn = {x0:28.7,y0:28.7,x1:765,y1:1094,r:54.5};
   const panelD = rrect(pn.x0,pn.y0,pn.x1,pn.y1,pn.r);
-  const tf = A ? 'translate(0,174.45)' : 'matrix(1.6121,0,0,0.44,0,267)';
+  const tf = 'translate(0,174.45)';
   const svg = `<svg class="bg" viewBox="0 0 ${W} ${H}"><defs>
       <radialGradient id="${uid}rg" gradientUnits="userSpaceOnUse" cx="${W/2}" cy="${H/2}" r="${A?561.3:700}"><stop offset="0" stop-color="#fbfbfb"/><stop offset="1" stop-color="#e2e2e2"/></radialGradient>
       <linearGradient id="${uid}sl" gradientUnits="userSpaceOnUse" x1="459.1" y1="745.8" x2="471" y2="817.9"><stop offset="0" stop-color="${c.c}" stop-opacity=".75"/><stop offset="1" stop-color="${c.c}" stop-opacity="0"/></linearGradient>
@@ -554,12 +581,30 @@ LAYOUTS.tekstplakat = (uid,f) => {
     + box(105,255,584,670,20,'tp10', topp + (harBrod ? '<div class="gap10"></div>' : '') + brod)
     + (q ? `<div class="qrbox7" style="left:628px;top:959px;width:103.3px;height:103.3px;padding:8px">${q}</div>` : '')
     + `<div class="box" data-base="18.22" style="left:${q?399:522}px;top:976px;width:210px;height:80.5px;justify-content:flex-end">${E('cta','qrt1','div',null,'bold')}</div>`;
-  return svg + logo(63,34,66) + ikonHer(1150,40,80,NAVY,'#f3f3f3')
-    + box(80,170,520,400,18,'tp10', topp)
-    + box(660,(S.ikon && ikonSvg(S.ikon)) ? 130 : 60,520,(S.ikon && ikonSvg(S.ikon)) ? 440 : 510,16,'tp10', brod)
-    + (q ? `<div class="qrbox7" style="left:1148px;top:602px;width:88px;height:88px;padding:7px">${q}</div>` : '')
-    + `<div class="box" data-base="16" style="left:${q?930:1028}px;top:620px;width:200px;height:66px;justify-content:flex-end">${E('cta','qrt1','div',null,'bold')}</div>`;
 };
+/* 10 · Tekstplakat, liggende (A4 liggende og 16:9). Forslag, ikke godkjent av designer. Se liggende(). */
+function tekstplakatLiggende(uid, f){
+  const g = liggende(uid, f), {L, W, H} = g;
+  const svg = `<svg class="bg" viewBox="0 0 ${W} ${H}"><defs>${g.defs}</defs>
+    <rect width="${W}" height="${H}" fill="#fff"/>
+    <g clip-path="url(#${uid}pc)" pointer-events="none"><rect width="${W}" height="${H}" fill="url(#${uid}rg)"/>${g.bolge}</g>
+    ${g.utsparing}
+  </svg>`;
+  const q = S.qr ? qrSvg() : '';
+  const topp = E('stikk','stikk') + E('tittel','tittel') + E('ingress','ingress');
+  const brod = E('ut1','h10') + E('tx1','p10','div',null,'rich') + E('ut2','h10') + E('tx2','p10','div',null,'rich')
+    + E('pTittel','h10') + E('pIntro','p10') + E('punkter','liste') + E('praktisk','praktisk');
+  const harBrod = ['ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk'].some(hasE);
+  const ikon = !!(S.ikon && ikonSvg(S.ikon));
+  // To spalter: tittel til venstre, brødtekst til høyre. Uten brødtekst får tittelen hele bredden.
+  const v = L ? {x:105, y:200, b:harBrod?440:760, h:420, base:18} : {x:87.5, y:160, b:harBrod?500:880, h:440, base:18};
+  const hy = L ? {x:600, y:ikon?190:80, b:440, h:ikon?320:430, base:16} : {x:650, y:ikon?150:60, b:540, h:ikon?290:380, base:16};
+  const [lx,ly,lw] = g.logoXYW;
+  return svg + logo(lx,ly,lw) + (L ? ikonHer(962,72,98,NAVY,'#f3f3f3') : ikonHer(1140,48,80,NAVY,'#f3f3f3'))
+    + box(v.x,v.y,v.b,v.h,v.base,'tp10', topp)
+    + (harBrod ? box(hy.x,hy.y,hy.b,hy.h,hy.base,'tp10', brod) : '')
+    + g.qrHtml(q);
+}
 
 
 /* 11 · Inndelt plakat. A4 er målt fra InDesign-fila (mal6_inndelt_plakat.idml): bilde øverst, tittel i blått bølgefelt,
@@ -622,11 +667,12 @@ function rundPoly(p, r){ // mangekant med avrundede hjørner (samme kurvetype so
   return d + ' Z';
 }
 LAYOUTS.trebilder = (uid,f) => {
-  const c = SLOR[S.slor], A = f==='a4', W = A?794:1280, H = A?1123:720;
-  const pn = A ? {x0:28.7,y0:28.7,x1:765,y1:1094,r:54.5} : {x0:20,y0:20,x1:1260,y1:700,r:40};
+  if(f !== 'a4') return trebilderLiggende(uid, f);
+  const c = SLOR[S.slor], A = true, W = 794, H = 1123;
+  const pn = {x0:28.7,y0:28.7,x1:765,y1:1094,r:54.5};
   const panelD = rrect(pn.x0,pn.y0,pn.x1,pn.y1,pn.r);
-  const tf = A ? 'translate(0,174.45)' : 'matrix(1.6121,0,0,0.44,0,267)';
-  const map = A ? (q => q) : (q => [700 + (q[0]-430.9)/326.9*540, 22 + (q[1]-37.4)*.66]);
+  const tf = 'translate(0,174.45)';
+  const map = q => q;
   const bilder = TB5.map((pts,i) => {
     const P = pts.map(map), xs = P.map(q => q[0]), ys = P.map(q => q[1]);
     const d = rundPoly(P, A ? 52.9 : 40);
@@ -655,11 +701,36 @@ LAYOUTS.trebilder = (uid,f) => {
     + box(87,257,292,700,20,'tp10 tb5', topp + (harBrod ? '<div class="gap10"></div>' : '') + brod)
     + (q ? `<div class="qrbox7" style="left:628px;top:959px;width:103.3px;height:103.3px;padding:8px">${q}</div>` : '')
     + `<div class="box" data-base="18.22" style="left:${q?399:522}px;top:976px;width:210px;height:80.5px;justify-content:flex-end">${E('cta','qrt1','div',null,'bold')}</div>`;
-  return svg + logo(63,34,66) + ki
-    + box(80,150,560,440,17,'tp10 tb5', topp + (harBrod ? '<div class="gap10"></div>' : '') + brod)
-    + (q ? `<div class="qrbox7" style="left:1148px;top:602px;width:88px;height:88px;padding:7px">${q}</div>` : '')
-    + `<div class="box" data-base="16" style="left:${q?930:1028}px;top:620px;width:200px;height:66px;justify-content:flex-end">${E('cta','qrt1','div',null,'bold')}</div>`;
 };
+/* 13 · Tre bilder, liggende (A4 liggende og 16:9). Forslag, ikke godkjent av designer. Se liggende().
+   Bilderammene fra A4 (TB5) flyttes til høyre halvdel; nederste bilde ligger under bølgen som på A4. */
+function trebilderLiggende(uid, f){
+  const g = liggende(uid, f), {L, W, H} = g;
+  const fl = L ? {x0:590, x1:1086, y0:37.4, y1:757} : {x0:680, x1:1232, y0:32, y1:688};
+  const map = q => [fl.x0 + (q[0]-430.9)/326.9*(fl.x1-fl.x0), fl.y0 + (q[1]-37.4)/(990.2-37.4)*(fl.y1-fl.y0)];
+  const bilder = TB5.map((pts,i) => {
+    const P = pts.map(map), xs = P.map(q => q[0]), ys = P.map(q => q[1]);
+    return imageIn(uid, rundPoly(P, L ? 52.9 : 40), Math.min(...xs), Math.min(...ys), Math.max(...xs)-Math.min(...xs), Math.max(...ys)-Math.min(...ys), [0,1,4][i]);
+  });
+  const svg = `<svg class="bg" viewBox="0 0 ${W} ${H}"><defs>${g.defs}</defs>
+    <rect width="${W}" height="${H}" fill="#fff"/>
+    <g clip-path="url(#${uid}pc)"><rect width="${W}" height="${H}" fill="url(#${uid}rg)" pointer-events="none"/>
+      ${bilder[2]}${g.bolge}${bilder[0]}${bilder[1]}
+    </g>
+    ${g.utsparing}
+  </svg>`;
+  const q = S.qr ? qrSvg() : '';
+  const topp = E('stikk','stikk') + E('tittel','tittel') + E('ingress','ingress');
+  const brod = E('ut1','h10') + E('tx1','p10','div',null,'rich') + E('ut2','h10') + E('tx2','p10','div',null,'rich')
+    + E('pTittel','h10') + E('pIntro','p10') + E('punkter','liste') + E('praktisk','praktisk');
+  const harBrod = ['ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk'].some(hasE);
+  const ki = S.ki ? `<div class="ki" style="right:${L?50:40}px;top:${L?48:36}px">${KI_ICON}KI-generert bilde</div>` : '';
+  const [lx,ly,lw] = g.logoXYW;
+  const v = L ? {x:105, y:190, b:440, h:430, base:20} : {x:87.5, y:150, b:540, h:460, base:20};
+  return svg + logo(lx,ly,lw) + ki
+    + box(v.x,v.y,v.b,v.h,v.base,'tp10 tb5', topp + (harBrod ? '<div class="gap10"></div>' : '') + brod)
+    + g.qrHtml(q);
+}
 
 
 /* 10 · Høydebilde. A4 er målt fra InDesign-fila (mal8_plakat_med_hoydebilde.idml): høyt bilde til venstre under bølgen,

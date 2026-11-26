@@ -57,9 +57,10 @@ async function exportFile(type, stille){
       const { jsPDF } = window.jspdf;
       const pdf = S.fmt==='a4'
         ? new jsPDF({orientation:'portrait', unit:'mm', format:'a4'})
+        : S.fmt==='a4l' ? new jsPDF({orientation:'landscape', unit:'mm', format:'a4'})
         : S.fmt==='bym' ? new jsPDF({orientation:'portrait', unit:'px', format:[2160,3840], hotfixes:['px_scaling']})
         : new jsPDF({orientation:'landscape', unit:'px', format:[1920,1080], hotfixes:['px_scaling']});
-      const w = S.fmt==='a4' ? 210 : S.fmt==='bym' ? 2160 : 1920, h = S.fmt==='a4' ? 297 : S.fmt==='bym' ? 3840 : 1080;
+      const w = S.fmt==='a4' ? 210 : S.fmt==='a4l' ? 297 : S.fmt==='bym' ? 2160 : 1920, h = S.fmt==='a4' ? 297 : S.fmt==='a4l' ? 210 : S.fmt==='bym' ? 3840 : 1080;
       let lenke = (S.url||'').trim(); if(lenke && !/^https?:\/\//i.test(lenke)) lenke = 'https://' + lenke;
       canvases.forEach((cv, i) => {
         if(i) pdf.addPage();
@@ -73,7 +74,7 @@ async function exportFile(type, stille){
       pdf.setProperties({title: (S.tittel||'Plakat').replace(/\*\*/g,''), creator: 'Plakatgenerator – Tønsberg kommune'});
       pdf.save(name + '.pdf');
     }
-    if(S.fmt === 'a4' && !stille && TPLS[S.tpl].fmts.includes('wide')) $('ogsa').classList.add('on');
+    if((S.fmt === 'a4' || S.fmt === 'a4l') && !stille && TPLS[S.tpl].fmts.includes('wide')) $('ogsa').classList.add('on');
   }catch(err){ alert('Eksporten feilet: ' + err.message); console.error(err); }
   finally{ EKSPORTERER = false; }
   btns.forEach(b => b.disabled = false);
