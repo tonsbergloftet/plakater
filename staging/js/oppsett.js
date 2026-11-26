@@ -52,6 +52,8 @@ const TPLS = {
     felt:['stikk','tittel','ut1','tx1','praktisk','cta','url']},
   infoskjerm2:{navn:'Infoskjerm, stort bilde', sub:'Ett stort bilde og lite tekst', bilder:1, fmts:['wide'],
     felt:['stikk','tittel','ut1','tx1','avslutt','cta','url']},
+  infoskjerm3:{navn:'Invitasjon – stort bilde', sub:'Bakgrunnsbilde, invitasjonstekst og QR', bilder:1, fmts:['wide'],
+    felt:['stikk','tittel','ut1','tx1','avslutt','cta','url']},
   inndelt:{navn:'Inndelt plakat', sub:'Bilde, tittel og to spalter', bilder:1,
     felt:['stikk','tittel','ingress','ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','ut3','tx3','cta','url']},
 };
@@ -63,7 +65,7 @@ const GRUPPER = [
   {navn:'Vise fram noe med et stort bilde', tekst:'Kort budskap der bildet gjør mye av jobben.', maler:['bildedrevet','forside']},
   {navn:'Forklare og informere', tekst:'Når leseren trenger litt mer tekst, punkter eller fakta.', maler:['inndelt','hoydebilde','trebilder','tekstplakat']},
   {navn:'Invitere til noe', tekst:'Kurs, møter og arrangementer.', maler:['invitasjon']},
-  {navn:'Skjermer', tekst:'Infoskjermer (16:9) og skjermene på bymøblene (9:16).', maler:['infoskjerm','infoskjerm2','bymobel']},
+  {navn:'Skjermer', tekst:'Infoskjermer (16:9) og skjermene på bymøblene (9:16).', maler:['infoskjerm','infoskjerm2','infoskjerm3','bymobel']},
 ];
 const fmtFor = k => TPLS[k].fmts.includes(S.fmt) ? S.fmt : TPLS[k].fmts[0];
 const bildeSlots = k => TPLS[k].bilder === 3 ? [0,1,4] : [0,1].slice(0, TPLS[k].bilder);
