@@ -129,6 +129,23 @@ Status fra 19.11.2026. Sjekk med designeren om noe er avklart, og oppdater lista
 
 ---
 
+
+### 2.1 Ny invitasjonsskjerm – mal 15
+
+Målt fra `mal15_infoskjerm stort bilde 2.idml` (november 2026). Dette er en egen 16:9-mal, ikke en variant av infoskjerm 2.
+
+| Element | Mål i generatoren (1280 × 720 px) |
+|---|---|
+| Fotopanel | x 24 · y 24 · bredde 1232 · høyde 672 · radius 53,3 px |
+| Logoens hvite utsparing | designerens to former `SKJ15.hvit` og `SKJ15.hale` |
+| Stikktittel «INVITASJON» | x 415,7 · y 90,7 · 448,7 × 23,3 px |
+| Hovedtittel | x 197,3 · y 126,7 · 885,3 × 118,6 px |
+| Tekstblokk nede til venstre | x 87,3 · y 461,3 · 258,7 × 174,7 px |
+| QR-felt | x 1077,5 · y 468 · 125,6 × 125,6 px |
+| Håndskrevet QR-tekst | x 1028 · y 605,3 · ca. 223 × 70,3 px |
+
+Formene `SKJ15.gronn` og `SKJ15.navy` er de målte organiske formene fra IDML-filen. Den grønne formen bruker valgt slørfarge med 75 % dekning og myk uttoning; den mørkeblå formen bruker `NAVY`. `SKJ15.hvit` og `SKJ15.hale` danner den hvite logoåpningen. QR-pilen er også målt fra IDML-filen. Bakgrunnsbildet har mørk vignett og blåskjær som lages med SVG-filter, ikke CSS-blandingsmodus.
+
 ## 5. Sjekkliste for nye maler
 
 - [ ] Malen er målt fra en IDML-fil fra designeren, eller tydelig merket som forslag som designeren må godkjenne.
