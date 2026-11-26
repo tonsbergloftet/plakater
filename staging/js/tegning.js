@@ -5,6 +5,7 @@ let uidN = 0;
 const hasSide2 = () => S.tpl==='bildetekst' && S.fmt==='a4' && S.side2;
 function buildPage(tpl, fmt, side, edit){
   EDIT = !!edit;
+  synkInnhold(); // brødtekst ↔ faste felt (js/oppsett.js)
   const egenSlor = S.slor; S.slor = temaSlor(); // et valgt tema bestemmer slørfargen (js/tema.js)
   const c = SLOR[S.slor];
   const el = document.createElement('div');

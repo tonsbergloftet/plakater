@@ -43,19 +43,19 @@ const TPLS = {
   bymobel:{navn:'Bymøbel', sub:'Bymøbelskjerm, 9:16', bilder:3, fmts:['bym'],
     felt:['stikk','tittel','ingress','cta','url','merke','merkeTx','bs1','bs2','bs3'], mork:'Mørk bunn'},
   tekstplakat:{navn:'Tekstplakat', sub:'Tekst, punkter og QR', bilder:0,
-    felt:['stikk','tittel','ingress','ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk','cta','url']},
+    felt:['stikk','tittel','ingress','innhold','cta','url']},
   trebilder:{navn:'Tre bilder', sub:'Tekst og tre bilder', bilder:3,
-    felt:['stikk','tittel','ingress','ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk','cta','url']},
+    felt:['stikk','tittel','ingress','innhold','cta','url']},
   tekstplakatliggende:{navn:'Tekstplakat, liggende', sub:'A4 liggende, tekst i to spalter', bilder:0, fmts:['a4l'],
-    felt:['stikk','tittel','ingress','ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk','cta','url']},
+    felt:['stikk','tittel','ingress','innhold','cta','url']},
   trebilderliggende:{navn:'Tre bilder, liggende', sub:'A4 liggende, tekst og tre bilder', bilder:3, fmts:['a4l'],
-    felt:['stikk','tittel','ingress','ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk','cta','url']},
+    felt:['stikk','tittel','ingress','innhold','cta','url']},
   tekstplakatskjerm:{navn:'Tekstplakat, skjerm', sub:'Infoskjerm 16:9, tekst i to spalter', bilder:0, fmts:['wide'],
-    felt:['stikk','tittel','ingress','ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk','cta','url']},
+    felt:['stikk','tittel','ingress','innhold','cta','url']},
   trebilderskjerm:{navn:'Tre bilder, skjerm', sub:'Infoskjerm 16:9, tekst og tre bilder', bilder:3, fmts:['wide'],
-    felt:['stikk','tittel','ingress','ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk','cta','url']},
+    felt:['stikk','tittel','ingress','innhold','cta','url']},
   hoydebilde:{navn:'Høydebilde', sub:'Høyt bilde og tekst ved siden av', bilder:1,
-    felt:['stikk','tittel','ingress','ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk','cta','url']},
+    felt:['stikk','tittel','ingress','innhold','cta','url']},
   infoskjerm:{navn:'Infoskjerm', sub:'To bilder, tittel og praktisk info', bilder:2, fmts:['wide'],
     felt:['stikk','tittel','ut1','tx1','praktisk','cta','url']},
   infoskjerm2:{navn:'Infoskjerm, stort bilde', sub:'Ett stort bilde og lite tekst', bilder:1, fmts:['wide'],
@@ -103,7 +103,7 @@ const S = {
   bs1:'', bs2:'', bs3:'', pIntro:'',
   side2:true, side:1,
   tema:null, // valgfritt tema (se js/tema.js)
-  blokker:null, blokkerSync:'', // innholdsblokker (se BLOKK_MALER)
+  innhold:null, // brødtekst som fritekst (se INNHOLD_MALER)
   s2Tittel:'Et foreldrekurs for migrasjonsfamilier',
   s2Ut1:'Hva er ICDP-kurs?',
   s2Tx1:'ICDP (International Child Development Programme) er et foreldreveiledningskurs som styrker samspillet mellom foreldre og barn. Kurset tar utgangspunkt i hverdagslige situasjoner og gir konkrete verktøy for å forstå barnets behov, regulere følelser og bygge en trygg og positiv relasjon.',
@@ -117,39 +117,56 @@ const S = {
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-/* ═════════ INNHOLDSBLOKKER ═════════
-   I malene med brødtekst (BLOKK_MALER) bygger brukeren innholdet selv av blokker: mellomtittel, tekst, punktliste,
-   «Etikett: verdi» og skillelinje. Blokkene ligger i S.blokker. De faste feltene (BLOKK_FELT) holdes oppdatert fra
-   blokkene, slik at arbeidsfila fortsatt virker i prod og i maler uten blokker. Blokk-nøklene heter B0, B1, … */
-const BLOKK_MALER = ['tekstplakat','tekstplakatliggende','tekstplakatskjerm','trebilder','trebilderliggende','trebilderskjerm','hoydebilde'];
-const BLOKK_FELT = ['ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk'];
-const BLOKKTYPER = {
-  h:      {navn:'Mellomtittel', ph:'Mellomtittel'},
-  p:      {navn:'Tekst', ph:'Skriv tekst. **ord** gir utheving.', kind:'rich'},
-  liste:  {navn:'Punktliste', ph:'Ett punkt per linje', kind:'list'},
-  etikett:{navn:'Etikett: verdi', ph:'Etikett: verdi (én per linje)', kind:'prak'},
-  linje:  {navn:'Skillelinje'},
-};
-const MAKS_BLOKKER = 10;
-const erB = k => /^B\d+$/.test(k);
-const blokk = k => (S.blokker || [])[+String(k).slice(1)] || null;
-const val = k => erB(k) ? ((blokk(k) || {}).v || '') : S[k];
-function settVerdi(k, v){ if(erB(k)){ const b = blokk(k); if(b) b.v = v; blokkerTilGamle(); } else S[k] = v; }
-const gamleNokkel = () => JSON.stringify(BLOKK_FELT.map(k => S[k] || ''));
-function gamleTilBlokker(){ // fra de faste feltene, i samme rekkefølge som malene viser dem
-  const t = {ut1:'h', tx1:'p', ut2:'h', tx2:'p', pTittel:'h', pIntro:'p', punkter:'liste', praktisk:'etikett'};
-  return BLOKK_FELT.filter(k => String(S[k]||'').trim()).map(k => ({t:t[k], v:S[k]}));
+/* ═════════ BRØDTEKST SOM FRITEKST ═════════
+   I malene med brødtekst (INNHOLD_MALER) skriver brukeren brødteksten i ett felt, S.innhold, med lett formatering:
+     en kort linje øverst i et avsnitt blir mellomtittel (eller en linje som starter med #),
+     «- » gir punkt, «Etikett: verdi» gir fet etikett, «---» gir skillelinje, tom linje gir nytt avsnitt.
+   De faste feltene (INNHOLD_FELT) holdes oppdatert fra teksten. Da virker arbeidsfila i prod, og teksten følger med til
+   maler som bruker de faste feltene. Endres feltene et annet sted (annen mal, arbeidsfil fra prod), lages teksten på nytt. */
+const INNHOLD_MALER = ['tekstplakat','tekstplakatliggende','tekstplakatskjerm','trebilder','trebilderliggende','trebilderskjerm','hoydebilde'];
+const INNHOLD_FELT = ['ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk'];
+const INNHOLD_TIPS = 'Tom linje gir nytt avsnitt · kort linje øverst i avsnittet blir mellomtittel · «- » gir punkt · «Etikett: verdi» gir fet etikett · «---» gir linje';
+const erEtikett = l => /^[^:*#\-•\s][^:]{0,22}:\s+\S/.test(l) && !/^https?:/i.test(l);
+function lesInnhold(tekst){ // → [{t:'h'|'p'|'liste'|'etikett'|'linje', v}]
+  const ut = [], punkt = /^[-*•]\s+/, linje = /^(-{3,}|\*{3,}|_{3,})$/;
+  for(const a of String(tekst || '').replace(/\r/g, '').split(/\n[ \t]*\n/)){
+    const L = a.split('\n').map(x => x.trim()).filter(Boolean);
+    let i = 0;
+    while(i < L.length){
+      const l = L[i];
+      if(linje.test(l)){ ut.push({t:'linje', v:''}); i++; continue; }
+      if(/^#{1,6}\s+/.test(l)){ ut.push({t:'h', v:l.replace(/^#+\s+/, '').replace(/\*\*/g, '')}); i++; continue; }
+      if(punkt.test(l)){ const p = []; while(i < L.length && punkt.test(L[i])) p.push(L[i++].replace(punkt, '')); ut.push({t:'liste', v:p.join('\n')}); continue; }
+      if(erEtikett(l)){ const p = []; while(i < L.length && erEtikett(L[i])) p.push(L[i++]); ut.push({t:'etikett', v:p.join('\n')}); continue; }
+      if(i === 0 && L.length > 1 && l.length <= 60 && !/[.,;]$/.test(l)){ ut.push({t:'h', v:l.replace(/\*\*/g, '')}); i++; continue; }
+      const p = []; while(i < L.length && !linje.test(L[i]) && !/^#{1,6}\s/.test(L[i]) && !punkt.test(L[i]) && !erEtikett(L[i])) p.push(L[i++]);
+      ut.push({t:'p', v:p.join('\n')});
+    }
+  }
+  return ut;
 }
-function sikreBlokker(){ // lag blokker fra feltene første gang, og på nytt hvis feltene er endret et annet sted (annen mal, KI, arbeidsfil fra prod)
-  if(!Array.isArray(S.blokker) || S.blokkerSync !== gamleNokkel()){ S.blokker = gamleTilBlokker(); S.blokkerSync = gamleNokkel(); }
+function fraGamle(o){ // de faste feltene → fritekst
+  o = o || S; const v = k => String(o[k] || '').trim();
+  const grupper = [[v('ut1'), v('tx1')], [v('ut2'), v('tx2')],
+    [v('pTittel'), v('pIntro'), v('punkter').split('\n').map(x => x.trim()).filter(Boolean).map(x => '- ' + x).join('\n')], [v('praktisk')]];
+  return grupper.map(g => g.filter(Boolean).join('\n')).filter(Boolean).join('\n\n');
 }
-function blokkerTilGamle(){ // best mulig oversettelse tilbake til de faste feltene
-  const av = t => (S.blokker || []).filter(b => b.t === t && String(b.v||'').trim()).map(b => b.v);
+function tilGamle(){ // fritekst → de faste feltene (best mulig)
+  const b = lesInnhold(S.innhold), av = t => b.filter(x => x.t === t && x.v.trim()).map(x => x.v);
   const h = av('h'), p = av('p');
   S.ut1 = h[0] || ''; S.ut2 = h[1] || ''; S.pTittel = h.slice(2).join(' / ');
   S.tx1 = p[0] || ''; S.tx2 = p.slice(1).join('\n\n'); S.pIntro = '';
   S.punkter = av('liste').join('\n'); S.praktisk = av('etikett').join('\n');
-  S.blokkerSync = gamleNokkel();
 }
-const has = k => { const v = val(k); return !!v && String(v).trim() !== ''; };
+const gamleNokkel = () => JSON.stringify(INNHOLD_FELT.map(k => S[k] || ''));
+let INNHOLD_SIST = null, GAMLE_SIST = null;
+function synkInnhold(){ // kalles før hver tegning og lagring
+  if(S.innhold == null) S.innhold = fraGamle();
+  else if(S.innhold !== INNHOLD_SIST) tilGamle();                 // teksten er endret (brukeren, KI, arbeidsfil)
+  else if(gamleNokkel() !== GAMLE_SIST) S.innhold = fraGamle();   // feltene er endret (annen mal, arbeidsfil fra prod)
+  INNHOLD_SIST = S.innhold; GAMLE_SIST = gamleNokkel();
+}
+const has = k => S[k] && String(S[k]).trim() !== '';
 
+
+DEMO.innhold = fraGamle(DEMO); // eksempelteksten viser formatet

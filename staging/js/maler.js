@@ -89,7 +89,7 @@ function urlBreak(u){ return esc(u||'').replace(/([\/.])/g,'$1<wbr>'); }
    EDIT er sann bare når forhåndsvisningen bygges. Da blir alle tekstfelt redigerbare,
    og tomme felt vises med grå hjelpetekst. Miniatyrer og nedlasting bygges uten. */
 let EDIT = false;
-const PH = {pIntro:'Innledning til punktlista (valgfri)', ut3:'Underoverskrift', tx3:'Skriv brødtekst',
+const PH = {innhold:'Skriv brødteksten her. Tom linje gir nytt avsnitt.', pIntro:'Innledning til punktlista (valgfri)', ut3:'Underoverskrift', tx3:'Skriv brødtekst',
   stikk:'Tema', tittel:'Skriv en tittel', ingress:'Skriv en kort ingress',
   ut1:'Underoverskrift', tx1:'Skriv brødtekst', pTittel:'Overskrift over punktene',
   punkter:'Ett punkt per linje', ut2:'Underoverskrift', tx2:'Skriv brødtekst',
@@ -99,7 +99,7 @@ const PH = {pIntro:'Innledning til punktlista (valgfri)', ut3:'Underoverskrift',
   s2Merknad:'Kort merknad med pil', s2Kontakt:'Kontaktinformasjon', merke:'Tekst i merket', avslutt:'Avsluttende setning (fet kursiv)',
   merkeTx:'Kort tekst', bs1:'Stikkord om bildet (valgfritt)', bs2:'Stikkord om bildet (valgfritt)', bs3:'Stikkord om bildet (valgfritt)',
 };
-const KIND = {tittel:'tit', tx1:'rich', tx2:'rich', tx3:'rich', s2Tx1:'rich', s2Tx2:'rich', s2Tx3:'rich', s2Slutt:'rich', punkter:'list', praktisk:'prak', url:'url'};
+const KIND = {innhold:'innhold', tittel:'tit', tx1:'rich', tx2:'rich', tx3:'rich', s2Tx1:'rich', s2Tx2:'rich', s2Tx3:'rich', s2Slutt:'rich', punkter:'list', praktisk:'prak', url:'url'};
 const SINGLE = new Set(['ut3','stikk','ut1','ut2','pTittel','cta','url','qrTekst','s2Ut1','s2Ut2','s2Slutt','bs1','bs2','bs3']);
 const hasE = k => EDIT || has(k);
 let EKSPORTERER = false;
@@ -107,8 +107,8 @@ function disp(k, kindOverride){ // [MANGLER] fra KI-forslag markeres i forhånds
   const h = disp0(k, kindOverride);
   return EKSPORTERER ? h : h.replace(/\[MANGLER\]/g, '<mark class="mangler">[MANGLER]</mark>');
 }
-function disp0(k, kindOverride){
-  const v = String(val(k)||''), kind = kindOverride || KIND[k] || (erB(k) && blokk(k) ? BLOKKTYPER[blokk(k).t].kind : undefined);
+function disp0(k, kindOverride, verdi){ // verdi: vis denne teksten i stedet for S[k]
+  const v = String(verdi ?? S[k] ?? ''), kind = kindOverride || KIND[k];
   if(kind==='tit') return esc(v).replace(/\*\*(.+?)\*\*/g, '<span class="tem">$1</span>');
   if(kind==='bold') return esc(v).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
   if(kind==='dline') return v.split('\n').map(x=>x.trim()).filter(Boolean).map(l => {
@@ -118,6 +118,11 @@ function disp0(k, kindOverride){
   if(kind==='rich') return rich(v);
   if(kind==='ctab'){ const l = v.split('\n'); return `<b>${esc(l[0])}</b>` + (l.length > 1 ? `<span class="sm">${esc(l.slice(1).join('\n'))}</span>` : ''); }
   if(kind==='url') return urlBreak(v);
+  if(kind==='innhold') return lesInnhold(v).map(b => b.t === 'h' ? `<div class="h10">${esc(b.v)}</div>`
+    : b.t === 'p' ? `<div class="p10">${rich(b.v)}</div>`
+    : b.t === 'liste' ? `<div class="liste">${disp0(null, 'list', b.v)}</div>`
+    : b.t === 'etikett' ? `<div class="praktisk">${disp0(null, 'prak', b.v)}</div>`
+    : `<div class="linje10"></div>`).join('');
   if(kind==='list') return v.split('\n').map(x=>x.trim()).filter(Boolean).map(x=>`<div class="li">${esc(x)}</div>`).join('');
   if(kind==='prak') return v.split('\n').map(x=>x.trim()).filter(Boolean).map(l => {
     if(/^[-•]\s*/.test(l)) return `<div class="pb">${esc(l.replace(/^[-•]\s*/, ''))}</div>`;
@@ -129,7 +134,7 @@ function disp0(k, kindOverride){
 function E(k, cls, tag, style, kind){
   tag = tag || 'div';
   if(!EDIT && !has(k)) return '';
-  const ed = EDIT ? ` data-k="${k}" contenteditable="plaintext-only" spellcheck="true" data-ph="${esc(PH[k]||(erB(k) && blokk(k) ? BLOKKTYPER[blokk(k).t].ph : ''))}"${kind?` data-kind="${kind}"`:''}` : '';
+  const ed = EDIT ? ` data-k="${k}" contenteditable="plaintext-only" spellcheck="true" data-ph="${esc(PH[k]||'')}"${kind?` data-kind="${kind}"`:''}` : '';
   return `<${tag} class="${cls||''}${EDIT?' ed':''}${has(k)?'':' tom'}"${ed}${style?` style="${style}"`:''}>${disp(k, kind)}</${tag}>`;
 }
 function T(k, cls, tag){ return E(k, cls, tag); }
@@ -526,13 +531,6 @@ LAYOUTS.bymobel = (uid) => {
 };
 
 
-/* Innholdsblokker (se BLOKK_MALER i oppsett.js). c = klassene malen bruker for hver blokktype. */
-const BLOKK_H10 = {h:'h10', p:'p10', liste:'liste', etikett:'praktisk', linje:'linje10'};
-function blokkerHtml(c){
-  sikreBlokker();
-  return S.blokker.map((b, i) => b.t === 'linje' ? `<div class="${c.linje}"></div>` : E('B' + i, c[b.t], 'div', null, BLOKKTYPER[b.t].kind)).join('');
-}
-function harBlokker(){ sikreBlokker(); return EDIT ? S.blokker.length > 0 : S.blokker.some((b, i) => b.t !== 'linje' && has('B' + i)); }
 
 /* Liggende versjoner (A4 liggende og 16:9) av malene med lys grå flate (tekstplakat, trebilder).
    Ingen designerfil ennå (designregler, åpent spørsmål 8). Bygget av låste byggeklosser, bare likt skalert:
@@ -581,8 +579,8 @@ LAYOUTS.tekstplakat = (uid,f) => {
   </svg>`;
   const q = S.qr ? qrSvg() : '';
   const topp = E('stikk','stikk') + E('tittel','tittel') + E('ingress','ingress');
-  const brod = blokkerHtml(BLOKK_H10);
-  const harBrod = harBlokker();
+  const brod = E('innhold','innhold10','div',null,'innhold');
+  const harBrod = hasE('innhold');
   if(A) return svg + logo(87.5,48.5,89) + ikonHer(608,90,98,NAVY,'#f3f3f3')
     + box(105,255,584,670,20,'tp10', topp + (harBrod ? '<div class="gap10"></div>' : '') + brod)
     + (q ? `<div class="qrbox7" style="left:628px;top:959px;width:103.3px;height:103.3px;padding:8px">${q}</div>` : '')
@@ -598,8 +596,8 @@ function tekstplakatLiggende(uid, f){
   </svg>`;
   const q = S.qr ? qrSvg() : '';
   const topp = E('stikk','stikk') + E('tittel','tittel') + E('ingress','ingress');
-  const brod = blokkerHtml(BLOKK_H10);
-  const harBrod = harBlokker();
+  const brod = E('innhold','innhold10','div',null,'innhold');
+  const harBrod = hasE('innhold');
   const ikon = !!(S.ikon && ikonSvg(S.ikon));
   // To spalter: tittel til venstre, brødtekst til høyre. Uten brødtekst får tittelen hele bredden.
   // Teksten starter under logoutsparingen (som på stående A4), og begge spaltene starter på samme høyde.
@@ -697,8 +695,8 @@ LAYOUTS.trebilder = (uid,f) => {
   </svg>`;
   const q = S.qr ? qrSvg() : '';
   const topp = E('stikk','stikk') + E('tittel','tittel') + E('ingress','ingress');
-  const brod = blokkerHtml(BLOKK_H10);
-  const harBrod = harBlokker();
+  const brod = E('innhold','innhold10','div',null,'innhold');
+  const harBrod = hasE('innhold');
   const ki = S.ki ? `<div class="ki" style="right:${A?50:36}px;top:${A?48:32}px">${KI_ICON}KI-generert bilde</div>` : '';
   if(A) return svg + logo(87.5,48.5,89) + ki
     + box(87,257,292,700,20,'tp10 tb5', topp + (harBrod ? '<div class="gap10"></div>' : '') + brod)
@@ -726,8 +724,8 @@ function trebilderLiggende(uid, f){
   </svg>`;
   const q = S.qr ? qrSvg() : '';
   const topp = E('stikk','stikk') + E('tittel','tittel') + E('ingress','ingress');
-  const brod = blokkerHtml(BLOKK_H10);
-  const harBrod = harBlokker();
+  const brod = E('innhold','innhold10','div',null,'innhold');
+  const harBrod = hasE('innhold');
   const ki = S.ki ? `<div class="ki" style="right:${L?50:40}px;top:${L?48:36}px">${KI_ICON}KI-generert bilde</div>` : '';
   const v = L ? {x:105, y:255, b:490, h:400, base:18} : {x:87.5, y:200, b:540, h:420, base:20};
   return svg + ki
@@ -770,8 +768,8 @@ LAYOUTS.hoydebilde = (uid,f) => {
   </svg>`;
   const q = S.qr ? qrSvg() : '';
   const topp = E('stikk','stikk') + E('tittel','tittel') + E('ingress','ingress');
-  const brod = blokkerHtml(BLOKK_H10);
-  const harBrod = harBlokker();
+  const brod = E('innhold','innhold10','div',null,'innhold');
+  const harBrod = hasE('innhold');
   const ki = S.ki ? `<div class="ki" style="left:${A?56:44}px;top:${A?210:150}px">${KI_ICON}KI-generert bilde</div>` : '';
   if(A) return svg + logo(87.5,48.5,89) + ki + ikonHer(635.5,82,96,NAVY,'#f3f3f3')
     + box(431,206,292,720,20,'tp10 tb5', topp + (harBrod ? '<div class="gap10"></div>' : '') + brod)

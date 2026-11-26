@@ -13,6 +13,7 @@ const KI_FELT = { // hva feltet skal gjøre, og omtrent hvor langt det kan være
   tx2:     ['Brødtekst 2', '2–3 korte setninger.', 200],
   ut3:     ['Underoverskrift 3', 'Kort underoverskrift.', 40],
   tx3:     ['Brødtekst 3', '1–3 korte setninger med tilleggsinformasjon.', 160],
+  innhold: ['Brødtekst', 'All brødtekst i ett felt. Format: avsnitt skilles med tom linje (\\n\\n). En kort linje øverst i et avsnitt blir mellomtittel. Punkter starter med «- ». Praktisk informasjon skrives «Etikett: verdi», én per linje. Ikke bruk annen markdown enn **ord** for utheving.', 600],
   pTittel: ['Overskrift over punktene', 'Kort overskrift.', 40],
   pIntro:  ['Innledning til punktlista', 'Én kort setning.', 80],
   punkter: ['Punktliste', '3–5 punkter, ett per linje (skilles med \\n). Hvert punkt kort, gjerne med verb først.', 160],
@@ -32,8 +33,8 @@ const KI_LENGDE = {
   infoskjerm: {tx1:90, praktisk:300},
   bildedrevet: {ingress:60, cta:45},
   forside: {ingress:70},
-  hoydebilde: {tx1:150, tx2:150},
-  trebilder: {tx1:150, tx2:150},
+  hoydebilde: {tx1:150, tx2:150, innhold:450},
+  trebilder: {tx1:150, tx2:150, innhold:450},
 };
 const kiFelt = () => TPLS[S.tpl].felt.filter(k => KI_FELT[k] && !(/^bs\d$/.test(k) && !has(k)));
 function kiInstruks(){
