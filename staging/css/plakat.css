@@ -243,7 +243,7 @@ details[open] .sumh{margin-bottom:12px}
 .page .inv15-copy .h15{font-weight:700;font-size:1em;line-height:1.1;margin:0}
 .page .inv15-copy .p15{font-weight:400;font-size:.75em;line-height:1.28;margin:.3em 0 0;white-space:pre-line}
 .page .inv15-copy .a15{font-weight:700;font-style:italic;font-size:.95em;line-height:1.15;margin:.42em 0 0;color:var(--slor)}
-.page .qr15{position:absolute;left:1077.45px;top:468px;width:125.64px;height:125.64px;padding:10px;background:#fff;border-radius:14px;box-shadow:5px 6px 18px rgba(0,0,0,.35)}
+.page .qr15{position:absolute;padding:.625em;background:#fff;border-radius:.875em;box-shadow:.3em .375em 1.125em rgba(0,0,0,.35)}
 .page .qr15 svg{display:block;width:100%;height:100%}
 .page .inv15-cta{left:0;top:0;pointer-events:none}
 
