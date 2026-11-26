@@ -2,6 +2,7 @@
 /* ───────── PLAKAT ───────── */
 .page{position:relative;overflow:hidden;background:#fff;font-family:'Barlow',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
 .page.a4{width:794px;height:1123px}
+.page.a4l{width:1123px;height:794px}
 .page.wide{width:1280px;height:720px}
 .page.bym{width:720px;height:1280px}
 .page svg.bg{position:absolute;inset:0;width:100%;height:100%;display:block}

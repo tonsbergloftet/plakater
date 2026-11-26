@@ -17,6 +17,7 @@ Det som kan sjekkes maskinelt, sjekkes av `node verktoy/sjekk-regler.js` (se ned
 | Format | InDesign | Generatoren | Regel |
 |---|---|---|---|
 | A4 stående | 210 × 297 mm (595 × 842 pt) | 794 × 1123 px | 1 pt = 4/3 px, 1 mm = 3,78 px |
+| A4 liggende | 297 × 210 mm (842 × 595 pt) | 1123 × 794 px | Som A4 stående. Ingen designerfil ennå (se under) |
 | Infoskjerm 16:9 | 1920 × 1080 pt | 1280 × 720 px | px = pt × 2/3. Lastes ned i 1920 × 1080 |
 | Bymøbel 9:16 | 2160 × 3840 pt | 720 × 1280 px | px = pt × 1/3. Lastes ned i 2160 × 3840 |
 
@@ -125,7 +126,12 @@ Status fra 19.11.2026. Sjekk med designeren om noe er avklart, og oppdater lista
 ## 4. Kjente avvik i koden
 
 - **Gamle maler** (`forklaring`, `delt`, `tekst`, `bilder`, `bildetekst`) ble laget før designerens filer. De bruker en annen bølge (`waveLayers`) og et annet logomål (`G.a4.logo`). De vises ikke, men må ligge i koden så gamle arbeidsfiler kan åpnes (se `ERSTATTET` i `js/oppsett.js`). Ikke bruk dem som utgangspunkt.
-- **Liggende varianter** av flere A4-maler strekker bølgen (`matrix(1.6121,0,0,0.44,…)`). De er skjult i generatoren. Sjekkskriptet tillater de som finnes, men ingen nye.
+- **Liggende varianter** av flere A4-maler strekker bølgen (`matrix(1.6121,0,0,0.44,…)`). De er skjult i generatoren. Sjekkskriptet tillater de som finnes, men ingen nye. Unntak: `tekstplakat` og `trebilder` (se under).
+- **Liggende Tekstplakat og Tre bilder** (A4 liggende og 16:9) er forslag, ikke godkjent av designer. De strekker ikke noe, og er bygget slik (`liggende()` i `js/maler.js`):
+  - **16:9:** ramme, bølgepar (`SKJ.S10`), logoutsparing, logo og QR med skripttekst som infoskjermen med stort bilde.
+  - **A4 liggende:** ramme, logoutsparing, logo og QR i samme mm-mål som stående A4. QR-koden har samme avstand til panelkanten. Bølgeparet er fra infoskjermen med to bilder (`SKJ.S9`, går over hele bredden), skalert likt til sidebredden (1123/1280) og flyttet ned 30 px.
+  - Tekst i to spalter (tittel til venstre, brødtekst til høyre) på Tekstplakat. Bilderammene på Tre bilder er flyttet til høyre halvdel.
+  - Designeren bør se på dem og helst levere en A4 liggende-fil (åpent spørsmål om 16:9-mal).
 
 ---
 

@@ -36,6 +36,7 @@ function fillForm(){
   $('morktxt').textContent = TPLS[S.tpl].mork || '';
   $('mork').checked = !!S.mork;
   document.querySelectorAll('#fmtseg button').forEach(b => b.style.display = TPLS[S.tpl].fmts.includes(b.dataset.fmt) ? '' : 'none');
+  $('sec-fmt').style.display = TPLS[S.tpl].fmts.length > 1 ? '' : 'none'; // formatvalget vises bare når malen har flere formater
   const IKON_TXT = {invitasjon:'Ikonet vises i det gule merket.', tekstplakat:'Ikonet vises øverst til høyre.', hoydebilde:'Ikonet vises over teksten.'};
   $('sec-ikon').classList.toggle('hide', !IKON_TXT[S.tpl]);
   $('ikonnote').textContent = IKON_TXT[S.tpl] || '';
@@ -68,7 +69,7 @@ function fillForm(){
   document.querySelectorAll('.tplbtn').forEach(b => b.classList.toggle('on', b.dataset.tpl===S.tpl));
   document.querySelectorAll('#fmtseg button').forEach(b => b.classList.toggle('on', b.dataset.fmt===S.fmt));
   document.querySelectorAll('.sw').forEach(b => b.classList.toggle('on', b.dataset.s===S.slor));
-  $('dlnote').textContent = S.fmt==='a4' ? 'PDF i A4 for utskrift. PNG i høy oppløsning.' : S.fmt==='bym' ? 'PNG i 2160 × 3840 (9:16) for skjermene på bymøblene. PDF i samme format.' : 'PNG i 1920 × 1080 for infoskjerm. PDF i samme format.';
+  $('dlnote').textContent = S.fmt==='a4' ? 'PDF i A4 for utskrift. PNG i høy oppløsning.' : S.fmt==='a4l' ? 'PDF i A4 liggende for utskrift. PNG i høy oppløsning.' : S.fmt==='bym' ? 'PNG i 2160 × 3840 (9:16) for skjermene på bymøblene. PDF i samme format.' : 'PNG i 1920 × 1080 for infoskjerm. PDF i samme format.';
   syncFields();
 }
 
