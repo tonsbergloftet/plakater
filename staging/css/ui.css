@@ -189,9 +189,22 @@ body.har-bank .bankbtn{display:block}
 .stagewrap .page{position:absolute;left:0;top:0;transform-origin:0 0;box-shadow:0 8px 30px rgba(1,57,82,.18)}
 
 
-/* Tema (js/tema.js) */
-.temachips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
-.tchip{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:5px 12px;font-family:var(--font);font-size:13px;font-weight:600;color:var(--navy);cursor:pointer}
-.tchip[aria-pressed=true]{background:var(--navy);border-color:var(--navy);color:#fff}
-.temavalg{width:100%;border:1.5px solid var(--line);border-radius:7px;padding:7px 9px;font-family:var(--font);font-size:14px;color:var(--ink);background:#fff}
+/* Tema (js/tema.js): stripe over plakaten og velger i samme stil som «Velg mal» */
+.temastripe{display:flex;align-items:center;gap:6px;flex-wrap:nowrap;overflow-x:auto;height:50px;box-sizing:border-box;padding:0 18px;border-bottom:1px solid var(--line);background:#fff;flex:none}
+#slortema.hide{display:none}
+.temastripe .tingen{font-size:13px;color:var(--muted)}
+.temastripe .tl{font-size:13px;font-weight:700;color:var(--navy);margin-right:4px}
+.tchip{flex:none;display:inline-flex;align-items:center;gap:6px;border:2px solid var(--line);background:#fafbfb;border-radius:999px;padding:3px 12px 3px 4px;font-family:var(--font);font-size:13px;font-weight:600;color:var(--navy);cursor:pointer}
+.tchip:hover,.tchip:focus-visible{border-color:var(--navy)}
+.tchip[aria-pressed=true]{border-color:var(--navy);background:#eef4f7}
+.tchip .ti{width:26px;height:26px;border-radius:50%;background:#eef1f3;display:inline-grid;place-items:center;overflow:hidden;flex:none}
+.tchip .ti svg{width:22px;height:22px;display:block}
+.tchip.flere{padding:5px 12px;background:#fff}
+.skort.on{border-color:var(--navy);background:#eef4f7}
+.skort .tmerke{position:absolute;top:10px;right:10px;width:44px;height:44px;border-radius:50%;background:#fff;box-shadow:0 2px 8px rgba(1,57,82,.25);display:grid;place-items:center;pointer-events:none}
+.skort .tmerke svg{width:36px;height:36px}
+.skort .mnd{font-size:10.5px;color:var(--muted);margin-top:-3px}
+#temamodal .mbox{width:min(1060px,100%)}
+#temamodal .mhead input{max-width:320px}
+#sec-slor.styrt .swatches{opacity:.35;pointer-events:none}
 .hint.tips{color:var(--navy);font-weight:600}

@@ -87,27 +87,60 @@ function leggPaaTema(el, tpl, fmt){
   bg.insertAdjacentHTML('afterend', `<svg class="temalag" viewBox="0 0 ${W} ${H}" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none">${lag}</svg>`);
 }
 
-/* ═════════ VALG AV TEMA I SIDEPANELET ═════════ */
+/* ═════════ VALG AV TEMA ═════════
+   Én måte å velge på: en stripe over plakaten (Ingen + temaene for denne og neste måned + «Alle temaer …»),
+   og et vindu i samme stil som «Velg mal» med alle temaene, vist på malen brukeren har valgt. */
 const TEMA_MND = ['jan','feb','mar','apr','mai','jun','jul','aug','sep','okt','nov','des'];
 // Hvor mange måneder til temaet er aktuelt (0 = nå). Temaer uten måneder passer hele året.
 const temaAvstand = t => !t.maaneder.length ? 99 : Math.min(...t.maaneder.map(m => (m - (new Date().getMonth() + 1) + 12) % 12));
+const temaMnd = t => t.maaneder.length ? t.maaneder.map(m => TEMA_MND[m-1]).join('–') : 'Hele året';
+// Lite ikon av temaets hovedmotiv (første motiv i illustrasjonen)
+function temaIkon(t){
+  const m = t && (t.motiv || [])[0];
+  return m ? `<svg viewBox="0 0 200 200" aria-hidden="true">${temaMotiv(m.m, 0, 0, 200, 0, m.f)}</svg>` : '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12h12" stroke="#5d6b74" stroke-width="2" stroke-linecap="round"/></svg>';
+}
 function tegnTemavalg(){
-  const sec = $('sec-tema'); if(!sec) return;
+  const stripe = $('temastripe'); if(!stripe) return;
   const kan = !!TEMA_PLASS[S.tpl] && TEMA_REKKE.length > 0;
-  sec.classList.toggle('hide', !kan);
-  if(!kan) return;
-  const aktuelle = TEMA_REKKE.map(id => TEMAER[id]).filter(t => t && t.maaneder.length && temaAvstand(t) <= 1).sort((a, b) => temaAvstand(a) - temaAvstand(b)).slice(0, 4);
-  const chips = [{id:'', navn:'Ingen'}, ...aktuelle];
-  if(S.tema && TEMAER[S.tema] && !chips.some(c => c.id === S.tema)) chips.push(TEMAER[S.tema]);
-  $('temachips').innerHTML = chips.map(c => `<button class="tchip" data-tema="${c.id}" aria-pressed="${(S.tema||'') === c.id}">${esc(c.navn)}</button>`).join('');
-  const gruppe = (navn, kat) => `<optgroup label="${navn}">${TEMA_REKKE.map(id => TEMAER[id]).filter(t => t && t.kategori === kat)
-    .map(t => `<option value="${t.id}"${S.tema === t.id ? ' selected' : ''}>${esc(t.navn)}${t.maaneder.length ? ' (' + t.maaneder.map(m => TEMA_MND[m-1]).join('–') + ')' : ''}</option>`).join('')}</optgroup>`;
-  $('temavalg').innerHTML = `<option value="">Flere temaer …</option>` + gruppe('Årshjulet', 'arshjul') + gruppe('Aktiviteter', 'aktivitet');
-  $('temavalg').value = S.tema || '';
-  $('temanote').textContent = S.tema && TEMAER[S.tema] ? 'Temaet bestemmer slørfargen og legger til motiver. Velg «Ingen» for å fjerne det.' : 'Legg til farge og motiver for en høytid eller aktivitet. Teksten og malen er den samme.';
+  // Stripa står alltid på samme plass (fast høyde), så plakaten ikke flytter seg når man bytter mal
+  // Slørfargen styres av temaet: vis det i sidepanelet
+  const t = aktivtTema();
+  $('sec-slor').classList.toggle('styrt', !!t);
+  $('slortema').classList.toggle('hide', !t);
+  if(t) $('slortema').textContent = `Slørfargen styres av temaet «${t.navn}». Velg «Ingen» tema over plakaten for å velge selv.`;
+  if(!kan){ stripe.innerHTML = `<span class="tl">Tema</span><span class="tingen">${TEMA_REKKE.length ? 'Denne malen har ingen temaer ennå.' : ''}</span>`; return; }
+  const aktuelle = TEMA_REKKE.map(id => TEMAER[id]).filter(x => x && x.maaneder.length && temaAvstand(x) <= 1).sort((a, b) => temaAvstand(a) - temaAvstand(b)).slice(0, 4);
+  const vis = [{id:'', navn:'Ingen'}, ...aktuelle];
+  if(S.tema && TEMAER[S.tema] && !vis.some(c => c.id === S.tema)) vis.push(TEMAER[S.tema]);
+  stripe.innerHTML = `<span class="tl">Tema</span>` + vis.map(c => `<button class="tchip" data-tema="${c.id}" aria-pressed="${(S.tema||'') === c.id}"><span class="ti">${temaIkon(c.id ? c : null)}</span>${esc(c.navn)}</button>`).join('')
+    + `<button class="tchip flere" id="temaflere">Alle temaer …</button>`;
+}
+function apneTemavalg(){
+  const q = ($('temasok').value || '').trim().toLowerCase();
+  const treff = t => !q || (t.navn + ' ' + t.sub + ' ' + (t.motiv||[]).map(m => (MOTIVER[m.m]||{}).navn||'').join(' ')).toLowerCase().includes(q);
+  const kort = (id, navn, mnd) => `<button class="skort${(S.tema||'') === id ? ' on' : ''}" data-tema="${id}" aria-pressed="${(S.tema||'') === id}"><div class="thumb"></div>${id ? `<span class="tmerke">${temaIkon(TEMAER[id])}</span>` : ''}<span class="lbl">${esc(navn)}</span>${mnd ? `<span class="mnd">${mnd}</span>` : ''}</button>`;
+  const gruppe = (navn, tekst, liste) => liste.length ? `<div class="sgrp"><h3>${navn}</h3><p>${tekst}</p><div class="srow">${liste.map(t => kort(t.id, t.navn, temaMnd(t))).join('')}</div></div>` : '';
+  const alle = TEMA_REKKE.map(id => TEMAER[id]).filter(t => t && treff(t));
+  $('temagrp').innerHTML = (q ? '' : `<div class="sgrp"><h3>Uten tema</h3><p>Malen slik den er.</p><div class="srow">${kort('', 'Ingen tema', '')}</div></div>`)
+    + gruppe('Årshjulet', 'Høytider og årstider, de neste først.', alle.filter(t => t.kategori === 'arshjul').sort((a, b) => temaAvstand(a) - temaAvstand(b)))
+    + gruppe('Aktiviteter', 'Passer hele året.', alle.filter(t => t.kategori === 'aktivitet'))
+    || '<p class="sintro">Ingen temaer passer søket.</p>';
+  $('temamodal').classList.add('on');
+  // Miniatyrene viser malen brukeren har valgt, med hvert tema
+  setTimeout(() => $('temagrp').querySelectorAll('.skort').forEach(b => {
+    const eget = S.tema; S.tema = b.dataset.tema || null;
+    try { miniatyr(b.querySelector('.thumb'), S.tpl); } finally { S.tema = eget; }
+  }), 30);
 }
 function initTema(){
-  const velg = id => { S.tema = id || null; fillForm(); render(); renderThumbs(); };
-  $('temachips').addEventListener('click', e => { const b = e.target.closest('.tchip'); if(b) velg(b.dataset.tema); });
-  $('temavalg').addEventListener('change', e => velg(e.target.value));
+  const velg = id => { S.tema = id || null; $('temamodal').classList.remove('on'); fillForm(); render(); renderThumbs(); };
+  $('temastripe').addEventListener('click', e => {
+    if(e.target.closest('#temaflere')){ $('temasok').value = ''; apneTemavalg(); setTimeout(() => $('temasok').focus(), 50); return; }
+    const b = e.target.closest('.tchip[data-tema]'); if(b) velg(b.dataset.tema);
+  });
+  $('temagrp').addEventListener('click', e => { const b = e.target.closest('.skort[data-tema]'); if(b) velg(b.dataset.tema); });
+  $('temalukk').onclick = () => $('temamodal').classList.remove('on');
+  $('temamodal').addEventListener('click', e => { if(e.target.id === 'temamodal') $('temamodal').classList.remove('on'); });
+  document.addEventListener('keydown', e => { if(e.key === 'Escape') $('temamodal').classList.remove('on'); });
+  let t = null; $('temasok').addEventListener('input', () => { clearTimeout(t); t = setTimeout(apneTemavalg, 150); });
 }
