@@ -10,12 +10,60 @@ function syncFields(){
   document.querySelectorAll('.f[data-k]').forEach(f => {
     const k = f.dataset.k;
     if(k==='qrTekst'){ f.classList.toggle('hide', !(used.includes('qrTekst') && S.qr)); return; }
-    f.classList.toggle('hide', !used.includes(k));
+    f.classList.toggle('hide', !used.includes(k) || (BLOKK_MALER.includes(S.tpl) && BLOKK_FELT.includes(k)));
+  });
+  $('blokkpanel').classList.toggle('hide', !BLOKK_MALER.includes(S.tpl));
+}
+const enLinje = k => SINGLE.has(k) || (erB(k) && blokk(k) && blokk(k).t === 'h');
+/* Innholdsblokker i sidepanelet (se BLOKK_MALER i oppsett.js) */
+function tegnBlokkpanel(){
+  if(!BLOKK_MALER.includes(S.tpl)) return;
+  sikreBlokker();
+  const n = S.blokker.length;
+  $('blokkliste').innerHTML = S.blokker.map((b, i) => `<div class="blokk" data-i="${i}">
+      <div class="bt"><select aria-label="Type blokk ${i+1}" data-i="${i}">${Object.entries(BLOKKTYPER).map(([t, d]) => `<option value="${t}"${t===b.t?' selected':''}>${d.navn}</option>`).join('')}</select>
+        <button class="bk" data-g="opp" data-i="${i}" aria-label="Flytt blokk ${i+1} opp" ${i===0?'disabled':''}>↑</button>
+        <button class="bk" data-g="ned" data-i="${i}" aria-label="Flytt blokk ${i+1} ned" ${i===n-1?'disabled':''}>↓</button>
+        <button class="bk" data-g="slett" data-i="${i}" aria-label="Slett blokk ${i+1}">✕</button></div>
+      ${b.t === 'linje' ? '<div class="regelvis" aria-hidden="true"></div>' : `<textarea rows="${b.t==='h'?1:3}" data-i="${i}" aria-label="${BLOKKTYPER[b.t].navn} (blokk ${i+1})" placeholder="${esc(BLOKKTYPER[b.t].ph)}" spellcheck="true">${esc(b.v||'')}</textarea>`}
+    </div>`).join('') || '<p class="h" style="margin:0;font-size:12.5px;color:var(--muted)">Ingen blokker ennå. Legg til en under.</p>';
+  $('blokkny').innerHTML = n >= MAKS_BLOKKER ? `<span class="h" style="font-size:12px;color:var(--muted)">Maks ${MAKS_BLOKKER} blokker</span>`
+    : Object.entries(BLOKKTYPER).map(([t, d]) => `<button class="btn" data-ny="${t}">+ ${d.navn}</button>`).join('');
+}
+function initBlokker(){
+  let t = null;
+  const endret = (tegnPanel) => { blokkerTilGamle(); BLOKK_FELT.forEach(k => { if($(k)) $(k).value = S[k] || ''; }); if(tegnPanel) tegnBlokkpanel(); render(); };
+  $('blokkliste').addEventListener('input', e => {
+    const ta = e.target.closest('textarea[data-i]'); if(!ta) return;
+    S.blokker[+ta.dataset.i].v = ta.value; blokkerTilGamle();
+    clearTimeout(t); t = setTimeout(render, 150);
+  });
+  $('blokkliste').addEventListener('change', e => {
+    const sel = e.target.closest('select[data-i]'); if(!sel) return;
+    const b = S.blokker[+sel.dataset.i]; b.t = sel.value; if(b.t === 'linje') b.v = '';
+    endret(true);
+  });
+  $('blokkliste').addEventListener('click', e => {
+    const k = e.target.closest('button[data-g]'); if(!k) return;
+    const i = +k.dataset.i, B = S.blokker;
+    if(k.dataset.g === 'slett') B.splice(i, 1);
+    if(k.dataset.g === 'opp' && i > 0) [B[i-1], B[i]] = [B[i], B[i-1]];
+    if(k.dataset.g === 'ned' && i < B.length - 1) [B[i+1], B[i]] = [B[i], B[i+1]];
+    endret(true);
+    const fokus = $('blokkliste').querySelector(`button[data-g="${k.dataset.g}"][data-i="${k.dataset.g==='opp'?i-1:k.dataset.g==='ned'?i+1:Math.max(0,i-1)}"]`);
+    if(fokus && !fokus.disabled) fokus.focus();
+  });
+  $('blokkny').addEventListener('click', e => {
+    const k = e.target.closest('button[data-ny]'); if(!k || S.blokker.length >= MAKS_BLOKKER) return;
+    S.blokker.push({t:k.dataset.ny, v:''});
+    endret(true);
+    const ta = $('blokkliste').querySelector(`textarea[data-i="${S.blokker.length-1}"]`); if(ta) ta.focus();
   });
 }
 const TEXT_KEYS = ['pIntro','ut3','tx3','merkeTx','bs1','bs2','bs3','stikk','tittel','ingress','ut1','tx1','pTittel','punkter','ut2','tx2','praktisk','cta','url','qrTekst','s2Tittel','s2Ut1','s2Tx1','s2Ut2','s2Tx2','s2Tx3','s2Slutt','s2Merknad','s2Kontakt','merke','avslutt'];
 function fillForm(){
   TEXT_KEYS.forEach(k => { $(k).value = S[k] || ''; });
+  tegnBlokkpanel();
   $('urlqr').value = S.url || '';
   $('visurl').checked = S.visUrl !== false;
   $('visurlrad').style.display = ['forklaring','delt','tekst','bilder','bildetekst'].includes(S.tpl) ? '' : 'none';
@@ -108,6 +156,7 @@ function initUI(){
   document.querySelectorAll('#fmtseg button').forEach(b => b.onclick = () => { S.fmt = b.dataset.fmt; fillForm(); render(); });
   let t = null;
   TEXT_KEYS.forEach(k => $(k).addEventListener('input', () => { S[k] = $(k).value; clearTimeout(t); t = setTimeout(render, 120); }));
+  initBlokker();
   $('urlqr').addEventListener('input', () => { S.url = $('urlqr').value; $('url').value = S.url; $('qrapner').textContent = has('url') ? 'Når noen skanner koden med mobilkameraet, åpnes: ' + (/^https?:\/\//i.test(S.url.trim()) ? '' : 'https://') + S.url.trim() : ''; clearTimeout(t); t = setTimeout(render, 200); });
   $('url').addEventListener('input', () => { $('urlqr').value = $('url').value; });
   $('qr').onchange = () => { S.qr = $('qr').checked; syncFields(); render(); };
@@ -156,7 +205,7 @@ function initUI(){
     const el = e.target.closest('.ed'); if(!el) return;
     const k = el.dataset.k;
     el.classList.add('editing');
-    el.textContent = el.dataset.kind === 'dline' ? (S[k]||'').split('\n').map(x=>x.trim()).filter(Boolean).join('  |  ') : (S[k] || ''); // råtekst mens man skriver
+    el.textContent = el.dataset.kind === 'dline' ? (S[k]||'').split('\n').map(x=>x.trim()).filter(Boolean).join('  |  ') : (val(k) || ''); // råtekst mens man skriver
     if(k === 'url') urlVed = S.url;
     const r = document.createRange(); r.selectNodeContents(el); r.collapse(false);
     const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
@@ -164,9 +213,10 @@ function initUI(){
   wrap.addEventListener('input', e => {
     const el = e.target.closest('.ed'); if(!el) return;
     const k = el.dataset.k;
-    S[k] = el.dataset.kind === 'dline' ? el.innerText.split(/\s*[|\n]\s*/).map(x=>x.trim()).filter(Boolean).join('\n') : el.innerText.replace(/\n$/, '');
-    el.classList.toggle('tom', !S[k].trim());
-    if($(k)) $(k).value = S[k];
+    settVerdi(k, el.dataset.kind === 'dline' ? el.innerText.split(/\s*[|\n]\s*/).map(x=>x.trim()).filter(Boolean).join('\n') : el.innerText.replace(/\n$/, ''));
+    el.classList.toggle('tom', !String(val(k)).trim());
+    if(erB(k)){ const ta = $('blokkliste').querySelector(`textarea[data-i="${k.slice(1)}"]`); if(ta) ta.value = val(k); BLOKK_FELT.forEach(f => { if($(f)) $(f).value = S[f] || ''; }); }
+    else if($(k)) $(k).value = S[k];
     refit();
   });
   wrap.addEventListener('focusout', e => {
@@ -186,13 +236,13 @@ function initUI(){
   wrap.addEventListener('keydown', e => {
     const el = e.target.closest('.ed'); if(!el) return;
     if(e.key === 'Enter' && el.dataset.kind === 'dline'){ e.preventDefault(); document.execCommand('insertText', false, '  |  '); return; }
-    if(e.key === 'Escape' || (e.key === 'Enter' && SINGLE.has(el.dataset.k) && el.dataset.kind !== 'ctab')){ e.preventDefault(); el.blur(); }
+    if(e.key === 'Escape' || (e.key === 'Enter' && enLinje(el.dataset.k) && el.dataset.kind !== 'ctab')){ e.preventDefault(); el.blur(); }
   });
   wrap.addEventListener('paste', e => {
     const el = e.target.closest('.ed'); if(!el) return;
     e.preventDefault();
     let t = (e.clipboardData || window.clipboardData).getData('text/plain') || '';
-    if(SINGLE.has(el.dataset.k) && el.dataset.kind !== 'ctab') t = t.replace(/\s*\n\s*/g, ' ');
+    if(enLinje(el.dataset.k) && el.dataset.kind !== 'ctab') t = t.replace(/\s*\n\s*/g, ' ');
     document.execCommand('insertText', false, t);
   });
   $('skjultom').onchange = () => { S.skjulTomme = $('skjultom').checked; render(); };
