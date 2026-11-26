@@ -534,7 +534,7 @@ LAYOUTS.bymobel = (uid) => {
 function liggende(uid, f){
   const c = SLOR[S.slor], L = f === 'a4l', W = L ? 1123 : 1280, H = L ? 794 : 720;
   const panelD = L ? rrect(28.7,28.7,1094.3,765.3,54.5) : rrect4(24,24,1256,696,[53.3,68,53.3,68]);
-  const sk = 1123/1280, bolgeTf = L ? `translate(0,30) scale(${sk})` : '';
+  const sk = 1123/1280, bolgeTf = L ? `translate(0,60) scale(${sk})` : '';
   const defs = `<radialGradient id="${uid}rg" gradientUnits="userSpaceOnUse" cx="${W/2}" cy="${H/2}" r="${L?680:700}"><stop offset="0" stop-color="#fbfbfb"/><stop offset="1" stop-color="#e2e2e2"/></radialGradient>
       <linearGradient id="${uid}sl" gradientUnits="userSpaceOnUse" ${L ? 'x1="721.3" y1="601.5" x2="743.8" y2="713.3"' : 'x1="845.7" y1="597.5" x2="863.8" y2="687.4"'}><stop offset="0" stop-color="${c.c}" stop-opacity=".75"/><stop offset="1" stop-color="${c.c}" stop-opacity="0"/></linearGradient>
       <clipPath id="${uid}pc"><path d="${panelD}"/></clipPath>`;
@@ -596,8 +596,9 @@ function tekstplakatLiggende(uid, f){
   const harBrod = ['ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk'].some(hasE);
   const ikon = !!(S.ikon && ikonSvg(S.ikon));
   // To spalter: tittel til venstre, brødtekst til høyre. Uten brødtekst får tittelen hele bredden.
-  const v = L ? {x:105, y:200, b:harBrod?440:760, h:420, base:18} : {x:87.5, y:160, b:harBrod?500:880, h:440, base:18};
-  const hy = L ? {x:600, y:ikon?190:80, b:440, h:ikon?320:430, base:16} : {x:650, y:ikon?150:60, b:540, h:ikon?290:380, base:16};
+  // Teksten starter under logoutsparingen (som på stående A4), og begge spaltene starter på samme høyde.
+  const v = L ? {x:105, y:255, b:harBrod?440:760, h:395, base:18} : {x:87.5, y:200, b:harBrod?500:880, h:410, base:18};
+  const hy = L ? {x:600, y:255, b:440, h:285, base:16} : {x:650, y:200, b:540, h:260, base:16};
   return svg + (L ? ikonHer(962,72,98,NAVY,'#f3f3f3') : ikonHer(1140,48,80,NAVY,'#f3f3f3'))
     + box(v.x,v.y,v.b,v.h,v.base,'tp10', topp)
     + (harBrod ? box(hy.x,hy.y,hy.b,hy.h,hy.base,'tp10', brod) : '')
@@ -703,7 +704,9 @@ LAYOUTS.trebilder = (uid,f) => {
    Bilderammene fra A4 (TB5) flyttes til høyre halvdel; nederste bilde ligger under bølgen som på A4. */
 function trebilderLiggende(uid, f){
   const g = liggende(uid, f), {L, W, H} = g;
-  const fl = L ? {x0:590, x1:1086, y0:37.4, y1:757} : {x0:680, x1:1232, y0:32, y1:688};
+  // A4 liggende: bølgen går høyt på høyre side, så bildene er presset sammen i høyden og slutter like under bølgetoppen.
+  // Da synes det meste av det nederste bildet (på stående ligger en større del under bølgen).
+  const fl = L ? {x0:630, x1:1086, y0:37.4, y1:615} : {x0:680, x1:1232, y0:32, y1:688};
   const map = q => [fl.x0 + (q[0]-430.9)/326.9*(fl.x1-fl.x0), fl.y0 + (q[1]-37.4)/(990.2-37.4)*(fl.y1-fl.y0)];
   const bilder = TB5.map((pts,i) => {
     const P = pts.map(map), xs = P.map(q => q[0]), ys = P.map(q => q[1]);
@@ -722,7 +725,7 @@ function trebilderLiggende(uid, f){
     + E('pTittel','h10') + E('pIntro','p10') + E('punkter','liste') + E('praktisk','praktisk');
   const harBrod = ['ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk'].some(hasE);
   const ki = S.ki ? `<div class="ki" style="right:${L?50:40}px;top:${L?48:36}px">${KI_ICON}KI-generert bilde</div>` : '';
-  const v = L ? {x:105, y:190, b:440, h:430, base:20} : {x:87.5, y:150, b:540, h:460, base:20};
+  const v = L ? {x:105, y:255, b:490, h:400, base:18} : {x:87.5, y:200, b:540, h:420, base:20};
   return svg + ki
     + box(v.x,v.y,v.b,v.h,v.base,'tp10 tb5', topp + (harBrod ? '<div class="gap10"></div>' : '') + brod)
     + g.qrHtml(q);
