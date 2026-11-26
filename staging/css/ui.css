@@ -188,3 +188,16 @@ body.har-bank .bankbtn{display:block}
 .stagewrap{position:relative;flex-shrink:0}
 .stagewrap .page{position:absolute;left:0;top:0;transform-origin:0 0;box-shadow:0 8px 30px rgba(1,57,82,.18)}
 
+
+/* Innholdsblokker i sidepanelet */
+.blokkpanel #blokkliste{display:flex;flex-direction:column;gap:8px}
+.blokk{border:1.5px solid var(--line);border-radius:8px;padding:7px;background:#fff;display:flex;flex-direction:column;gap:6px}
+.blokk .bt{display:flex;gap:6px;align-items:center}
+.blokk select{flex:1;border:1.5px solid var(--line);border-radius:6px;padding:4px 6px;font-family:var(--font);font-size:13px;color:var(--navy);font-weight:600;background:#fff}
+.blokk .bk{border:1.5px solid var(--line);background:#fff;border-radius:6px;width:30px;height:28px;cursor:pointer;color:var(--navy);font-size:14px;line-height:1}
+.blokk .bk:disabled{opacity:.35;cursor:default}
+.blokk textarea{min-height:40px;border:1.5px solid var(--line);border-radius:7px;padding:7px 9px;font-family:var(--font);font-size:14px;color:var(--ink);resize:vertical;width:100%}
+.blokk textarea:focus{outline:none;border-color:var(--navy)}
+.blokk .regelvis{height:0;border-top:1.5px solid var(--line);margin:8px 2px}
+.blokkny{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.blokkny .btn{flex:0 1 auto;padding:6px 10px;font-size:12.5px}

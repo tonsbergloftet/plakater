@@ -85,7 +85,11 @@ function download(href, name){ const a = document.createElement('a'); a.href = h
 function utkastData(){
   // Bare bildene malen bruker tas med (holder PDF-en mindre)
   const brukes = new Set(bildeSlots(S.tpl).concat(hasSide2() ? [2,3] : []));
-  return {type:'tk-plakat', v:4, ...S, imgs: S.imgs.map((I,n) => !brukes.has(n) ? {ex:!!I.ex, fx:I.fx, fy:I.fy, z:I.z} : I.ex ? {ex:true, fx:I.fx, fy:I.fy, z:I.z} : I.bank ? {bank:I.bank, fx:I.fx, fy:I.fy, z:I.z, ki:false} : I)};
+  const d = {type:'tk-plakat', v:4, ...S, imgs: S.imgs.map((I,n) => !brukes.has(n) ? {ex:!!I.ex, fx:I.fx, fy:I.fy, z:I.z} : I.ex ? {ex:true, fx:I.fx, fy:I.fy, z:I.z} : I.bank ? {bank:I.bank, fx:I.fx, fy:I.fy, z:I.z, ki:false} : I)};
+  // Blokkene lagres bare når de inneholder noe de faste feltene ikke kan vise (rekkefølge, skillelinjer, flere avsnitt).
+  // Ellers er arbeidsfila lik den prod lager, og blokkene lages på nytt fra feltene når fila åpnes.
+  if(!Array.isArray(S.blokker) || JSON.stringify(S.blokker) === JSON.stringify(gamleTilBlokker())){ delete d.blokker; delete d.blokkerSync; }
+  return d;
 }
 function b64utf8(t){
   const b = new TextEncoder().encode(t); let s = '';
