@@ -217,22 +217,6 @@ details[open] .sumh{margin-bottom:12px}
 .page .qr11 svg{display:block;width:100%;height:100%}
 
 /* 13 · Invitasjon – stort bilde (mal15_infoskjerm stort bilde 2.idml) */
-.page .inv13-head{color:#fff;text-align:center;text-shadow:0 2px 18px rgba(0,0,0,.65)}
-.page .inv13-head .stikk{display:block;color:var(--slor);font-weight:700;font-size:1em;letter-spacing:.3em;text-transform:uppercase;line-height:1.05;margin:0 0 .45em}
-.page .inv13-head .stikk::before{display:none}
-.page .inv13-head .tittel{font-weight:400;font-style:italic;font-size:2.4em;line-height:1.05;letter-spacing:0;margin:0}
-.page .inv13-copy{color:#fff;text-align:left;text-shadow:1px 2px 10px rgba(0,0,0,.65)}
-.page .inv13-copy .h13{font-weight:700;font-size:1.32em;line-height:1.1;margin:0}
-.page .inv13-copy .p13{font-weight:300;font-size:.92em;line-height:1.28;margin:.28em 0 0;white-space:pre-line}
-.page .inv13-copy .a13{font-weight:700;font-style:italic;font-size:1em;line-height:1.15;margin:.45em 0 0;color:var(--slor)}
-.page .qr13{position:absolute;left:1078px;top:475px;width:120px;height:120px;padding:10px;background:#fff;border-radius:15px;box-shadow:5px 6px 20px rgba(0,0,0,.38)}
-.page .qr13 svg{display:block;width:100%;height:100%}
-.page .inv13-cta{color:#fff;text-align:center;text-shadow:1px 2px 8px rgba(0,0,0,.6);font-size:1em}
-.page .qrt13{text-align:right;color:#fff;font-style:italic;font-size:1em;line-height:1.08}
-.page .qrt13 b{font-weight:700}
-
-
-/* 13 · Invitasjon – stort bilde (mal15_infoskjerm stort bilde 2.idml) */
 .page .inv15-stikk{text-align:center;color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.65)}
 .page .inv15-stikk .stikk{display:block;color:var(--slor);font-weight:700;font-size:1em;letter-spacing:.3em;text-transform:uppercase;line-height:1.05;margin:0;text-shadow:1px 2px 4px rgba(0,0,0,.65)}
 .page .inv15-stikk .stikk::before{display:none}
