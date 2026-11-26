@@ -63,16 +63,16 @@ const TPLS = {
   // Svømmehallen (ENHETER): forslag, ikke godkjent av designer
   forbudsskilt:{navn:'Forbudsskilt', sub:'Tre forbudsskilt og tekst på to språk', bilder:0,
     felt:['tittel','ut1','tx1','ut2','tx2','cta','url'],
-    demo:{tittel:'Ikke tillatt i svømmehallen', ut1:'Mobil, kamera og mat', tx1:'Det er ikke lov å bruke mobil eller kamera, eller å spise, i garderober og ved bassengene.', ut2:'Phones, cameras and food', tx2:'Using phones or cameras, and eating, is not allowed in the changing rooms or by the pools.'}},
+    demo:{tittel:'Ikke tillatt i svømmehallen', ut1:'Mobil, kamera og mat', tx1:'Det er ikke lov å bruke mobil eller kamera, eller å spise, i garderobene og ved bassengene.', ut2:'Phones, cameras and food', tx2:'Phones, cameras and eating are not allowed in the changing rooms or by the pools.', cta:'Les **ordensreglene**'}},
   forbudsskiltliggende:{navn:'Forbudsskilt, liggende', sub:'A4 liggende, tre forbudsskilt og to språk', bilder:0, fmts:['a4l'],
     felt:['tittel','ut1','tx1','ut2','tx2','cta','url'],
-    demo:{tittel:'Ikke tillatt i svømmehallen', ut1:'Mobil, kamera og mat', tx1:'Det er ikke lov å bruke mobil eller kamera, eller å spise, i garderober og ved bassengene.', ut2:'Phones, cameras and food', tx2:'Using phones or cameras, and eating, is not allowed in the changing rooms or by the pools.'}},
+    demo:{tittel:'Ikke tillatt i svømmehallen', ut1:'Mobil, kamera og mat', tx1:'Det er ikke lov å bruke mobil eller kamera, eller å spise, i garderobene og ved bassengene.', ut2:'Phones, cameras and food', tx2:'Phones, cameras and eating are not allowed in the changing rooms or by the pools.', cta:'Les **ordensreglene**'}},
   qrplakat:{navn:'Stor QR-kode', sub:'Lite tekst og en stor QR-kode', bilder:0,
     felt:['stikk','tittel','ingress','cta','url'],
-    demo:{stikk:'Svømmehallen', tittel:'Se **åpningstider**', ingress:'Skann koden med mobilkameraet.', cta:'Skann meg!'}},
+    demo:{stikk:'Svømmehallen', tittel:'Se **åpningstidene**', ingress:'Tidene endrer seg i ferier og på helligdager. Skann koden for å se dagens tider.', cta:'Skann for åpningstider'}},
   prisliste:{navn:'Prisliste', sub:'Priser med prikker fram til beløpet', bilder:0,
     felt:['stikk','tittel','ingress','innhold','cta','url'],
-    demo:{stikk:'Svømmehallen', tittel:'Priser', ingress:'Gjelder fra 1. januar.', innhold:'Enkeltbillett\nVoksen: 95 kr\nBarn (4–15 år): 50 kr\nHonnør: 60 kr\n\nKlippekort (10 bad)\nVoksen: 800 kr\nBarn: 400 kr\n\nBarn under 4 år bader gratis.'}},
+    demo:{stikk:'Svømmehallen', tittel:'Priser', ingress:'Gjelder fra 1. januar 2027.', innhold:'Enkeltbillett\nVoksen: 95 kr\nBarn (4–15 år): 50 kr\nHonnør: 60 kr\n\nKlippekort (10 bad)\nVoksen: 800 kr\nBarn: 400 kr\n\nBarn under 4 år bader gratis.', cta:'Kjøp klippekort på **nett**'}},
   inndelt:{navn:'Inndelt plakat', sub:'Bilde, tittel og to spalter', bilder:1,
     felt:['stikk','tittel','ingress','ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','ut3','tx3','cta','url']},
 };
@@ -89,7 +89,10 @@ const GRUPPER = [
 /* Egne seksjoner for en enhet: vises bare når siden åpnes med ?enhet=… (for eksempel staging/svommehallen/).
    Malene her ligger ikke i GRUPPER og er derfor ikke en del av testlista før de er godkjent. */
 const ENHETER = {
-  svommehallen:{navn:'Svømmehallen', tekst:'Maler laget for svømmehallen. Forslag, ikke godkjent av designer.', maler:['forbudsskilt','forbudsskiltliggende','qrplakat','prisliste','tekstplakat']},
+  svommehallen:{navn:'Svømmehallen', tekst:'Maler laget for svømmehallen. Forslag, ikke godkjent av designer.', maler:['forbudsskilt','forbudsskiltliggende','qrplakat','prisliste','tekstplakat'],
+    // Eksempeltekst for vanlige maler når de brukes fra svømmehallens seksjon (de egne malene har den i TPLS)
+    demo:{tekstplakat:{stikk:'Svømmehallen', tittel:'Velkommen til **badet**', ingress:'Dette må du vite før du går i vannet.',
+      innhold:'Før du bader\nDusj uten badetøy, og vask håret, før du går i bassenget.\n\nHusk\n- Badehette hvis du har langt hår\n- Barn under 10 år bader sammen med en voksen\n- Badetøy, ikke shorts eller undertøy\n\nHverdager: kl. 07–21\nLørdag og søndag: kl. 10–17', cta:'Skann for **åpningstider**'}}},
 };
 const ENHET = (() => { try { const e = new URLSearchParams(location.search).get('enhet') || ''; return ENHETER[e] ? e : ''; } catch(_){ return ''; } })();
 const visGrupper = () => ENHET ? [ENHETER[ENHET], ...GRUPPER] : GRUPPER;
@@ -145,7 +148,6 @@ const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replac
    maler som bruker de faste feltene. Endres feltene et annet sted (annen mal, arbeidsfil fra prod), lages teksten på nytt. */
 const INNHOLD_MALER = ['prisliste','tekstplakat','tekstplakatliggende','tekstplakatskjerm','trebilder','trebilderliggende','trebilderskjerm','hoydebilde'];
 const INNHOLD_FELT = ['ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk'];
-const INNHOLD_TIPS = 'Tom linje gir nytt avsnitt · kort linje øverst i avsnittet blir mellomtittel · «- » gir punkt · «Etikett: verdi» gir fet etikett · «---» gir linje';
 const erEtikett = l => /^[^:*#\-•\s][^:]{0,22}:\s+\S/.test(l) && !/^https?:/i.test(l);
 function lesInnhold(tekst){ // → [{t:'h'|'p'|'liste'|'etikett'|'linje', v}]
   const ut = [], punkt = /^[-*•]\s+/, linje = /^(-{3,}|\*{3,}|_{3,})$/;
@@ -190,3 +192,27 @@ const has = k => S[k] && String(S[k]).trim() !== '';
 
 
 DEMO.innhold = fraGamle(DEMO); // eksempelteksten viser formatet
+
+/* Eksempeltekst per mal. Hver mal har ett sammenhengende sett (tittel og brødtekst handler om det samme):
+   DEMO, overstyrt av enhetens sett (ENHETER[…].demo) og malens eget (TPLS[…].demo). */
+function demoFor(k){
+  const egen = {...((ENHET && ENHETER[ENHET].demo && ENHETER[ENHET].demo[k]) || {}), ...(TPLS[k].demo || {})};
+  // Har malen egen brødtekst, skal ikke resten av brødteksten hentes fra den generelle eksempelteksten
+  const tom = Object.keys(egen).some(f => f === 'innhold' || INNHOLD_FELT.includes(f)) ? Object.fromEntries(INNHOLD_FELT.map(f => [f, ''])) : {};
+  return {...DEMO, ...tom, ...egen};
+}
+// Alle eksempeltekster som finnes, per felt (for å se om et felt fortsatt har eksempeltekst)
+const EKSEMPLER = (() => { const e = {}; const legg = o => Object.entries(o || {}).forEach(([f, v]) => (e[f] = e[f] || new Set()).add(v));
+  legg(DEMO); Object.values(TPLS).forEach(t => legg(t.demo)); Object.values(ENHETER).forEach(en => Object.values(en.demo || {}).forEach(legg)); return e; })();
+const erEksempel = (f, v) => v == null || !!(EKSEMPLER[f] && EKSEMPLER[f].has(v));
+const innholdErEksempel = () => erEksempel('innhold', S.innhold) || INNHOLD_FELT.every(g => !S[g] || erEksempel(g, S[g]));
+// Felt som fortsatt har eksempeltekst (fra hvilken som helst mal) får malens eksempeltekst, så tittel og
+// brødtekst alltid hører sammen. Tekst brukeren har skrevet selv, røres ikke. Brukes ved malbytte og i miniatyrene.
+function brukEksempel(k){
+  const mal = demoFor(k), urortInnhold = innholdErEksempel();
+  Object.keys(mal).forEach(f => { if(f !== 'innhold' && !INNHOLD_FELT.includes(f) && erEksempel(f, S[f])) S[f] = mal[f]; });
+  if(urortInnhold){
+    if(TPLS[k].felt.includes('innhold')) S.innhold = mal.innhold;                       // feltene følger etter i synkInnhold()
+    else { INNHOLD_FELT.forEach(g => { S[g] = mal[g] ?? ''; }); S.innhold = null; }      // brødteksten lages fra feltene
+  }
+}

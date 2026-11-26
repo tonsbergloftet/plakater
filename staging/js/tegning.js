@@ -87,7 +87,9 @@ function renderThumbs(){
 function miniatyr(th, k){
   th.innerHTML = '';
   const tw = th.clientWidth || 130;
+  const lagret = {...S}, sist = [INNHOLD_SIST, GAMLE_SIST]; brukEksempel(k);              // miniatyren viser malens egen eksempeltekst
   const p = buildPage(k, fmtFor(k));
+  Object.keys(S).forEach(f => { if(!(f in lagret)) delete S[f]; }); Object.assign(S, lagret); [INNHOLD_SIST, GAMLE_SIST] = sist;
   const holder = document.createElement('div');
   holder.style.position = 'relative'; holder.style.overflow = 'hidden';
   th.appendChild(holder);

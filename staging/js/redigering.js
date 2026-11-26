@@ -109,6 +109,7 @@ function initUI(){
   document.querySelectorAll('#fmtseg button').forEach(b => b.onclick = () => { S.fmt = b.dataset.fmt; fillForm(); render(); });
   let t = null;
   TEXT_KEYS.forEach(k => $(k).addEventListener('input', () => { S[k] = $(k).value; clearTimeout(t); t = setTimeout(render, 120); }));
+  $('innhold').addEventListener('focus', () => visFormhjelp(true)); $('innhold').addEventListener('blur', () => visFormhjelp(false));
   initTema();
   $('urlqr').addEventListener('input', () => { S.url = $('urlqr').value; $('url').value = S.url; $('qrapner').textContent = has('url') ? 'Når noen skanner koden med mobilkameraet, åpnes: ' + (/^https?:\/\//i.test(S.url.trim()) ? '' : 'https://') + S.url.trim() : ''; clearTimeout(t); t = setTimeout(render, 200); });
   $('url').addEventListener('input', () => { $('urlqr').value = $('url').value; });
@@ -160,7 +161,7 @@ function initUI(){
     el.classList.add('editing');
     el.textContent = el.dataset.kind === 'dline' ? (S[k]||'').split('\n').map(x=>x.trim()).filter(Boolean).join('  |  ') : (S[k] || ''); // råtekst mens man skriver
     if(k === 'url') urlVed = S.url;
-    if(k === 'innhold'){ const h = document.querySelector('.hint'); if(h){ h.dataset.std = h.dataset.std || h.textContent; h.textContent = INNHOLD_TIPS; h.classList.add('tips'); } }
+    if(k === 'innhold') visFormhjelp(true);
     const r = document.createRange(); r.selectNodeContents(el); r.collapse(false);
     const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
   });
@@ -176,7 +177,7 @@ function initUI(){
     const el = e.target.closest('.ed'); if(!el) return;
     const k = el.dataset.k;
     el.classList.remove('editing');
-    if(k === 'innhold'){ const h = document.querySelector('.hint'); if(h && h.dataset.std){ h.textContent = h.dataset.std; h.classList.remove('tips'); } }
+    if(k === 'innhold') visFormhjelp(false);
     el.innerHTML = disp(k, el.dataset.kind);
     if((k === 'merke' && !has(k)) || /^bs\d$/.test(k)){ setTimeout(render, 0); return; } // tomt merke fjernes
     el.classList.toggle('tom', !has(k));
@@ -388,15 +389,26 @@ function oppdaterKi(){
 
 
 // Startskjermen: «Hva skal plakaten gjøre?»
+/* Formateringshjelp: viser hva hver skrivemåte blir til i brødteksten. Prislista viser «Etikett: verdi» som prisrad. */
+function visFormhjelp(på){
+  const el = $('formhjelp'); if(!el) return;
+  if(!på){ el.classList.remove('on'); return; }
+  const pris = S.tpl === 'prisliste';
+  const rad = (skriv, blir) => `<tr><td><code>${skriv}</code></td><td>${blir}</td></tr>`;
+  el.innerHTML = `<h3>Slik styrer du stilen</h3><table><tr><th>Du skriver</th><th>Blir</th></tr>`
+    + rad('Før du bader\nDusj først.', '<span class="fh-h">Før du bader</span><br>Dusj først.')
+    + rad('# Husk', '<span class="fh-h">Husk</span> (alltid mellomtittel)')
+    + rad('- Badehette', '• Badehette')
+    + (pris ? rad('Voksen: 95 kr', '<span class="fh-pris">Voksen<i></i><b>95 kr</b></span>')
+            : rad('Tid: kl. 18', '<span class="fh-e">Tid:</span> kl. 18'))
+    + rad('---', '<span class="fh-l"></span>')
+    + rad('**viktig**', '<span class="fh-u">viktig</span>')
+    + `</table><p>Tom linje starter et nytt avsnitt. En kort første linje i et avsnitt blir mellomtittel.${pris ? ' Hver «Navn: pris» på egen linje blir en prisrad.' : ''}</p>`;
+  el.classList.add('on');
+}
 function velgMal(k){ if(TPLS[S.tpl] && TPLS[S.tpl].fmts.length === 1 && TPLS[k].fmts.length > 1) S.fmt = 'a4'; // fra en skjermmal tilbake til plakat
   S.tpl = k; S.fmt = fmtFor(k); if(!TPLS[k].fmts.includes(S.fmt)) S.fmt = 'a4';
-  // Malens egen eksempeltekst brukes i felt som fortsatt har den vanlige eksempelteksten
-  // (felt som fortsatt har eksempeltekst fra DEMO eller fra en annen mal). Brødteksten regnes som eksempel når feltene bak den er det.
-  const eksempel = (f, v) => v == null || v === DEMO[f] || Object.values(TPLS).some(t => t.demo && t.demo[f] === v);
-  if(TPLS[k].demo) Object.entries(TPLS[k].demo).forEach(([f, v]) => {
-    const urort = f === 'innhold' ? INNHOLD_FELT.every(g => !S[g] || eksempel(g, S[g])) || eksempel('innhold', S.innhold) : eksempel(f, S[f]);
-    if(urort) S[f] = v;
-  });
+  brukEksempel(k);
   oppdaterKi(); fillForm(); render(); }
 function apneStart(forsteGang){
   const g = $('startgrp');
