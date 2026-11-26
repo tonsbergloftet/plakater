@@ -770,38 +770,38 @@ const SKJ15 = {
 LAYOUTS.infoskjerm3 = (uid) => {
   const c = SLOR[S.slor], W = 1280, H = 720;
   const photo = rrect(24,24,1256,696,53.3);
-  const svg = \`<svg class="bg" viewBox="0 0 \${W} \${H}"><defs>
-      \${blaskjaer(uid,'s15',.4)}
-      <clipPath id="\${uid}photo"><path d="\${photo}"/></clipPath>
-      <radialGradient id="\${uid}vignette" gradientUnits="userSpaceOnUse" cx="640" cy="360" r="748">
+  const svg = `<svg class="bg" viewBox="0 0 ${W} ${H}"><defs>
+      ${blaskjaer(uid,'s15',.4)}
+      <clipPath id="${uid}photo"><path d="${photo}"/></clipPath>
+      <radialGradient id="${uid}vignette" gradientUnits="userSpaceOnUse" cx="640" cy="360" r="748">
         <stop offset="0" stop-color="#000" stop-opacity=".40"/>
         <stop offset="1" stop-color="#000" stop-opacity="0"/>
       </radialGradient>
-      <linearGradient id="\${uid}green" gradientUnits="userSpaceOnUse" x1="845.76" y1="597.58" x2="863.91" y2="507.72">
-        <stop offset="0" stop-color="\${c.c}" stop-opacity=".75"/>
-        <stop offset="1" stop-color="\${c.c}" stop-opacity="0"/>
+      <linearGradient id="${uid}green" gradientUnits="userSpaceOnUse" x1="845.76" y1="597.58" x2="863.91" y2="507.72">
+        <stop offset="0" stop-color="${c.c}" stop-opacity=".75"/>
+        <stop offset="1" stop-color="${c.c}" stop-opacity="0"/>
       </linearGradient>
     </defs>
-    <rect width="\${W}" height="\${H}" fill="#fff"/>
-    <path d="\${photo}" fill="#7f8f99"/>
-    <g clip-path="url(#\${uid}photo)">
-      <g filter="url(#\${uid}s15)">\${imageIn(uid, photo, 24,24,1232,672,0)}</g>
-      <path d="\${photo}" fill="url(#\${uid}vignette)" pointer-events="none"/>
+    <rect width="${W}" height="${H}" fill="#fff"/>
+    <path d="${photo}" fill="#7f8f99"/>
+    <g clip-path="url(#${uid}photo)">
+      <g filter="url(#${uid}s15)">${imageIn(uid, photo, 24,24,1232,672,0)}</g>
+      <path d="${photo}" fill="url(#${uid}vignette)" pointer-events="none"/>
     </g>
-    <path d="\${SKJ15.gronn}" fill="url(#\${uid}green)" pointer-events="none"/>
-    <path d="\${SKJ15.navy}" fill="\${NAVY}" pointer-events="none"/>
-    <path d="\${SKJ15.hvit}" fill="#fff" pointer-events="none"/>
-    <path d="\${SKJ15.hale}" fill="#fff" pointer-events="none"/>
-    <path d="\${SKJ15.pil}" fill="none" stroke="#fff" stroke-width="1.16" stroke-linecap="round" pointer-events="none"/>
-  </svg>\`;
+    <path d="${SKJ15.gronn}" fill="url(#${uid}green)" pointer-events="none"/>
+    <path d="${SKJ15.navy}" fill="${NAVY}" pointer-events="none"/>
+    <path d="${SKJ15.hvit}" fill="#fff" pointer-events="none"/>
+    <path d="${SKJ15.hale}" fill="#fff" pointer-events="none"/>
+    <path d="${SKJ15.pil}" fill="none" stroke="#fff" stroke-width="1.16" stroke-linecap="round" pointer-events="none"/>
+  </svg>`;
   const q = S.qr ? qrSvg() : '';
-  const ki = S.ki ? \`<div class="ki" style="left:40px;top:652px">\${KI_ICON}KI-generert bilde</div>\` : '';
+  const ki = S.ki ? `<div class="ki" style="left:40px;top:652px">${KI_ICON}KI-generert bilde</div>` : '';
   return svg + logo(69,40.5,65) + ki
     + box(415.67,90.67,448.66,23.33,23.33,'inv15-stikk',E('stikk','stikk'))
     + box(197.33,126.67,885.34,118.64,50.67,'inv15-head',E('tittel','tittel'))
     + box(87.33,461.33,258.67,174.67,26.67,'inv15-copy',E('ut1','h15')+E('tx1','p15')+E('avslutt','a15'))
-    + (q ? \`<div class="qr15">\${q}</div>\` : '')
-    + \`<div class="box inv15-cta" data-base="36.2" style="left:1028px;top:605px;width:223px;height:71px;font-size:36.2px;transform:rotate(-2deg)">\${E('cta','skript','div','line-height:.81')}</div>\`;
+    + (q ? `<div class="qr15" style="left:1077.45px;top:468px;width:125.64px;height:125.64px">${q}</div>` : '')
+    + `<div class="box inv15-cta" data-base="36.2" style="left:1028px;top:605px;width:223px;height:71px;font-size:36.2px;transform:rotate(-2deg)">${E('cta','skript','div','line-height:.81')}</div>`;
 };
 
 LAYOUTS.infoskjerm2 = (uid) => {
