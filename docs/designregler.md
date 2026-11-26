@@ -129,7 +129,7 @@ Status fra 19.11.2026. Sjekk med designeren om noe er avklart, og oppdater lista
 - **Liggende varianter** av flere A4-maler strekker bølgen (`matrix(1.6121,0,0,0.44,…)`). De er skjult i generatoren. Sjekkskriptet tillater de som finnes, men ingen nye.
 - **Egne maler for liggende A4 og skjerm:** `tekstplakatliggende`, `trebilderliggende` (A4 liggende) og `tekstplakatskjerm`, `trebilderskjerm` (16:9). Hver mal har ett format, som de andre malene. De har samme felt som Tekstplakat og Tre bilder. Forslag, ikke godkjent av designer. De strekker ikke noe, og er bygget slik (`liggende()` i `js/maler.js`):
   - **16:9:** ramme, bølgepar (`SKJ.S10`), logoutsparing, logo og QR med skripttekst som infoskjermen med stort bilde.
-  - **A4 liggende:** ramme, logoutsparing, logo og QR i samme mm-mål som stående A4. QR-koden har samme avstand til panelkanten. Bølgeparet er fra infoskjermen med to bilder (`SKJ.S9`, går over hele bredden), skalert likt til sidebredden (1123/1280) og flyttet ned 30 px.
+  - **A4 liggende:** ramme, logoutsparing, logo og QR i samme mm-mål som stående A4. QR-koden har samme avstand til panelkanten. Bølgeparet er fra infoskjermen med to bilder (`SKJ.S9`, går over hele bredden), skalert likt til sidebredden (1123/1280) og flyttet ned 60 px.
   - Tekst i to spalter (tittel til venstre, brødtekst til høyre) på Tekstplakat. Bilderammene på Tre bilder er flyttet til høyre halvdel.
   - Designeren bør se på dem og helst levere en A4 liggende-fil (åpent spørsmål om 16:9-mal).
 
