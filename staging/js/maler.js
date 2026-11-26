@@ -754,6 +754,42 @@ LAYOUTS.infoskjerm = (uid) => {
     + skjermQr(q, 1099, 503.5, 125.5, SKJ.S9.pil,
         `<div class="box" data-base="30.6" style="left:1040px;top:643px;width:200px;height:62px;font-size:30.6px">${E('cta','skript','div','line-height:.81')}</div>`);
 };
+
+/* 13 · Invitasjon – stort bilde (mal15_infoskjerm stort bilde 2.idml).
+   Ny egen skjermmal målt fra IDML: helflatebilde, midtstilt tittel og QR nederst til høyre. */
+LAYOUTS.infoskjerm3 = (uid) => {
+  const W = 1280, H = 720;
+  const ramme = rrect4(24,24,1256,696,[53.3,68,53.3,68]);
+  const photo = rrect4(24,24,1256,696,[53.3,68,53.3,68]);
+  const svg = `<svg class="bg" viewBox="0 0 ${W} ${H}"><defs>
+      ${blaskjaer(uid,'inv3',.4)}
+      <clipPath id="${uid}cr"><path d="${ramme}"/></clipPath>
+      <linearGradient id="${uid}bottom" gradientUnits="userSpaceOnUse" x1="0" y1="430" x2="0" y2="720">
+        <stop offset="0" stop-color="#000" stop-opacity="0"/>
+        <stop offset="1" stop-color="#000" stop-opacity=".56"/>
+      </linearGradient>
+      <linearGradient id="${uid}top" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="235">
+        <stop offset="0" stop-color="#000" stop-opacity=".3"/>
+        <stop offset="1" stop-color="#000" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <rect width="${W}" height="${H}" fill="#fff"/>
+    <path d="${ramme}" fill="#7f8f99"/>
+    <g clip-path="url(#${uid}cr)">
+      <g filter="url(#${uid}inv3) ${''}">${imageIn(uid, photo, 24,24,1232,672,0)}</g>
+      <rect width="${W}" height="${H}" fill="url(#${uid}top)" pointer-events="none"/>
+      <rect width="${W}" height="${H}" fill="url(#${uid}bottom)" pointer-events="none"/>
+    </g>
+  </svg>`;
+  const q = S.qr ? qrSvg() : '';
+  const ki = S.ki ? `<div class="ki" style="left:38px;top:650px">${KI_ICON}KI-generert bilde</div>` : '';
+  return svg + logo(69,40.5,65) + ki
+    + box(205,88,870,150,25.33,'inv13-head', E('stikk','stikk') + E('tittel','tittel'))
+    + box(60,488,465,190,24,'inv13-copy', E('ut1','h13') + E('tx1','p13') + E('avslutt','a13'))
+    + (q ? `<div class="qr13">${q}</div>` : '')
+    + box(1028,560,190,62,24,'inv13-cta', E('cta','qrt13','div',null,'bold'));
+};
+
 LAYOUTS.infoskjerm2 = (uid) => {
   const c = SLOR[S.slor], W = 1280, H = 720;
   const ramme = rrect4(24,24,1256,696,[53.3,68,53.3,68]);
