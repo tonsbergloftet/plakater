@@ -18,7 +18,7 @@ Lag plakater (A4), skjermversjoner (16:9) og innhold til skjermene på bymøblen
 Hver mal har sitt faste format, så brukeren bare trenger å velge mal:
 
 - Plakatene (Bildeplakat, Forside, Inndelt plakat, Høydebilde, Tre bilder, Tekstplakat, Invitasjon) er stående A4.
-- Infoskjerm, Infoskjerm stort bilde og Invitasjon, stort bilde er liggende 16:9 og lastes ned i 1920 × 1080 px.
+- Infoskjerm og Infoskjerm, stort bilde er liggende 16:9 og lastes ned i 1920 × 1080 px.
 - Bymøbel er stående 9:16 for skjermene på bymøblene og lastes ned i 2160 × 3840 px.
 - Bildeplakat og Bymøbel har en mørk variant (valg under «Slørfarge»).
 - Skriv linjeskift i tittelen der du vil at linjen skal brytes.

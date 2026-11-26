@@ -43,7 +43,7 @@ const ROT = path.resolve(verdi('--rot') || (fs.existsSync(path.join(REPO, '_site
 const RASK = flagg('--rask');
 const GRENSE = 0.5; // prosent av pikslene
 const UT = fs.mkdtempSync(path.join(os.tmpdir(), 'plakater-sammenlign-'));
-const VIS = ['bildedrevet', 'forside', 'inndelt', 'hoydebilde', 'trebilder', 'tekstplakat', 'invitasjon', 'infoskjerm', 'infoskjerm2', 'bymobel', 'infoskjerm3'];
+const VIS = ['bildedrevet', 'forside', 'inndelt', 'hoydebilde', 'trebilder', 'tekstplakat', 'invitasjon', 'infoskjerm', 'infoskjerm2', 'bymobel'];
 
 /* ───── Enkel statisk server ───── */
 const TYPER = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.json': 'application/json',
