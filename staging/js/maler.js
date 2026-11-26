@@ -792,16 +792,17 @@ LAYOUTS.infoskjerm3 = (uid) => {
     <path d="${SKJ15.navy}" fill="${NAVY}" pointer-events="none"/>
     <path d="${SKJ15.hvit}" fill="#fff" pointer-events="none"/>
     <path d="${SKJ15.hale}" fill="#fff" pointer-events="none"/>
-    <path d="${SKJ15.pil}" fill="none" stroke="#fff" stroke-width="1.16" stroke-linecap="round" pointer-events="none"/>
   </svg>`;
   const q = S.qr ? qrSvg() : '';
   const ki = S.ki ? `<div class="ki" style="left:40px;top:652px">${KI_ICON}KI-generert bilde</div>` : '';
+  const pil = q ? `<svg class="arrow15" viewBox="0 0 1280 720" aria-hidden="true"><path d="${SKJ15.pil}" fill="none" stroke="#fff" stroke-width="1.16" stroke-linecap="round"/></svg>` : '';
   return svg + logo(69,40.5,65) + ki
     + box(415.67,90.67,448.66,23.33,23.33,'inv15-stikk',E('stikk','stikk'))
     + box(197.33,126.67,885.34,118.64,50.67,'inv15-head',E('tittel','tittel'))
     + box(87.33,461.33,258.67,174.67,26.67,'inv15-copy',E('ut1','h15')+E('tx1','p15')+E('avslutt','a15'))
     + (q ? `<div class="qr15" style="left:1077.45px;top:468px;width:125.64px;height:125.64px">${q}</div>` : '')
-    + `<div class="box inv15-cta" data-base="36.2" style="left:1028px;top:605px;width:223px;height:71px;font-size:36.2px;transform:rotate(-2deg)">${E('cta','skript','div','line-height:.81')}</div>`;
+    + pil
+    + (q ? `<div class="box" data-base="36.2" style="left:1028px;top:605px;width:223px;height:71px;font-size:36.2px;transform:rotate(-2deg)">${E('cta','skript','div','line-height:.81')}</div>` : '');
 };
 
 LAYOUTS.infoskjerm2 = (uid) => {
