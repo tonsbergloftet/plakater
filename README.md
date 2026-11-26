@@ -91,3 +91,16 @@ Hvilende bilder kan likevel hentes fram via lenken nederst i bildebanken.
 - Originalbildene ligger i repoet, men bare nedskalerte kopier publiseres på nettsiden.
 - Åpnes `index.html` direkte fra disk, virker alt unntatt bildebanken. Da starter plakaten uten bilde.
 - Når noen laster opp et eget bilde, spør generatoren om bildet er KI-generert. Svarer de ja, merkes plakaten automatisk.
+
+## For deg som videreutvikler generatoren
+
+| Fil | Hva den er |
+|---|---|
+| `CLAUDE.md` | Reglene for repoet: prod og staging, testing, opprykk og hvordan man går tilbake. Les den først. |
+| `docs/designregler.md` | Designreglene for plakatene, målt fra designerens InDesign-filer. |
+| `.claude/skills/ny-mal/SKILL.md` | Oppskrift for å lage eller rette en mal. |
+| `AGENTS.md` | Peker KI-verktøy (Copilot, Claude o.l.) til filene over. |
+| `verktoy/sjekk-regler.js` | Regelsjekk: `node verktoy/sjekk-regler.js`. Kjøres før hver pull request. |
+| `verktoy/sammenlign.js` | Sammenligner staging med prod piksel for piksel (Playwright). |
+
+Kort fortalt: alt nytt arbeid gjøres i `staging/`, leveres som pull request, og regelsjekken og sammenligningstesten skal være grønne før merge.
