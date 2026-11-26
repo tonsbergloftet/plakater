@@ -5,13 +5,17 @@ let uidN = 0;
 const hasSide2 = () => S.tpl==='bildetekst' && S.fmt==='a4' && S.side2;
 function buildPage(tpl, fmt, side, edit){
   EDIT = !!edit;
+  const egenSlor = S.slor; S.slor = temaSlor(); // et valgt tema bestemmer slørfargen (js/tema.js)
   const c = SLOR[S.slor];
   const el = document.createElement('div');
   el.className = 'page ' + fmt;
   el.style.setProperty('--slor', c.c);
   el.style.setProperty('--slor-mork', c.mork);
   el.style.setProperty('--slor-tint', c.tint);
-  el.innerHTML = side===2 ? LAYOUTS.bildetekst2('u'+(uidN++)+'_') : LAYOUTS[tpl]('u'+(uidN++)+'_', fmt);
+  try {
+    el.innerHTML = side===2 ? LAYOUTS.bildetekst2('u'+(uidN++)+'_') : LAYOUTS[tpl]('u'+(uidN++)+'_', fmt);
+    if(side !== 2) leggPaaTema(el, tpl, fmt);
+  } finally { S.slor = egenSlor; }
   EDIT = false;
   if(edit){ el.classList.add('edit'); if(S.skjulTomme) el.classList.add('skjul-tomme'); }
   return el;

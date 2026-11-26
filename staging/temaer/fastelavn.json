@@ -1,0 +1,56 @@
+{
+  "id": "fastelavn",
+  "navn": "Fastelavn og karneval",
+  "sub": "Masker, ris og konfetti",
+  "kategori": "arshjul",
+  "maaneder": [
+    2,
+    3
+  ],
+  "malgrupper": [
+    "barn"
+  ],
+  "slor": "gul",
+  "motiv": [
+    {
+      "m": "maske",
+      "x": 0,
+      "y": 30,
+      "s": 140,
+      "r": -8
+    },
+    {
+      "m": "ris",
+      "x": 110,
+      "y": 40,
+      "s": 110,
+      "r": 8
+    },
+    {
+      "m": "konfetti",
+      "x": 0,
+      "y": 120,
+      "s": 100
+    },
+    {
+      "m": "konfetti",
+      "x": 110,
+      "y": 0,
+      "s": 80,
+      "r": 90
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "konfetti",
+      "prikk"
+    ],
+    "antall": 8,
+    "dekning": 0.35,
+    "farger": [
+      "gul",
+      "navy",
+      "lysbla"
+    ]
+  }
+}

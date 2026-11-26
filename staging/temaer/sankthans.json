@@ -1,0 +1,43 @@
+{
+  "id": "sankthans",
+  "navn": "Sankthans",
+  "sub": "Bål og lys sommerkveld",
+  "kategori": "arshjul",
+  "maaneder": [
+    6
+  ],
+  "malgrupper": [
+    "alle"
+  ],
+  "slor": "gul",
+  "motiv": [
+    {
+      "m": "bal",
+      "x": 30,
+      "y": 30,
+      "s": 140
+    },
+    {
+      "m": "sol",
+      "x": 140,
+      "y": 0,
+      "s": 60,
+      "f": [
+        "gul",
+        "korall"
+      ]
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "stjerne",
+      "prikk"
+    ],
+    "antall": 8,
+    "dekning": 0.35,
+    "farger": [
+      "gul",
+      "korall"
+    ]
+  }
+}

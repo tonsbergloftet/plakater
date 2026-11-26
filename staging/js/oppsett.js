@@ -102,6 +102,7 @@ const S = {
   imgs:[], ki:false, zoom:'fit', skjulTomme:false, ikon:null, mork:false,
   bs1:'', bs2:'', bs3:'', pIntro:'',
   side2:true, side:1,
+  tema:null, // valgfritt tema (se js/tema.js)
   blokker:null, blokkerSync:'', // innholdsblokker (se BLOKK_MALER)
   s2Tittel:'Et foreldrekurs for migrasjonsfamilier',
   s2Ut1:'Hva er ICDP-kurs?',

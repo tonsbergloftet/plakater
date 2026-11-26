@@ -1,0 +1,53 @@
+{
+  "id": "vinter",
+  "navn": "Vinter",
+  "sub": "Aking, snømann og snø",
+  "kategori": "arshjul",
+  "maaneder": [
+    1,
+    2
+  ],
+  "malgrupper": [
+    "barn",
+    "alle"
+  ],
+  "slor": "gul",
+  "motiv": [
+    {
+      "m": "snomann",
+      "x": 8,
+      "y": 30,
+      "s": 130
+    },
+    {
+      "m": "kjelke",
+      "x": 90,
+      "y": 110,
+      "s": 100,
+      "r": -6
+    },
+    {
+      "m": "snofnugg",
+      "x": 140,
+      "y": 10,
+      "s": 40
+    },
+    {
+      "m": "snofnugg",
+      "x": 112,
+      "y": 60,
+      "s": 22
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "snofnugg",
+      "prikk"
+    ],
+    "antall": 8,
+    "dekning": 0.35,
+    "farger": [
+      "navy"
+    ]
+  }
+}

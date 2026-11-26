@@ -1,0 +1,50 @@
+{
+  "id": "halloween",
+  "navn": "Halloween",
+  "sub": "Fullmåne, gresskar og flaggermus",
+  "kategori": "arshjul",
+  "maaneder": [
+    10
+  ],
+  "malgrupper": [
+    "barn",
+    "ungdom"
+  ],
+  "slor": "korall",
+  "motiv": [
+    {
+      "m": "mane",
+      "x": 70,
+      "y": 0,
+      "s": 110
+    },
+    {
+      "m": "flaggermus",
+      "x": 0,
+      "y": 10,
+      "s": 70
+    },
+    {
+      "m": "flaggermus",
+      "x": 150,
+      "y": 80,
+      "s": 46
+    },
+    {
+      "m": "gresskar",
+      "x": 30,
+      "y": 60,
+      "s": 140
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "stjerne"
+    ],
+    "antall": 8,
+    "dekning": 0.35,
+    "farger": [
+      "gul"
+    ]
+  }
+}

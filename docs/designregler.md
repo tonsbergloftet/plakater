@@ -133,6 +133,15 @@ Status fra 19.11.2026. Sjekk med designeren om noe er avklart, og oppdater lista
   - Tekst i to spalter (tittel til venstre, brødtekst til høyre) på Tekstplakat. Bilderammene på Tre bilder er flyttet til høyre halvdel.
   - Designeren bør se på dem og helst levere en A4 liggende-fil (åpent spørsmål om 16:9-mal).
 
+- **Tema (valgfritt lag, `js/tema.js`)** er ikke godkjent av designer. Det endrer bare det malen har plass til:
+  - **Slør:** temaets slørfarge, en av de fire i `SLOR`.
+  - **Flate:** malene med lys grå flate får en lys tone av slørfargen (`SLOR.tint`). Mørk tekst beholder god kontrast.
+  - **Motiv:** en illustrasjon på malens faste motivplass (`TEMA_PLASS`). Den vises ikke når malen har valgt ikon på samme plass.
+  - **Dekor:** små motiver i malens ledige felt, aldri over tekst eller bilder.
+  - Logo, ramme, bølgeform, typografi og QR endres ikke.
+  - Motivene (`js/motiver.js`) bruker profilfargene, også rød, mørkegrønn og grå, som ikke står i malene ellers.
+  - `verktoy/sjekk-regler.js` sjekker ikke fargene i `motiver.js` ennå.
+
 ---
 
 ## 5. Sjekkliste for nye maler

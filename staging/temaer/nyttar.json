@@ -1,0 +1,64 @@
+{
+  "id": "nyttar",
+  "navn": "Nyttår",
+  "sub": "Fyrverkeri og festkveld",
+  "kategori": "arshjul",
+  "maaneder": [
+    12,
+    1
+  ],
+  "malgrupper": [
+    "alle",
+    "ungdom",
+    "senior"
+  ],
+  "slor": "gul",
+  "motiv": [
+    {
+      "m": "fyrverkeri",
+      "x": 20,
+      "y": 0,
+      "s": 120,
+      "f": [
+        "gul",
+        "korall",
+        "lysbla"
+      ]
+    },
+    {
+      "m": "fyrverkeri",
+      "x": 110,
+      "y": 40,
+      "s": 90,
+      "f": [
+        "lysbla",
+        "gul",
+        "korall"
+      ]
+    },
+    {
+      "m": "konfetti",
+      "x": 10,
+      "y": 110,
+      "s": 90
+    },
+    {
+      "m": "konfetti",
+      "x": 100,
+      "y": 120,
+      "s": 90,
+      "r": 40
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "stjerne",
+      "prikk"
+    ],
+    "antall": 8,
+    "dekning": 0.35,
+    "farger": [
+      "gul"
+    ]
+  }
+}

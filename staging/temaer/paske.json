@@ -1,0 +1,68 @@
+{
+  "id": "paske",
+  "navn": "Påske",
+  "sub": "Egg, kylling og påskeliljer",
+  "kategori": "arshjul",
+  "maaneder": [
+    3,
+    4
+  ],
+  "malgrupper": [
+    "barn",
+    "alle",
+    "senior"
+  ],
+  "slor": "gronn",
+  "motiv": [
+    {
+      "m": "egg",
+      "x": 4,
+      "y": 60,
+      "s": 100,
+      "r": -12
+    },
+    {
+      "m": "kylling",
+      "x": 80,
+      "y": 70,
+      "s": 120
+    },
+    {
+      "m": "blomst",
+      "x": 140,
+      "y": 0,
+      "s": 70,
+      "r": 10,
+      "f": [
+        "gul",
+        "korall",
+        "morkgronn"
+      ]
+    },
+    {
+      "m": "egg",
+      "x": 60,
+      "y": 140,
+      "s": 56,
+      "r": 14,
+      "f": [
+        "lysbla",
+        "korall",
+        "gul"
+      ]
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "blomst",
+      "prikk"
+    ],
+    "antall": 8,
+    "dekning": 0.35,
+    "farger": [
+      "navy",
+      "korall",
+      "morkgronn"
+    ]
+  }
+}
