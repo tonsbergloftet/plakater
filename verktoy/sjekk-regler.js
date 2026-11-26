@@ -39,6 +39,8 @@ const PROFILFARGER = {
   '#ffffff': 'hvit', '#fff': 'hvit',
   '#000000': 'sort (vask og skygger med gjennomsiktighet)', '#000': 'sort (vask og skygger med gjennomsiktighet)',
   '#1d1d1b': 'sort tekst og QR (logofargen)',
+  // T_rød fra profilen. Brukes bare til forbudsskilt (svømmehallen). Godkjent som unntak av Marius 26.11.2026.
+  '#923c3d': 'T_rød (forbudsskilt)',
 };
 // Hjelpefarger som allerede er i bruk og godkjent. Nye farger skal helst ikke inn her.
 const HJELPEFARGER = {
