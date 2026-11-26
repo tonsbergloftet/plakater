@@ -208,3 +208,21 @@ body.har-bank .bankbtn{display:block}
 #temamodal .mhead input{max-width:320px}
 #sec-slor.styrt .swatches{opacity:.35;pointer-events:none}
 .hint.tips{color:var(--navy);font-weight:600}
+
+/* Formateringshjelp: vises ved siden av plakaten mens brødteksten redigeres */
+.formhjelp{display:none;position:absolute;right:14px;top:132px;z-index:25;width:290px;background:#fff;border:1.5px solid var(--navy);border-radius:10px;padding:10px 12px 8px;font-size:12.5px;color:var(--ink);box-shadow:0 6px 18px rgba(0,0,0,.14)}
+.formhjelp.on{display:block}
+.formhjelp h3{margin:0 0 6px;font-size:13px;color:var(--navy)}
+.formhjelp table{width:100%;border-collapse:collapse}
+.formhjelp th{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);text-align:left;font-weight:600;padding:0 0 3px}
+.formhjelp td{vertical-align:top;padding:5px 0;border-top:1px solid #e6e8ee}
+.formhjelp td:first-child{width:52%;padding-right:8px}
+.formhjelp code{font-family:ui-monospace,Consolas,monospace;font-size:11.5px;background:#f2f3f6;border-radius:4px;padding:1px 4px;white-space:pre-wrap;display:inline-block}
+.formhjelp .fh-h{font-weight:700;color:var(--navy)}
+.formhjelp .fh-e{font-weight:700}
+.formhjelp .fh-pris{display:flex;gap:4px;align-items:baseline}
+.formhjelp .fh-pris i{flex:1;border-bottom:1.5px dotted #9aa;transform:translateY(-3px)}
+.formhjelp .fh-l{display:block;border-top:1.5px solid var(--navy);margin-top:7px}
+.formhjelp .fh-u{font-weight:700;color:var(--navy)}
+.formhjelp p{margin:6px 0 0;color:var(--muted);font-size:11.5px}
+@media (max-width: 1100px){ .formhjelp{top:auto;bottom:12px;right:12px} }
