@@ -2,9 +2,6 @@
 'use strict';
 /* ═════════ PROFIL (Tønsberg kommunes grafiske profil, s. 8–9) ═════════ */
 const P = {navy:'#013952', gronn:'#c5daaf', rod:'#923c3d', korall:'#e69d7d', gul:'#f1be48', lysbla:'#91cef2', morkgronn:'#00714e', gra:'#4a4a49', hvit:'#ffffff', sort:'#1d1d1b'};
-const PNAVN = {navy:'mørkeblå', gronn:'grønn', rod:'rød', korall:'korall', gul:'gul', lysbla:'lyseblå', morkgronn:'mørkegrønn', gra:'grå', hvit:'hvit', sort:'sort'};
-const SLOR_OK = ['gronn','korall','gul','lysbla'];          // profilen: «sløret kan brukes i lyse farger fra paletten»
-const BOLGE_OK = ['navy','hvit'];                           // profilen: «bølgen skal være mørkeblå eller hvit»
 const W = 794, H = 1123;
 const PANEL = {x0:29.3, y0:28.9, x1:766.3, y1:1092.3, r:56.7};
 const rrect = (x0,y0,x1,y1,r) => `M${x0},${y0+r} Q${x0},${y0} ${x0+r},${y0} L${x1-r},${y0} Q${x1},${y0} ${x1},${y0+r} L${x1},${y1-r} Q${x1},${y1} ${x1-r},${y1} L${x0+r},${y1} Q${x0},${y1} ${x0},${y1-r} Z`;
@@ -17,7 +14,7 @@ const MALGRUPPER = {alle:'Alle', barn:'Barn', ungdom:'Ungdom', voksne:'Voksne', 
    bolgeY: bølgeparet flyttes bare loddrett. helt: [x, y, størrelse, rotasjon, foran bølgen]. fri: felt der dekor ikke legges. */
 const VAR = {
   illustrasjon:{navn:'Illustrasjon', bolgeY:10,   helt:[207,100,390,0,true],  fri:[[207,100,597,490],[50,520,744,730]]},
-  tittel:      {navn:'Stor tittel',  bolgeY:40,   helt:[440,440,320,-4,true], fri:[[70,180,730,560],[440,440,760,760],[90,580,260,760]]},
+  tittel:      {navn:'Stor tittel',  bolgeY:4,    helt:[440,450,310,-4,true], fri:[[70,210,730,580],[440,450,760,770],[80,590,290,780]]},
   invitasjon:  {navn:'Invitasjon',   bolgeY:-280, helt:[530,40,220,4,false],  fri:[[530,40,750,260],[70,190,690,400]]},
 };
 
@@ -43,7 +40,6 @@ async function lastTemaer(){
 
 /* Farger som følger av temaet. Lyst panel gir mørk tekst, mørkt panel gir lys tekst. */
 function lum(h){ const c = h.replace('#','').match(/../g).map(x => { x = parseInt(x,16)/255; return x <= .03928 ? x/12.92 : Math.pow((x+.055)/1.055, 2.4); }); return .2126*c[0] + .7152*c[1] + .0722*c[2]; }
-function kr(a,b){ const A = lum(a), B = lum(b); return (Math.max(A,B)+.05)/(Math.min(A,B)+.05); }
 function farger(t){
   const lys = lum(P[t.panel]) > .3;
   const f = {
@@ -168,13 +164,13 @@ function bygg(temaId, varId, edit, uid){
 
   let tekst = '';
   if(varId==='illustrasjon'){
-    tekst = box(50,510,694,210,17, stikk() + tittel(104), 'align-items:center;text-align:center;justify-content:flex-end')
-          + box(80,850,440,132,17, prakt(), 'justify-content:flex-end')
+    tekst = box(50,488,694,210,17, stikk() + tittel(104), 'align-items:center;text-align:center;justify-content:flex-end')
+          + box(80,836,440,128,17, prakt(), 'justify-content:flex-end')
           + merke(596,110,150,8,c.panel);
   } else if(varId==='tittel'){
-    tekst = box(80,200,650,330,17, stikk() + tittel(124) + hilsen(c.stikk,'margin-top:14px'), 'justify-content:flex-start')
-          + box(80,850,440,132,17, prakt(), 'justify-content:flex-end')
-          + merke(100,590,140,-8,c.panel);
+    tekst = box(80,232,650,330,17, stikk() + tittel(124) + hilsen(c.stikk,'margin-top:18px;font-size:58px'), 'justify-content:flex-start')
+          + box(80,836,440,128,17, prakt(), 'justify-content:flex-end')
+          + merke(92,600,176,-8,c.panel);
   } else {
     tekst = box(80,200,600,190,17, stikk() + tittel(96), 'justify-content:flex-end')
           + box(80,600,620,110,17, ingress(), 'justify-content:flex-start')
@@ -271,33 +267,6 @@ function tegn(){
   document.querySelectorAll('[data-f]').forEach(e => e.classList.toggle('over', over.includes(e.dataset.f)));
   $('varsel').className = 'varsel' + (over.length ? ' feil' : '');
   $('varsel').textContent = over.length ? `For lang tekst i: ${over.map(k => FELT.find(f=>f.k===k).navn).join(', ')}. Kort ned, ellers blir noe kuttet.` : '';
-  tegnRegler();
-}
-
-function tegnRegler(){
-  const t = TEMA[S.tema], v = VAR[S.variant], c = farger(t);
-  const li = (cls, s, sm) => `<li class="${cls}"><i>${cls==='u'?'!':'✓'}</i><span>${s}${sm?`<small>${sm}</small>`:''}</span></li>`;
-  const motivNavn = [...new Set([...t.helt.map(m => m.m), ...((t.dekor||{}).motiver||[])])].map(id => (MOTIVER[id]||{}).navn || id).join(', ');
-  const k = [['Tittel på panelet', kr(c.panelTekst,c.panel), 3], ['Stikktittel på panelet', kr(c.stikk,c.panel), 3], ['Uthevet ord i tittelen', kr(c.uthev,c.panel), 3], ['Info på bølgen', kr(c.bolgeTekst,c.bolge), 4.5], ['Tekst i merket', (m => kr(m[1],m[0]))(merkeFarger(c, S.variant==='invitasjon' ? c.bolge : c.panel)), 3]];
-  $('regler').innerHTML = `
-    <h3>Alltid likt</h3><ul>
-      ${li('l','Logo i fast utsparing','Riktig logofil, samme størrelse og plass som i profilmalene')}
-      ${li('l','Hvit ramme og avrundet panel','7,7 mm kant, 15 mm radius')}
-      ${li('l','Bølgeparets form','Designerens form, bare flyttet loddrett ('+(v.bolgeY>0?'+':'')+v.bolgeY+' px)')}
-      ${li('l','Slør bak bølgen, 75 %','Bølgen brukes aldri uten slør')}
-      ${li('l','QR-kode og arrangør','Nederst på samme linje, samme plass i alle temaer')}
-      ${li('l','Barlow','Tittel i Black Italic, info i Regular/Bold')}
-    </ul>
-    <h3>Temaet «${esc(t.navn)}»</h3><ul>
-      ${li('p','Panel: '+PNAVN[t.panel], c.lys ? 'Lyst panel gir mørkeblå tekst' : 'Mørkt panel gir hvit tekst')}
-      ${li(BOLGE_OK.includes(t.bolge)?'p':'u','Bølge: '+PNAVN[t.bolge], BOLGE_OK.includes(t.bolge) ? 'Profilen tillater mørkeblå eller hvit bølge' : 'Profilen sier mørkeblå eller hvit')}
-      ${li(SLOR_OK.includes(t.slor)?'p':'u','Slør: '+PNAVN[t.slor], SLOR_OK.includes(t.slor) ? 'Lys profilfarge' : 'Hvitt slør er ikke nevnt i profilen')}
-      ${li('p','Motiver fra biblioteket', motivNavn)}
-      ${S.variant!=='illustrasjon' ? li('u','Square Peg som hilsen','Står i profilen, men brukes ikke i profilmalene i dag') : ''}
-      ${t.monster==='teppe' ? li('u','Teaterteppe som striper i panelet','Svarte og hvite striper med lav dekning') : ''}
-      ${t.monster==='bane' ? li('p','Banelinjer i panelet','Hvite linjer med lav dekning') : ''}
-    </ul>
-    <h3>Kontrast</h3><ul>${k.map(([n,r,krav]) => li(r>=krav?'p':'u', n, `${r.toFixed(1)}:1 (krav ${krav}:1)`)).join('')}</ul>`;
 }
 
 function velgTema(id){

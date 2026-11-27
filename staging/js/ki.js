@@ -151,7 +151,7 @@ function initKI(){
     if(!tekst.trim()) return;
     if(erBestilling(tekst)){ $('kifeil').textContent = 'Dette er bestillingen du kopierte i steg 1, ikke svaret. Lim den inn i Copilot først (steg 2), og kopier svaret Copilot gir deg.'; return; }
     const o = kiLes(tekst);
-    if(!o){ $('kifeil').textContent = 'Fant ingen forslag. Pass på at du kopierer hele svaret fra Copilot, med krøllparentesene.'; return; }
+    if(!o){ $('kifeil').textContent = 'Fant ikke hele svaret. Gå tilbake til Copilot og bruk kopier-knappen øverst til høyre i JSON-boksen, så kommer alt med.'; return; }
     const felt = kiFelt().filter(k => k in o);
     if(!felt.length){ $('kifeil').textContent = 'Svaret passer ikke til malen som er valgt nå. Har du byttet mal? Start på nytt fra steg 1.'; return; }
     kiForslag = {}; felt.forEach(k => kiForslag[k] = String(o[k] ?? '').replace(/\r/g, '').trim());

@@ -16,7 +16,7 @@
 .testbanner{position:fixed;top:0;left:0;right:0;z-index:50;background:#ffd400;color:#1a1a1a;font-weight:700;font-size:13px;letter-spacing:.12em;text-align:center;height:28px;line-height:28px}
 body:has(.testbanner){padding-top:28px}
 html,body{margin:0;height:100%}
-body{font-family:'Barlow',system-ui,sans-serif;color:#1d1d1b;background:#eef1f3;display:grid;grid-template-columns:400px 1fr 290px;height:100vh;overflow:hidden}
+body{font-family:'Barlow',system-ui,sans-serif;color:#1d1d1b;background:#eef1f3;display:grid;grid-template-columns:400px 1fr;height:100vh;overflow:hidden}
 button,input,textarea,select{font:inherit;color:inherit}
 :focus-visible{outline:3px solid #2581c4;outline-offset:2px}
 
@@ -65,16 +65,9 @@ button,input,textarea,select{font:inherit;color:inherit}
 .ramme > .plakat{transform-origin:0 0}
 
 /* ── Regelsjekk ── */
-.regler{background:#fff;border-left:1px solid #d9dee2;overflow:auto;padding:18px 16px 40px;font-size:13.5px;line-height:1.4}
-.regler h2{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#013952;margin:0 0 8px}
-.regler h3{font-size:14px;margin:16px 0 6px;color:#013952}
-.regler ul{list-style:none;padding:0;margin:0}
-.regler li{display:grid;grid-template-columns:20px 1fr;gap:6px;padding:5px 0;border-bottom:1px solid #eef1f3}
-.regler li i{font-style:normal;font-weight:800;text-align:center;border-radius:50%;width:18px;height:18px;font-size:11px;line-height:18px;margin-top:1px}
 .l i{background:#013952;color:#fff}
 .p i{background:#c5daaf;color:#013952}
 .u i{background:#f1be48;color:#013952}
-.regler small{color:#5b6570;display:block}
 .forklaring{margin-top:14px;font-size:12.5px;color:#4a4a49}
 .forklaring span{display:inline-flex;align-items:center;gap:5px;margin-right:10px}
 .forklaring span i{display:inline-block;width:12px;height:12px;border-radius:50%}
@@ -90,8 +83,8 @@ button,input,textarea,select{font:inherit;color:inherit}
 .plakat .tom{display:none}
 .plakat.edit .tom{display:block;opacity:.45;font-style:italic}
 .plakat .over{box-shadow:0 0 0 3px #923c3d !important}
-.stikk{font-weight:700;letter-spacing:.3em;text-transform:uppercase;font-size:17px;line-height:1.3;margin:0 0 6px}
-.tittel{font-weight:900;font-style:italic;line-height:1.0;margin:0;letter-spacing:-.005em;overflow-wrap:normal;hyphens:manual;max-width:100%;padding:0 .06em .12em 0}
+.stikk{font-weight:700;letter-spacing:.3em;text-transform:uppercase;font-size:17px;line-height:1.3;margin:0 0 12px}
+.tittel{font-weight:900;font-style:italic;line-height:1.0;margin:0;letter-spacing:-.005em;overflow-wrap:normal;hyphens:manual;max-width:100%;padding:.1em .06em .12em 0}
 .tittel mark{background:none;color:inherit}
 .ingress{font-style:italic;font-size:22px;line-height:1.3;margin:10px 0 0}
 .hilsen{font-family:'Square Peg',cursive;font-size:46px;line-height:1;margin:0}
@@ -105,11 +98,11 @@ button,input,textarea,select{font:inherit;color:inherit}
 .qrblokk .qrt b{font-weight:700}
 .qrblokk .qr{width:103px;height:103px;border-radius:11px;background:#fff;padding:7px;flex:none}
 .qrblokk .qr svg{width:100%;height:100%;display:block}
-.bunn{position:absolute;left:80px;right:63px;bottom:31px;display:flex;align-items:flex-end;justify-content:space-between;gap:24px}
+.bunn{position:absolute;left:80px;right:63px;bottom:58px;display:flex;align-items:flex-end;justify-content:space-between;gap:24px}
 .bunn .qrblokk{position:static}
 .arr{min-width:0;padding-bottom:4px}
 .arr .lbl{font-size:13px;letter-spacing:.3em;text-transform:uppercase;font-weight:700;margin:0 0 4px;opacity:.85}
 .arr .navn{font-size:22px;font-weight:700;line-height:1.15}
 
-@media (max-width:1150px){body{grid-template-columns:380px 1fr}.regler{display:none}}
+@media (max-width:1150px){body{grid-template-columns:380px 1fr}}
 @media (max-width:760px){body{display:block;overflow:auto;height:auto}.side{border:0}.scene{padding:12px}.temaer{max-height:none}}
