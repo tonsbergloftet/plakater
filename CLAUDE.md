@@ -67,6 +67,7 @@ Opprykket leveres som en egen pull request, ikke sammen med andre endringer.
 1. Lag en ny tagg av dagens prod, for eksempel `v2-for-opprykk`, under Releases → Draft a new release.
 2. Kopier innholdet i `staging/` til rota, slik at det erstatter `index.html` og legger til de nye mappene.
 3. I rotkopien: sett `RESSURS_ROT` og `LS_PREFIKS` til `''` (øverst i `js/oppsett.js`), og fjern banneret «TESTVERSJON» (`<div class="testbanner">` i `index.html` og regelen `.testbanner` i `css/ui.css`).
+   Gjør det samme i temamodusen: `LS_PREFIKS` øverst i `tema/app.js`, og `<div class="testbanner">` i `tema/index.html` (regelen i `tema/tema.css` kan stå).
 4. Kjør `node verktoy/sjekk-regler.js --prod` og sammenligningstesten på nytt, nå mellom den nye prod og staging.
 5. Last opp, og sjekk prod på nettet: lag én plakat, eksporter den og åpne en gammel arbeidsfil.
 6. Behold `staging/` som utgangspunkt for neste runde.
@@ -103,6 +104,9 @@ staging/
                         bølgene tegnes av koden for hver mal og hører hjemme i js/maler.js, ikke i grafikk/
                         motiver.js er motivbiblioteket for temaene, tema.js legger et valgt tema på malene
   temaer/               temaene (én JSON-fil per tema, rekkefølgen i index.json)
+  tema/                 temamodusen «Temaplakater» (egen side, forslag, ikke godkjent av designer)
+                        index.html, tema.css, app.js, temaer/ (egne temafiler med panel, bølge og demotekst)
+                        bolge.js er en kopi av FS8 i js/maler.js. Bruker ../js/motiver.js, ../lib/, ../fonter/ og ../grafikk/logo.png
   fonter/               Barlow, Square Peg (woff2)
   grafikk/              logo, eksempelbilder
   lib/                  html-to-image, jsPDF, qrcode-generator

@@ -1,0 +1,59 @@
+{
+  "id": "quiz",
+  "navn": "Quiz",
+  "sub": "Spørsmål og lyse ideer",
+  "kategori": "aktivitet",
+  "maaneder": [],
+  "malgrupper": [
+    "ungdom",
+    "voksne",
+    "ansatte",
+    "senior"
+  ],
+  "panel": "lysbla",
+  "bolge": "navy",
+  "slor": "gul",
+  "helt": [
+    {
+      "m": "sporsmal",
+      "x": 0,
+      "y": 20,
+      "s": 130,
+      "r": -6,
+      "f": [
+        "hvit",
+        "navy"
+      ]
+    },
+    {
+      "m": "lyspare",
+      "x": 110,
+      "y": 40,
+      "s": 100,
+      "r": 12
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "stjerne",
+      "prikk"
+    ],
+    "antall": 8,
+    "dekning": 0.6,
+    "farger": [
+      "hvit",
+      "gul"
+    ]
+  },
+  "demo": {
+    "stikk": "Hvem vinner",
+    "tittel": "**Quiz**kvelden?",
+    "ingress": "Lag på 2–5 personer. Spørsmål om alt fra lokalhistorie til popmusikk.",
+    "praktisk": "Når: Torsdag 21. januar kl. 19.00\nHvor: Biblioteket\nLag: 2–5 personer",
+    "merke": "Premie\ntil vinneren!",
+    "hilsen": "Ta med de smarte vennene",
+    "url": "tonsberg.kommune.no/quiz",
+    "qr": "Skann og\n**meld på laget**",
+    "arr": "Biblioteket"
+  }
+}

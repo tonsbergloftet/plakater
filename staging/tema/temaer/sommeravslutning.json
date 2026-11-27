@@ -1,0 +1,72 @@
+{
+  "id": "sommeravslutning",
+  "navn": "Sommeravslutning",
+  "sub": "Sol, is og ballonger",
+  "kategori": "arshjul",
+  "maaneder": [
+    6
+  ],
+  "malgrupper": [
+    "barn",
+    "ungdom",
+    "ansatte"
+  ],
+  "panel": "gul",
+  "bolge": "navy",
+  "slor": "lysbla",
+  "helt": [
+    {
+      "m": "sol",
+      "x": 100,
+      "y": 0,
+      "s": 100
+    },
+    {
+      "m": "iskrem",
+      "x": 20,
+      "y": 40,
+      "s": 120,
+      "r": -10
+    },
+    {
+      "m": "ballong",
+      "x": 130,
+      "y": 80,
+      "s": 70,
+      "r": 10,
+      "f": [
+        "rod",
+        "navy"
+      ]
+    },
+    {
+      "m": "ballong",
+      "x": 150,
+      "y": 60,
+      "s": 56,
+      "r": -6,
+      "f": [
+        "lysbla",
+        "navy"
+      ]
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "konfetti"
+    ],
+    "antall": 6,
+    "dekning": 0.6
+  },
+  "demo": {
+    "stikk": "Endelig",
+    "tittel": "**Sommer**fest",
+    "ingress": "Vi avslutter året med leker, musikk og is til alle.",
+    "praktisk": "Når: Torsdag 17. juni kl. 12–14\nHvor: Skolegården\nFor: Elever, foreldre og ansatte",
+    "merke": "Is til\nalle!",
+    "hilsen": "Takk for i år!",
+    "url": "tonsberg.kommune.no/sommer",
+    "qr": "Skann for\n**program**",
+    "arr": "FAU"
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "id": "loppemarked",
+  "navn": "Loppemarked",
+  "sub": "Prislapper og bytteting",
+  "kategori": "aktivitet",
+  "maaneder": [],
+  "malgrupper": [
+    "alle"
+  ],
+  "panel": "gul",
+  "bolge": "navy",
+  "slor": "gronn",
+  "helt": [
+    {
+      "m": "kleshenger",
+      "x": 60,
+      "y": 10,
+      "s": 110
+    },
+    {
+      "m": "prislapp",
+      "x": 0,
+      "y": 70,
+      "s": 100
+    },
+    {
+      "m": "prislapp",
+      "x": 110,
+      "y": 100,
+      "s": 80,
+      "r": 20,
+      "f": [
+        "korall",
+        "navy"
+      ]
+    },
+    {
+      "m": "vimpler",
+      "x": 0,
+      "y": 0,
+      "s": 200,
+      "f": [
+        "rod",
+        "lysbla",
+        "korall"
+      ]
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "prikk"
+    ],
+    "antall": 6,
+    "dekning": 0.4,
+    "farger": [
+      "hvit"
+    ]
+  },
+  "demo": {
+    "stikk": "Kjøp, selg og bytt på",
+    "tittel": "**Loppe**marked",
+    "ingress": "Klær, leker, bøker og møbler. Lever lopper fredag kl. 16–19.",
+    "praktisk": "Når: Lørdag 24. april kl. 10–14\nHvor: Gymsalen\nInntekt: Går til klassetur",
+    "merke": "Kafé og\nlotteri!",
+    "hilsen": "Gjenbruk er gull",
+    "url": "tonsberg.kommune.no/loppis",
+    "qr": "Skann for\n**innlevering**",
+    "arr": "7. trinn"
+  }
+}

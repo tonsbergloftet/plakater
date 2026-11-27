@@ -1,0 +1,66 @@
+{
+  "id": "vinter",
+  "navn": "Vinterdag",
+  "sub": "Aking, snømann og snø",
+  "kategori": "arshjul",
+  "maaneder": [
+    1,
+    2
+  ],
+  "malgrupper": [
+    "barn",
+    "alle"
+  ],
+  "panel": "lysbla",
+  "bolge": "hvit",
+  "slor": "gul",
+  "helt": [
+    {
+      "m": "snomann",
+      "x": 8,
+      "y": 30,
+      "s": 130
+    },
+    {
+      "m": "kjelke",
+      "x": 90,
+      "y": 110,
+      "s": 100,
+      "r": -6
+    },
+    {
+      "m": "snofnugg",
+      "x": 140,
+      "y": 10,
+      "s": 40
+    },
+    {
+      "m": "snofnugg",
+      "x": 112,
+      "y": 60,
+      "s": 22
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "snofnugg",
+      "prikk"
+    ],
+    "antall": 12,
+    "dekning": 0.75,
+    "farger": [
+      "hvit"
+    ]
+  },
+  "demo": {
+    "stikk": "Ut i snøen",
+    "tittel": "**Vinter**dag",
+    "ingress": "Aking, skileik og bål. Vi har kakao og pølser.",
+    "praktisk": "Når: Onsdag 10. februar kl. 10–13\nHvor: Bakken bak skolen\nTa med: Akebrett og varme klær",
+    "merke": "Gratis\nkakao!",
+    "hilsen": "Husk ull innerst",
+    "url": "tonsberg.kommune.no/vinter",
+    "qr": "Skann for\n**værmelding**",
+    "arr": "Fritidsklubben"
+  }
+}

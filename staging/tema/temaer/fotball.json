@@ -1,0 +1,45 @@
+{
+  "id": "fotball",
+  "navn": "Fotballkamp",
+  "sub": "Gressbane, banelinjer og ball",
+  "kategori": "aktivitet",
+  "maaneder": [],
+  "malgrupper": [
+    "barn",
+    "ungdom",
+    "ansatte"
+  ],
+  "panel": "morkgronn",
+  "bolge": "navy",
+  "slor": "gronn",
+  "monster": "bane",
+  "helt": [
+    {
+      "m": "fart",
+      "x": 0,
+      "y": 40,
+      "s": 70
+    },
+    {
+      "m": "fotball",
+      "x": 30,
+      "y": 10,
+      "s": 170
+    }
+  ],
+  "dekor": {
+    "motiver": [],
+    "antall": 0
+  },
+  "demo": {
+    "stikk": "Ansatte mot elever",
+    "tittel": "Stor**kampen**",
+    "ingress": "Heiagjeng, grilling og premie til beste supporter.",
+    "praktisk": "Når: Onsdag 9. juni kl. 14.00\nHvor: Kunstgresset, Kilen\nPåmelding: Til kontaktlærer",
+    "merke": "Alle kan\nheie!",
+    "hilsen": "Ta med flagg og stemme",
+    "url": "tonsberg.kommune.no/kamp",
+    "qr": "Skann og\n**se laget**",
+    "arr": "Kilen ungdomsskole"
+  }
+}

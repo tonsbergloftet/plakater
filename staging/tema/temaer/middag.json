@@ -1,0 +1,57 @@
+{
+  "id": "middag",
+  "navn": "Felles middag",
+  "sub": "Gryte, tallerken og fellesskap",
+  "kategori": "aktivitet",
+  "maaneder": [],
+  "malgrupper": [
+    "alle",
+    "senior",
+    "voksne"
+  ],
+  "panel": "gronn",
+  "bolge": "navy",
+  "slor": "korall",
+  "helt": [
+    {
+      "m": "tallerken",
+      "x": 0,
+      "y": 60,
+      "s": 130
+    },
+    {
+      "m": "gryte",
+      "x": 100,
+      "y": 30,
+      "s": 100
+    },
+    {
+      "m": "hjerte",
+      "x": 150,
+      "y": 0,
+      "s": 40
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "prikk",
+      "hjerte"
+    ],
+    "antall": 7,
+    "dekning": 0.4,
+    "farger": [
+      "hvit"
+    ]
+  },
+  "demo": {
+    "stikk": "Velkommen til",
+    "tittel": "**Felles** middag",
+    "ingress": "Vi lager mat sammen og spiser ved langbord. Alle er velkomne.",
+    "praktisk": "Når: Hver torsdag kl. 17.00\nHvor: Felleskjøkkenet, Frivilligsentralen\nPris: 30 kr",
+    "merke": "Vegetar\nhver gang!",
+    "hilsen": "Ta med en venn",
+    "url": "tonsberg.kommune.no/middag",
+    "qr": "Skann og\n**se menyen**",
+    "arr": "Frivilligsentralen"
+  }
+}

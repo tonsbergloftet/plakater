@@ -1,0 +1,64 @@
+{
+  "id": "strikkekafe",
+  "navn": "Strikkekafé",
+  "sub": "Garn, pinner og kaffe",
+  "kategori": "aktivitet",
+  "maaneder": [],
+  "malgrupper": [
+    "voksne",
+    "senior"
+  ],
+  "panel": "korall",
+  "bolge": "navy",
+  "slor": "gul",
+  "helt": [
+    {
+      "m": "garn",
+      "x": 10,
+      "y": 30,
+      "s": 130,
+      "f": [
+        "lysbla",
+        "gul"
+      ]
+    },
+    {
+      "m": "garn",
+      "x": 100,
+      "y": 80,
+      "s": 90,
+      "f": [
+        "gronn",
+        "gul"
+      ]
+    },
+    {
+      "m": "kopp",
+      "x": 130,
+      "y": 10,
+      "s": 60
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "hjerte",
+      "prikk"
+    ],
+    "antall": 8,
+    "dekning": 0.35,
+    "farger": [
+      "hvit"
+    ]
+  },
+  "demo": {
+    "stikk": "Strikk og prat på",
+    "tittel": "**Strikke**kafé",
+    "ingress": "Ta med strikketøyet. Nybegynnere får hjelp.",
+    "praktisk": "Når: Annenhver tirsdag kl. 18–20\nHvor: Frivilligsentralen\nFor: Alle som liker garn",
+    "merke": "Kaffe og\nvafler!",
+    "hilsen": "Ta med prosjektet ditt",
+    "url": "tonsberg.kommune.no/strikk",
+    "qr": "Skann for\n**datoer**",
+    "arr": "Frivilligsentralen"
+  }
+}

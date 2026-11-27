@@ -1,0 +1,69 @@
+{
+  "id": "jul",
+  "navn": "Juleverksted",
+  "sub": "Snøfonn og stjernehimmel",
+  "kategori": "arshjul",
+  "maaneder": [
+    11,
+    12
+  ],
+  "malgrupper": [
+    "barn",
+    "alle"
+  ],
+  "panel": "navy",
+  "bolge": "hvit",
+  "slor": "lysbla",
+  "merke": [
+    "rod",
+    "hvit"
+  ],
+  "helt": [
+    {
+      "m": "juletre",
+      "x": 40,
+      "y": 0,
+      "s": 130
+    },
+    {
+      "m": "gave",
+      "x": 0,
+      "y": 120,
+      "s": 60,
+      "r": -6
+    },
+    {
+      "m": "gave",
+      "x": 140,
+      "y": 124,
+      "s": 56,
+      "r": 6,
+      "f": [
+        "lysbla",
+        "rod"
+      ]
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "snofnugg",
+      "prikk"
+    ],
+    "antall": 12,
+    "dekning": 0.45,
+    "farger": [
+      "hvit"
+    ]
+  },
+  "demo": {
+    "stikk": "Velkommen til",
+    "tittel": "**Jule**verksted",
+    "ingress": "Vi lager pynt, pakker inn og spiser pepperkaker sammen.",
+    "praktisk": "Når: Lørdag 12. desember kl. 11–14\nHvor: Biblioteket\nFor: Barn 5–12 år med voksen",
+    "merke": "Gratis!",
+    "hilsen": "Ta med saks og godt humør",
+    "url": "tonsberg.kommune.no/jul",
+    "qr": "Skann og\n**meld deg på**",
+    "arr": "Kultur og fritid"
+  }
+}

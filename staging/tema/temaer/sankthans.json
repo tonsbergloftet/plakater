@@ -1,0 +1,56 @@
+{
+  "id": "sankthans",
+  "navn": "Sankthans",
+  "sub": "Bål og lys sommerkveld",
+  "kategori": "arshjul",
+  "maaneder": [
+    6
+  ],
+  "malgrupper": [
+    "alle"
+  ],
+  "panel": "rod",
+  "bolge": "navy",
+  "slor": "gul",
+  "helt": [
+    {
+      "m": "bal",
+      "x": 30,
+      "y": 30,
+      "s": 140
+    },
+    {
+      "m": "sol",
+      "x": 140,
+      "y": 0,
+      "s": 60,
+      "f": [
+        "gul",
+        "korall"
+      ]
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "stjerne",
+      "prikk"
+    ],
+    "antall": 10,
+    "dekning": 0.45,
+    "farger": [
+      "gul",
+      "korall"
+    ]
+  },
+  "demo": {
+    "stikk": "Velkommen til",
+    "tittel": "**Sankthans**",
+    "ingress": "Bål i fjæra, grilling og allsang.",
+    "praktisk": "Når: Onsdag 23. juni kl. 19–23\nHvor: Badestranda\nTa med: Noe å grille",
+    "merke": "Bålet\ntennes 21!",
+    "hilsen": "God sommer!",
+    "url": "tonsberg.kommune.no/sankthans",
+    "qr": "Skann for\n**kart**",
+    "arr": "Velforeningen"
+  }
+}
