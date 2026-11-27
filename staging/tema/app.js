@@ -13,8 +13,8 @@ const MALGRUPPER = {alle:'Alle', barn:'Barn', ungdom:'Ungdom', voksne:'Voksne', 
 /* ═════════ VARIANTER (felles oppsett for alle temaer) ═════════
    bolgeY: bølgeparet flyttes bare loddrett. helt: [x, y, størrelse, rotasjon, foran bølgen]. fri: felt der dekor ikke legges. */
 const VAR = {
-  illustrasjon:{navn:'Illustrasjon', bolgeY:10,   helt:[207,100,390,0,true],  fri:[[207,100,597,490],[50,520,744,730]]},
-  tittel:      {navn:'Stor tittel',  bolgeY:4,    helt:[440,450,310,-4,true], fri:[[70,210,730,580],[440,450,760,770],[80,590,290,780]]},
+  illustrasjon:{navn:'Illustrasjon', bolgeY:-6,   helt:[207,100,390,0,true],  fri:[[207,100,597,490],[50,520,744,730]]},
+  tittel:      {navn:'Stor tittel',  bolgeY:-12,   helt:[440,450,310,-4,true], fri:[[70,210,730,580],[440,450,760,770],[80,590,290,780]]},
   invitasjon:  {navn:'Invitasjon',   bolgeY:-280, helt:[530,40,220,4,false],  fri:[[530,40,750,260],[70,190,690,400]]},
 };
 
@@ -164,12 +164,12 @@ function bygg(temaId, varId, edit, uid){
 
   let tekst = '';
   if(varId==='illustrasjon'){
-    tekst = box(50,488,694,210,17, stikk() + tittel(104), 'align-items:center;text-align:center;justify-content:flex-end')
-          + box(80,836,440,128,17, prakt(), 'justify-content:flex-end')
+    tekst = box(50,472,694,210,17, stikk() + tittel(104), 'align-items:center;text-align:center;justify-content:flex-end')
+          + box(80,852,440,134,17, prakt(), 'justify-content:flex-end')
           + merke(596,110,150,8,c.panel);
   } else if(varId==='tittel'){
     tekst = box(80,232,650,330,17, stikk() + tittel(124) + hilsen(c.stikk,'margin-top:18px;font-size:58px'), 'justify-content:flex-start')
-          + box(80,836,440,128,17, prakt(), 'justify-content:flex-end')
+          + box(80,852,440,134,17, prakt(), 'justify-content:flex-end')
           + merke(92,600,176,-8,c.panel);
   } else {
     tekst = box(80,200,600,190,17, stikk() + tittel(96), 'justify-content:flex-end')
