@@ -231,14 +231,24 @@
         <ol class="kiliste-steg">
           <li>Åpne Copilot (eller et annet KI-verktøy kommunen har godkjent) og logg inn med kommunekontoen.</li>
           <li>Klikk i skrivefeltet og lim inn med <kbd>Ctrl</kbd>+<kbd>V</kbd>. Trykk send.</li>
-          <li>Vent til Copilot har svart. Svaret er en boks med tekst i krøllparenteser.</li>
+          <li>Vent til Copilot har svart. Svaret kommer i en grå boks merket «JSON».</li>
         </ol>
         <p class="kinote">Ikke lim inn personopplysninger som navn på innbyggere, fødselsnummer eller helseopplysninger.</p>
         <div class="kinav"><button class="btn" data-til="1">Tilbake</button><button class="btn pri" data-til="3">Copilot har svart</button></div>
       </section>
       <section class="kisteg" data-steg="3">
         <b class="t">3. Kopier svaret fra Copilot og lim det inn her</b>
-        <p>I Copilot: trykk på kopier-knappen under svaret, eller oppe i hjørnet av boksen med tekst. Kom tilbake hit og lim inn i feltet under.</p>
+        <div class="kikopi">
+          <div class="kk-boks" aria-hidden="true">
+            <div class="kk-topp"><span class="kk-navn">&lt;/&gt; JSON</span><span class="kk-knapp"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="8" y="4" width="11" height="14" rx="2"/><path d="M5 8v10a2 2 0 0 0 2 2h8"/></svg></span></div>
+            <div class="kk-kode">{<br>&nbsp;&nbsp;"tittel": "…",<br>&nbsp;&nbsp;"ingress": "…",<br>&nbsp;&nbsp;…<br>}</div>
+          </div>
+          <div class="kk-tekst">
+            <p><b>Trykk på kopier-knappen øverst til høyre i JSON-boksen</b> (den er ringet inn her). Da får du med hele svaret.</p>
+            <p>Ikke marker teksten med musa. Da blir det lett noe som mangler.</p>
+          </div>
+        </div>
+        <p>Kom tilbake hit og lim inn i feltet under.</p>
         <textarea id="kisvar" placeholder="Lim inn svaret fra Copilot her (Ctrl+V)"></textarea>
         <div class="kifeil" id="kifeil" role="alert"></div>
         <div class="kinav"><button class="btn" data-til="2">Tilbake</button></div>

@@ -238,3 +238,12 @@ body.har-bank .bankbtn{display:block}
 .kinav{display:flex;justify-content:space-between;gap:8px;margin-top:14px}
 .kinav .btn{width:auto;flex:0 0 auto}
 .kinav .btn.pri:only-child{margin-left:auto}
+/* Viser hvor kopier-knappen i Copilot er (steg 3) */
+.kikopi{display:flex;gap:16px;align-items:center;margin:0 0 10px}
+.kk-boks{flex:0 0 210px;border:1px solid #d6d9de;border-radius:14px;background:#fff;padding:8px 10px 10px;font-size:12px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.kk-topp{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.kk-navn{font-weight:700;color:#333}
+.kk-knapp{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;color:#333;outline:3px solid #f1be48;outline-offset:1px;background:#fff8e6}
+.kk-kode{font-family:ui-monospace,Consolas,monospace;font-size:11px;color:#b5401c;line-height:1.5}
+.kk-tekst p{margin:0 0 6px}
+@media (max-width:640px){ .kikopi{flex-direction:column;align-items:flex-start} .kk-boks{flex-basis:auto;width:210px} }
