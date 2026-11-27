@@ -207,7 +207,6 @@ body.har-bank .bankbtn{display:block}
 #temamodal .mbox{width:min(1060px,100%)}
 #temamodal .mhead input{max-width:320px}
 #sec-slor.styrt .swatches{opacity:.35;pointer-events:none}
-.hint.tips{color:var(--navy);font-weight:600}
 
 /* Formateringshjelp: vises ved siden av plakaten mens brødteksten redigeres */
 .formhjelp{display:none;position:absolute;right:14px;top:132px;z-index:25;width:290px;background:#fff;border:1.5px solid var(--navy);border-radius:10px;padding:10px 12px 8px;font-size:12.5px;color:var(--ink);box-shadow:0 6px 18px rgba(0,0,0,.14)}
