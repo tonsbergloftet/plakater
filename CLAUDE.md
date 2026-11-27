@@ -82,10 +82,11 @@ Opprykket leveres som en egen pull request, ikke sammen med andre endringer.
 2. Last den opp til rota på `main`, slik at den erstatter den ødelagte. Pages publiserer på nytt i løpet av et par minutter.
 3. Har opprykket lagt til mapper i rota, for eksempel `css/` eller `js/`, kan de ligge, fordi den gamle `index.html` ikke bruker dem.
 
-## 7. Mappestruktur (mål etter ryddingen)
+## 7. Mappestruktur
 
 ```
-index.html              prod
+index.html  css/  js/  lib/  fonter/  grafikk/  temaer/  tema/
+                        prod, samme oppbygging som staging/ (kopieres dit ved opprykk)
 CLAUDE.md               denne fila
 AGENTS.md               peker andre KI-verktøy hit
 README.md

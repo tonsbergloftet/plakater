@@ -12,22 +12,34 @@ Lag plakater (A4), skjermversjoner (16:9) og innhold til skjermene på bymøblen
 - Generatoren sier fra over plakaten hvis teksten i Bildeplakat blir vanskelig å lese på bildet (med knapp for å bytte tekstfarge), eller hvis et bilde har for lav oppløsning. Når et nytt bilde legges inn i Bildeplakat, velges lys eller mørk tekst automatisk.
 - **PDF-en er også arbeidsfil:** Åpne den under «Fortsett på en plakat» for å redigere videre. QR-koden er klikkbar i PDF-en.
 - Skriv `**ord**` for å utheve ord med farge.
+- **Brødteksten er ett fritt felt.** En kort første linje i et avsnitt blir mellomtittel, `- ` gir punkt, `Etikett: verdi` gir fet etikett (prisrad i Prisliste) og `---` gir en linje. Mens du skriver, viser kortet «Slik styrer du stilen» hva hver skrivemåte blir til.
+- **Tema** (stripa over plakaten) gir plakaten farger og en illustrasjon til en anledning, for eksempel jul eller sommeravslutning. Tema finnes bare for maler der illustrasjonen ikke dekker et bilde.
+- **«Hjelp med teksten (KI)»** leder gjennom fire steg: kopier bestillingen, lim den inn i Copilot, lim svaret tilbake og velg hvilke endringer som skal brukes.
 
 ## Maler og formater
 
 Hver mal har sitt faste format, så brukeren bare trenger å velge mal:
 
 - Plakatene (Bildeplakat, Forside, Inndelt plakat, Høydebilde, Tre bilder, Tekstplakat, Invitasjon) er stående A4.
+- Tekstplakat og Tre bilder finnes også som egne liggende maler: A4 liggende og skjerm (16:9).
 - Infoskjerm og Infoskjerm, stort bilde er liggende 16:9 og lastes ned i 1920 × 1080 px.
 - Bymøbel er stående 9:16 for skjermene på bymøblene og lastes ned i 2160 × 3840 px.
 - Bildeplakat og Bymøbel har en mørk variant (valg under «Slørfarge»).
 - Skriv linjeskift i tittelen der du vil at linjen skal brytes.
 
+### Egne seksjoner og moduser (forslag, ikke godkjent av designer)
+
+- **Svømmehallen:** `…/plakater/?enhet=svommehallen` viser en egen seksjon øverst i malvalget med Forbudsskilt (stående og liggende), Stor QR-kode, Prisliste og Tekstplakat, i tillegg til alle de andre malene. Nye enheter legges inn i `ENHETER` i `js/oppsett.js`.
+- **Temaplakater:** `…/plakater/tema/` er en egen side for lekne arrangementsplakater. Temaet bestemmer farger, motiver og stemning, og logo, ramme, bølgeform og QR er alltid de samme. Den er ikke lenket fra generatoren ennå.
+
 ## Innhold
 
 | Fil / mappe | Hva det er |
 |---|---|
-| `index.html` | Selve generatoren. **Ikke rediger denne for hånd** – den er ferdigbygd. |
+| `index.html`, `css/`, `js/` | Selve generatoren (prod). Endres bare ved opprykk fra `staging/`, se `CLAUDE.md`. |
+| `temaer/` | Temaene i tema-stripa, én JSON-fil per tema. |
+| `tema/` | Temaplakatene (egen side med egne temafiler i `tema/temaer/`). |
+| `staging/` | Testversjonen. Alt nytt arbeid gjøres her. |
 | `bilder/` | Bildebanken. Legg bilder her. |
 | `bilder/bildeinfo.csv` | Valgfri tilleggsinfo om bildene. |
 | `ikoner/` | Ikonbiblioteket. Legg SVG-ikoner her. |
