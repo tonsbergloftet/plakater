@@ -144,12 +144,6 @@ body.har-bank .bankbtn{display:block}
 .stagecol{display:flex;flex-direction:column;min-height:0;min-width:0;position:relative}
 #kimodal .mbox{width:min(760px,100%);max-height:100%}
 .kibody{padding:4px 22px 18px;overflow:auto}
-.kisteg{display:flex;gap:12px;margin-top:16px}
-.kisteg .nr{flex:0 0 28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:14px}
-.kisteg .inn{flex:1;min-width:0}
-.kisteg b.t{display:block;color:var(--navy);font-size:15px;margin-bottom:3px}
-.kisteg p{margin:0 0 8px;font-size:13.5px;color:var(--ink);line-height:1.45}
-.kisteg textarea{width:100%;min-height:110px;border:1.5px solid var(--line);border-radius:8px;padding:8px 10px;font-family:ui-monospace,monospace;font-size:12.5px;resize:vertical}
 .kinote{font-size:12.5px;color:var(--muted);background:#f4f6f7;border-radius:8px;padding:8px 10px;margin:8px 0 0;line-height:1.45}
 .kifeil{color:#8a1f11;font-size:13px;margin-top:6px}
 .kiliste{margin-top:10px;border:1px solid var(--line);border-radius:8px;overflow:hidden}
@@ -166,8 +160,6 @@ body.har-bank .bankbtn{display:block}
 .kiopps b{color:var(--navy)}
 .kiopps ul{margin:4px 0 0;padding-left:18px}
 .kiuendret{font-size:12.5px;color:var(--muted);padding:8px 10px;border-top:1px solid var(--line)}
-.kilest{font-size:13px;color:var(--muted);margin-top:4px}
-.kilest a{color:var(--navy);cursor:pointer;text-decoration:underline}
 .page mark.mangler{background:#ffe58a;color:#1d1d1b;border-radius:3px;padding:0 .15em;text-shadow:none}
 #kitoast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:45;display:none;align-items:center;gap:12px;background:var(--navy);color:#fff;border-radius:999px;padding:9px 10px 9px 18px;font-size:14px;box-shadow:0 6px 18px rgba(0,0,0,.25)}
 #kitoast.on{display:flex}
@@ -226,3 +218,24 @@ body.har-bank .bankbtn{display:block}
 .formhjelp .fh-u{font-weight:700;color:var(--navy)}
 .formhjelp p{margin:6px 0 0;color:var(--muted);font-size:11.5px}
 @media (max-width: 1100px){ .formhjelp{top:auto;bottom:12px;right:12px} }
+
+/* KI-hjelp: ett steg om gangen */
+.kiframdrift{display:flex;gap:6px;list-style:none;margin:0;padding:10px 22px 0;counter-reset:ki}
+.kiframdrift li{flex:1;counter-increment:ki;font-size:12.5px;color:var(--muted);border-top:4px solid var(--line);padding-top:6px}
+.kiframdrift li::before{content:counter(ki) ". "}
+.kiframdrift li.ferdig{color:var(--navy);border-color:#8fb3c4}
+.kiframdrift li.na{color:var(--navy);font-weight:700;border-color:var(--navy)}
+.kisteg{display:none;margin-top:16px}
+.kisteg.na{display:block}
+.kisteg b.t{display:block;color:var(--navy);font-size:17px;margin-bottom:6px}
+.kisteg p{margin:0 0 10px;font-size:14px;color:var(--ink);line-height:1.5}
+.kisteg textarea{width:100%;min-height:140px;border:1.5px solid var(--line);border-radius:8px;padding:8px 10px;font-family:ui-monospace,monospace;font-size:12.5px;resize:vertical}
+.kisteg textarea:focus{border-color:var(--navy);outline:none}
+.kisteg .btn.stor{padding:12px 22px;font-size:15px}
+.kistatus{display:block;margin-top:8px;font-size:13.5px;color:var(--muted)}
+.kiliste-steg{margin:0 0 10px;padding-left:20px;font-size:14px;line-height:1.55}
+.kiliste-steg li + li{margin-top:4px}
+.kiliste-steg kbd{font-family:var(--font);font-size:12px;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 5px;background:#fff}
+.kinav{display:flex;justify-content:space-between;gap:8px;margin-top:14px}
+.kinav .btn{width:auto;flex:0 0 auto}
+.kinav .btn.pri:only-child{margin-left:auto}

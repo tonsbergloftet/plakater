@@ -171,7 +171,7 @@
 <div class="tools">
   <span class="hint">Klikk på tekst i plakaten for å skrive</span>
   <div class="seg sidetabs" id="sidetabs"><button data-side="1">Forside</button><button data-side="2">Bakside</button></div><span class="sidehint" id="sidehint"></span>
-  <button class="hjelpbtn" id="kiknapp" title="Få hjelp fra et KI-verktøy til å gjøre teksten klar og kort">Forbedre teksten med KI</button>
+  <button class="hjelpbtn" id="kiknapp" title="Få Copilot til å gjøre teksten klar og kort. Du velger selv hva som endres.">Hjelp med teksten (KI)</button>
   <button class="hjelpbtn" id="allemaler">Alle maler</button>
   <button class="hjelpbtn" id="hjelp">Slik virker det</button>
   <label class="chk mini"><input type="checkbox" id="skjultom"> Skjul tomme felt</label>
@@ -214,28 +214,41 @@
 <div id="juster" role="toolbar" aria-label="Juster bildet"><span>Dra i bildet for å flytte det</span><label style="display:flex;align-items:center;gap:6px">Zoom<input type="range" id="justerz" min="1" max="3" step="0.02"></label><button class="btn pri" id="justerok">Ferdig</button></div>
 <div class="modal" id="kimodal" role="dialog" aria-modal="true" aria-labelledby="kimt">
   <div class="mbox">
-    <div class="mhead"><b id="kimt">Forbedre teksten med KI</b><span style="flex:1"></span><button class="btn" id="kilukk">Lukk</button></div>
+    <div class="mhead"><b id="kimt">Få hjelp med teksten fra KI</b><span style="flex:1"></span><button class="btn" id="kilukk">Lukk</button></div>
+    <ol class="kiframdrift" id="kiframdrift" aria-label="Steg">
+      <li data-s="1">Kopier</li><li data-s="2">Spør Copilot</li><li data-s="3">Hent svaret</li><li data-s="4">Velg endringer</li>
+    </ol>
     <div class="kibody">
-      <div class="kisteg"><span class="nr">1</span><div class="inn">
-        <b class="t">Kopier bestillingen</b>
-        <p>Vi har laget en ferdig bestilling til KI-en med teksten din og hvor mye plass hvert felt har. KI-en skal gjøre teksten klar og kort, uten å finne på noe nytt.</p>
-        <button class="btn pri" id="kikopier">Kopier bestillingen</button> <span id="kikopiert" style="font-size:13px;color:var(--muted)"></span>
-        <textarea id="kiprompt" readonly style="display:none"></textarea>
-      </div></div>
-      <div class="kisteg"><span class="nr">2</span><div class="inn">
-        <b class="t">Lim den inn i KI-verktøyet</b>
-        <p>Åpne KI-verktøyet kommunen har godkjent, for eksempel Copilot med kommunekontoen din. Lim inn og send.</p>
-        <p class="kinote">Ikke lim inn personopplysninger som navn på innbyggere, fødselsnummer eller helseopplysninger. Les alltid gjennom svaret – KI kan ta feil.</p>
-      </div></div>
-      <div class="kisteg"><span class="nr">3</span><div class="inn">
-        <b class="t">Lim inn svaret her</b>
-        <p>Kopier hele svaret og lim det inn i feltet. Du ser forslagene før noe endres på plakaten.</p>
-        <textarea id="kisvar" placeholder="Lim inn svaret fra KI-verktøyet her"></textarea>
-        <div class="kilest" id="kilest" style="display:none">Svaret er lest. <a id="kinytt">Lim inn et nytt svar</a></div>
-        <div class="kifeil" id="kifeil"></div>
+      <section class="kisteg" data-steg="1">
+        <b class="t">1. Kopier bestillingen</b>
+        <p>Vi har skrevet en bestilling til KI-en for deg. Den inneholder teksten på plakaten og hvor mye plass hvert felt har. Du trenger ikke lese den.</p>
+        <button class="btn pri stor" id="kikopier">Kopier bestillingen</button>
+        <span id="kikopiert" class="kistatus"></span>
+        <textarea id="kiprompt" readonly style="display:none" aria-label="Bestillingen"></textarea>
+      </section>
+      <section class="kisteg" data-steg="2">
+        <b class="t">2. Lim inn i Copilot og send</b>
+        <ol class="kiliste-steg">
+          <li>Åpne Copilot (eller et annet KI-verktøy kommunen har godkjent) og logg inn med kommunekontoen.</li>
+          <li>Klikk i skrivefeltet og lim inn med <kbd>Ctrl</kbd>+<kbd>V</kbd>. Trykk send.</li>
+          <li>Vent til Copilot har svart. Svaret er en boks med tekst i krøllparenteser.</li>
+        </ol>
+        <p class="kinote">Ikke lim inn personopplysninger som navn på innbyggere, fødselsnummer eller helseopplysninger.</p>
+        <div class="kinav"><button class="btn" data-til="1">Tilbake</button><button class="btn pri" data-til="3">Copilot har svart</button></div>
+      </section>
+      <section class="kisteg" data-steg="3">
+        <b class="t">3. Kopier svaret fra Copilot og lim det inn her</b>
+        <p>I Copilot: trykk på kopier-knappen under svaret, eller oppe i hjørnet av boksen med tekst. Kom tilbake hit og lim inn i feltet under.</p>
+        <textarea id="kisvar" placeholder="Lim inn svaret fra Copilot her (Ctrl+V)"></textarea>
+        <div class="kifeil" id="kifeil" role="alert"></div>
+        <div class="kinav"><button class="btn" data-til="2">Tilbake</button></div>
+      </section>
+      <section class="kisteg" data-steg="4">
+        <b class="t">4. Velg hvilke endringer du vil ha</b>
+        <p>Rødt fjernes og grønt legges til. Fjern haken på det du vil beholde som før. Les alltid gjennom, KI kan ta feil.</p>
         <div id="kiforslag"></div>
-        <div style="display:flex;gap:8px;margin-top:10px"><button class="btn pri" id="kibruk" style="display:none">Bruk endringene jeg har valgt</button></div>
-      </div></div>
+        <div class="kinav"><button class="btn" id="kinytt">Lim inn et annet svar</button><button class="btn pri" id="kibruk">Bruk endringene</button></div>
+      </section>
     </div>
   </div>
 </div>
