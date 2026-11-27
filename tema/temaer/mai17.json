@@ -1,0 +1,63 @@
+{
+  "id": "mai17",
+  "navn": "17. mai",
+  "sub": "Flagg, sløyfer og vimpler",
+  "kategori": "arshjul",
+  "maaneder": [
+    5
+  ],
+  "malgrupper": [
+    "alle",
+    "barn"
+  ],
+  "panel": "lysbla",
+  "bolge": "navy",
+  "slor": "hvit",
+  "helt": [
+    {
+      "m": "flagg",
+      "x": 10,
+      "y": 10,
+      "s": 120,
+      "r": -10
+    },
+    {
+      "m": "flagg",
+      "x": 80,
+      "y": 20,
+      "s": 110,
+      "r": 8
+    },
+    {
+      "m": "rosett",
+      "x": 120,
+      "y": 110,
+      "s": 70,
+      "r": 6
+    },
+    {
+      "m": "vimpler",
+      "x": 0,
+      "y": 140,
+      "s": 90
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "vimpler"
+    ],
+    "antall": 3,
+    "dekning": 0.9
+  },
+  "demo": {
+    "stikk": "Hipp hurra for",
+    "tittel": "**17.** mai",
+    "ingress": "Tog, korps, leker og is i skolegården.",
+    "praktisk": "Når: Mandag 17. mai fra kl. 10\nHvor: Skolegården\nTog: Går fra kirken kl. 11",
+    "merke": "Is og pølser!",
+    "hilsen": "Gratulerer med dagen!",
+    "url": "tonsberg.kommune.no/17mai",
+    "qr": "Skann for\n**hele programmet**",
+    "arr": "17. mai-komiteen"
+  }
+}

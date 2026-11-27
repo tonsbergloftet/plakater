@@ -1,0 +1,60 @@
+{
+  "id": "grillfest",
+  "navn": "Grillfest",
+  "sub": "Grill, sol og sommer",
+  "kategori": "aktivitet",
+  "maaneder": [
+    5,
+    6,
+    7,
+    8
+  ],
+  "malgrupper": [
+    "alle",
+    "ansatte"
+  ],
+  "panel": "gul",
+  "bolge": "navy",
+  "slor": "korall",
+  "helt": [
+    {
+      "m": "grill",
+      "x": 20,
+      "y": 50,
+      "s": 150
+    },
+    {
+      "m": "sol",
+      "x": 130,
+      "y": 0,
+      "s": 70
+    },
+    {
+      "m": "vimpler",
+      "x": 0,
+      "y": 0,
+      "s": 110
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "prikk"
+    ],
+    "antall": 6,
+    "dekning": 0.5,
+    "farger": [
+      "hvit"
+    ]
+  },
+  "demo": {
+    "stikk": "Sommerkos med",
+    "tittel": "**Grill**fest",
+    "ingress": "Vi tenner grillen. Ta med det du vil grille, vi har tilbehør.",
+    "praktisk": "Når: Fredag 11. juni kl. 15–18\nHvor: Bakgården\nFor: Alle ansatte",
+    "merke": "Vegetar-\nalternativ!",
+    "hilsen": "Håper på sol!",
+    "url": "tonsberg.kommune.no/grill",
+    "qr": "Skann og\n**si hva du spiser**",
+    "arr": "Personalklubben"
+  }
+}

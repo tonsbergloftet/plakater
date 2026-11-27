@@ -1,0 +1,44 @@
+{
+  "id": "apenthus",
+  "navn": "Åpent hus",
+  "sub": "Hus, kaffe og velkommen",
+  "kategori": "aktivitet",
+  "maaneder": [],
+  "malgrupper": [
+    "alle",
+    "senior",
+    "voksne"
+  ],
+  "slor": "bla",
+  "motiv": [
+    {
+      "m": "hus",
+      "x": 20,
+      "y": 10,
+      "s": 150
+    },
+    {
+      "m": "kopp",
+      "x": 130,
+      "y": 110,
+      "s": 70
+    },
+    {
+      "m": "hjerte",
+      "x": 150,
+      "y": 0,
+      "s": 40
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "prikk",
+      "hjerte"
+    ],
+    "antall": 6,
+    "dekning": 0.35,
+    "farger": [
+      "navy"
+    ]
+  }
+}

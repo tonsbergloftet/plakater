@@ -1,0 +1,66 @@
+{
+  "id": "lucia",
+  "navn": "Lucia og lysfest",
+  "sub": "Stearinlys og lussekatter",
+  "kategori": "arshjul",
+  "maaneder": [
+    12
+  ],
+  "malgrupper": [
+    "barn",
+    "senior",
+    "alle"
+  ],
+  "panel": "navy",
+  "bolge": "hvit",
+  "slor": "gul",
+  "helt": [
+    {
+      "m": "lys",
+      "x": 20,
+      "y": 10,
+      "s": 110
+    },
+    {
+      "m": "lys",
+      "x": 90,
+      "y": 30,
+      "s": 90
+    },
+    {
+      "m": "lussekatt",
+      "x": 100,
+      "y": 120,
+      "s": 90
+    },
+    {
+      "m": "stjerne",
+      "x": 150,
+      "y": 0,
+      "s": 40
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "stjerne",
+      "prikk"
+    ],
+    "antall": 12,
+    "dekning": 0.5,
+    "farger": [
+      "gul",
+      "hvit"
+    ]
+  },
+  "demo": {
+    "stikk": "Velkommen til",
+    "tittel": "**Lucia**tog",
+    "ingress": "Barna i barnehagen går luciatog og synger for beboerne.",
+    "praktisk": "Når: Mandag 13. desember kl. 10.00\nHvor: Kantina på sykehjemmet\nFor: Beboere, pårørende og ansatte",
+    "merke": "Lussekatter\ntil alle!",
+    "hilsen": "Lys i mørketida",
+    "url": "tonsberg.kommune.no/lucia",
+    "qr": "Skann for\n**mer info**",
+    "arr": "Eik sykehjem"
+  }
+}

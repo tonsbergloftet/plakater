@@ -1,0 +1,49 @@
+{
+  "id": "dugnad",
+  "navn": "Dugnad og hage",
+  "sub": "Rive, planter og ryddedag",
+  "kategori": "aktivitet",
+  "maaneder": [
+    4,
+    5,
+    9
+  ],
+  "malgrupper": [
+    "alle",
+    "barn"
+  ],
+  "slor": "gul",
+  "motiv": [
+    {
+      "m": "rive",
+      "x": 10,
+      "y": 0,
+      "s": 140
+    },
+    {
+      "m": "plante",
+      "x": 100,
+      "y": 60,
+      "s": 100
+    },
+    {
+      "m": "blomst",
+      "x": 150,
+      "y": 90,
+      "s": 50,
+      "r": 10
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "blad",
+      "prikk"
+    ],
+    "antall": 8,
+    "dekning": 0.35,
+    "farger": [
+      "gronn",
+      "navy"
+    ]
+  }
+}

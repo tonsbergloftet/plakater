@@ -1,0 +1,62 @@
+{
+  "id": "dugnad",
+  "navn": "Dugnad",
+  "sub": "Rive, planter og ryddedag",
+  "kategori": "aktivitet",
+  "maaneder": [
+    4,
+    5,
+    9
+  ],
+  "malgrupper": [
+    "alle",
+    "barn"
+  ],
+  "panel": "morkgronn",
+  "bolge": "navy",
+  "slor": "gul",
+  "helt": [
+    {
+      "m": "rive",
+      "x": 10,
+      "y": 0,
+      "s": 140
+    },
+    {
+      "m": "plante",
+      "x": 100,
+      "y": 60,
+      "s": 100
+    },
+    {
+      "m": "blomst",
+      "x": 150,
+      "y": 90,
+      "s": 50,
+      "r": 10
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "blad",
+      "prikk"
+    ],
+    "antall": 8,
+    "dekning": 0.35,
+    "farger": [
+      "gronn",
+      "hvit"
+    ]
+  },
+  "demo": {
+    "stikk": "Alle sammen på",
+    "tittel": "**Dugnad**",
+    "ingress": "Vi rydder, raker og planter. Etterpå griller vi sammen.",
+    "praktisk": "Når: Onsdag 28. april kl. 17–20\nHvor: Barnehagen\nTa med: Arbeidshansker og rive",
+    "merke": "Pølser\netterpå!",
+    "hilsen": "Mange hender, lett arbeid",
+    "url": "tonsberg.kommune.no/dugnad",
+    "qr": "Skann for\n**oppgaveliste**",
+    "arr": "Høgenhall barnehage"
+  }
+}

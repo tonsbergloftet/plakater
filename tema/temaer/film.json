@@ -1,0 +1,58 @@
+{
+  "id": "film",
+  "navn": "Filmkveld",
+  "sub": "Teaterteppe, lyskaster og popkorn",
+  "kategori": "aktivitet",
+  "maaneder": [],
+  "malgrupper": [
+    "barn",
+    "ungdom",
+    "alle"
+  ],
+  "panel": "rod",
+  "bolge": "navy",
+  "slor": "gul",
+  "monster": "teppe",
+  "helt": [
+    {
+      "m": "lysstrale",
+      "x": 90,
+      "y": 10,
+      "s": 110
+    },
+    {
+      "m": "filmrull",
+      "x": 10,
+      "y": 10,
+      "s": 90,
+      "r": -12
+    },
+    {
+      "m": "popkorn",
+      "x": 50,
+      "y": 40,
+      "s": 150
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "stjerne"
+    ],
+    "antall": 6,
+    "dekning": 0.55,
+    "farger": [
+      "gul"
+    ]
+  },
+  "demo": {
+    "stikk": "Fredagskos med",
+    "tittel": "**Film**kveld",
+    "ingress": "Vi viser en familiefilm på storskjerm. Popkorn og saft til alle.",
+    "praktisk": "Når: Fredag kl. 18.00\nHvor: Aulaen, Byskogen skole\nFilm: Avstemning på stedet",
+    "merke": "Gratis\npopkorn!",
+    "hilsen": "Ta med pute og pledd",
+    "url": "tonsberg.kommune.no/film",
+    "qr": "Skann og\n**stem på film**",
+    "arr": "FAU Byskogen"
+  }
+}

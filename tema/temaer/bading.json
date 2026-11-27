@@ -1,0 +1,63 @@
+{
+  "id": "bading",
+  "navn": "Bading",
+  "sub": "Sol, sjø og livbøye",
+  "kategori": "aktivitet",
+  "maaneder": [
+    6,
+    7,
+    8
+  ],
+  "malgrupper": [
+    "barn",
+    "ungdom",
+    "alle"
+  ],
+  "panel": "gul",
+  "bolge": "navy",
+  "slor": "lysbla",
+  "helt": [
+    {
+      "m": "sol",
+      "x": 110,
+      "y": 0,
+      "s": 90
+    },
+    {
+      "m": "livboye",
+      "x": 10,
+      "y": 40,
+      "s": 120
+    },
+    {
+      "m": "vann",
+      "x": 40,
+      "y": 130,
+      "s": 150,
+      "f": [
+        "lysbla"
+      ]
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "prikk"
+    ],
+    "antall": 6,
+    "dekning": 0.5,
+    "farger": [
+      "hvit"
+    ]
+  },
+  "demo": {
+    "stikk": "Ut på",
+    "tittel": "**Bade**dag",
+    "ingress": "Livvakter på stranda, vannleker og grilling.",
+    "praktisk": "Når: Onsdag 7. juli kl. 11–15\nHvor: Ringshaug strand\nFor: 6–12 år",
+    "merke": "Husk\nsolkrem!",
+    "hilsen": "Vannet er 19 grader",
+    "url": "tonsberg.kommune.no/bad",
+    "qr": "Skann for\n**badetemperatur**",
+    "arr": "Ferieklubben"
+  }
+}

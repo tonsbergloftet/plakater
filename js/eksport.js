@@ -2,9 +2,9 @@
 'use strict';
 /* ═════════ EKSPORT ═════════ */
 // Felt i malen som fortsatt har eksempelteksten
-const NAVN_FELT = {stikk:'tema', tittel:'tittel', ingress:'ingress', ut1:'underoverskrift 1', tx1:'brødtekst 1', ut2:'underoverskrift 2', tx2:'brødtekst 2', ut3:'underoverskrift 3', tx3:'brødtekst 3', pTittel:'overskrift over punktene', punkter:'punktliste', praktisk:'praktisk informasjon', cta:'tekst ved QR-koden', merke:'merket', merkeTx:'merket', avslutt:'avslutning'};
+const NAVN_FELT = {innhold:'brødtekst', stikk:'tema', tittel:'tittel', ingress:'ingress', ut1:'underoverskrift 1', tx1:'brødtekst 1', ut2:'underoverskrift 2', tx2:'brødtekst 2', ut3:'underoverskrift 3', tx3:'brødtekst 3', pTittel:'overskrift over punktene', punkter:'punktliste', praktisk:'praktisk informasjon', cta:'tekst ved QR-koden', merke:'merket', merkeTx:'merket', avslutt:'avslutning'};
 function demoIgjen(){
-  const f = TPLS[S.tpl].felt.filter(k => k in DEMO && k !== 'url' && S[k] === DEMO[k]);
+  const f = TPLS[S.tpl].felt.filter(k => k !== 'url' && S[k] && erEksempel(k, S[k]));
   return [...new Set(f.map(k => NAVN_FELT[k] || k))];
 }
 async function exportFile(type, stille){
@@ -57,9 +57,10 @@ async function exportFile(type, stille){
       const { jsPDF } = window.jspdf;
       const pdf = S.fmt==='a4'
         ? new jsPDF({orientation:'portrait', unit:'mm', format:'a4'})
+        : S.fmt==='a4l' ? new jsPDF({orientation:'landscape', unit:'mm', format:'a4'})
         : S.fmt==='bym' ? new jsPDF({orientation:'portrait', unit:'px', format:[2160,3840], hotfixes:['px_scaling']})
         : new jsPDF({orientation:'landscape', unit:'px', format:[1920,1080], hotfixes:['px_scaling']});
-      const w = S.fmt==='a4' ? 210 : S.fmt==='bym' ? 2160 : 1920, h = S.fmt==='a4' ? 297 : S.fmt==='bym' ? 3840 : 1080;
+      const w = S.fmt==='a4' ? 210 : S.fmt==='a4l' ? 297 : S.fmt==='bym' ? 2160 : 1920, h = S.fmt==='a4' ? 297 : S.fmt==='a4l' ? 210 : S.fmt==='bym' ? 3840 : 1080;
       let lenke = (S.url||'').trim(); if(lenke && !/^https?:\/\//i.test(lenke)) lenke = 'https://' + lenke;
       canvases.forEach((cv, i) => {
         if(i) pdf.addPage();
@@ -82,9 +83,15 @@ function download(href, name){ const a = document.createElement('a'); a.href = h
 
 /* ═════════ UTKAST ═════════ */
 function utkastData(){
+  synkInnhold();
   // Bare bildene malen bruker tas med (holder PDF-en mindre)
   const brukes = new Set(bildeSlots(S.tpl).concat(hasSide2() ? [2,3] : []));
-  return {type:'tk-plakat', v:4, ...S, imgs: S.imgs.map((I,n) => !brukes.has(n) ? {ex:!!I.ex, fx:I.fx, fy:I.fy, z:I.z} : I.ex ? {ex:true, fx:I.fx, fy:I.fy, z:I.z} : I.bank ? {bank:I.bank, fx:I.fx, fy:I.fy, z:I.z, ki:false} : I)};
+  const d = {type:'tk-plakat', v:4, ...S, imgs: S.imgs.map((I,n) => !brukes.has(n) ? {ex:!!I.ex, fx:I.fx, fy:I.fy, z:I.z} : I.ex ? {ex:true, fx:I.fx, fy:I.fy, z:I.z} : I.bank ? {bank:I.bank, fx:I.fx, fy:I.fy, z:I.z, ki:false} : I)};
+  if(!d.tema) delete d.tema; // uten tema er arbeidsfila lik den prod lager
+  // Brødteksten lagres bare når den har noe de faste feltene ikke kan vise (skillelinjer, rekkefølge, flere avsnitt).
+  // Ellers er arbeidsfila lik den prod lager, og teksten lages på nytt fra feltene når fila åpnes.
+  if(d.innhold == null || d.innhold === fraGamle()) delete d.innhold;
+  return d;
 }
 function b64utf8(t){
   const b = new TextEncoder().encode(t); let s = '';
@@ -122,6 +129,7 @@ function loadDraft(e){
       if(ERSTATTET[S.tpl]) S.tpl = ERSTATTET[S.tpl];
       if(!TPLS[S.tpl]) S.tpl = 'bildedrevet';
       if(!SLOR[S.slor]) S.slor = 'gronn';
+      if(S.tema && !TEMAER[S.tema]) S.tema = null; // ukjent tema (for eksempel fjernet)
       if(!FMT[S.fmt] || !TPLS[S.tpl].fmts.includes(S.fmt)) S.fmt = TPLS[S.tpl].fmts[0];
       if(!('visUrl' in d)) S.visUrl = true;
       autoVariant = false; // utkastet har allerede valgt variant

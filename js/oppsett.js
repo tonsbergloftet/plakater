@@ -1,8 +1,8 @@
 /* Oppsett: RESSURS_ROT og LS_PREFIKS, logo og eksempelbilder, malene (TPLS), formater, eksempeltekst og tilstanden S */
 'use strict';
 // STAGING: ved opprykk til prod settes begge til ''
-const RESSURS_ROT = '';        // bildebank og ikoner ligger i rota, felles for prod og staging
-const LS_PREFIKS = '';         // egne localStorage-nøkler, så staging ikke forstyrrer prod
+const RESSURS_ROT = '';     // bildebank og ikoner ligger i rota, felles for prod og staging
+const LS_PREFIKS = ''; // egne localStorage-nøkler, så staging ikke forstyrrer prod
 const LOGO = 'grafikk/logo.png';
 // Eksempelbilder (KI-genererte, fra malforslagene) – vises til brukeren laster opp egne
 const EKS = [
@@ -43,31 +43,62 @@ const TPLS = {
   bymobel:{navn:'Bymøbel', sub:'Bymøbelskjerm, 9:16', bilder:3, fmts:['bym'],
     felt:['stikk','tittel','ingress','cta','url','merke','merkeTx','bs1','bs2','bs3'], mork:'Mørk bunn'},
   tekstplakat:{navn:'Tekstplakat', sub:'Tekst, punkter og QR', bilder:0,
-    felt:['stikk','tittel','ingress','ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk','cta','url']},
+    felt:['stikk','tittel','ingress','innhold','cta','url']},
   trebilder:{navn:'Tre bilder', sub:'Tekst og tre bilder', bilder:3,
-    felt:['stikk','tittel','ingress','ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk','cta','url']},
+    felt:['stikk','tittel','ingress','innhold','cta','url']},
+  tekstplakatliggende:{navn:'Tekstplakat, liggende', sub:'A4 liggende, tekst i to spalter', bilder:0, fmts:['a4l'],
+    felt:['stikk','tittel','ingress','innhold','cta','url']},
+  trebilderliggende:{navn:'Tre bilder, liggende', sub:'A4 liggende, tekst og tre bilder', bilder:3, fmts:['a4l'],
+    felt:['stikk','tittel','ingress','innhold','cta','url']},
+  tekstplakatskjerm:{navn:'Tekstplakat, skjerm', sub:'Infoskjerm 16:9, tekst i to spalter', bilder:0, fmts:['wide'],
+    felt:['stikk','tittel','ingress','innhold','cta','url']},
+  trebilderskjerm:{navn:'Tre bilder, skjerm', sub:'Infoskjerm 16:9, tekst og tre bilder', bilder:3, fmts:['wide'],
+    felt:['stikk','tittel','ingress','innhold','cta','url']},
   hoydebilde:{navn:'Høydebilde', sub:'Høyt bilde og tekst ved siden av', bilder:1,
-    felt:['stikk','tittel','ingress','ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk','cta','url']},
+    felt:['stikk','tittel','ingress','innhold','cta','url']},
   infoskjerm:{navn:'Infoskjerm', sub:'To bilder, tittel og praktisk info', bilder:2, fmts:['wide'],
     felt:['stikk','tittel','ut1','tx1','praktisk','cta','url']},
   infoskjerm2:{navn:'Infoskjerm, stort bilde', sub:'Ett stort bilde og lite tekst', bilder:1, fmts:['wide'],
     felt:['stikk','tittel','ut1','tx1','avslutt','cta','url']},
+  // Svømmehallen (ENHETER): forslag, ikke godkjent av designer
+  forbudsskilt:{navn:'Forbudsskilt', sub:'Tre forbudsskilt og tekst på to språk', bilder:0,
+    felt:['tittel','ut1','tx1','ut2','tx2','cta','url'],
+    demo:{tittel:'Ikke tillatt i svømmehallen', ut1:'Mobil, kamera og mat', tx1:'Det er ikke lov å bruke mobil eller kamera, eller å spise, i garderobene og ved bassengene.', ut2:'Phones, cameras and food', tx2:'Phones, cameras and eating are not allowed in the changing rooms or by the pools.', cta:'Les **ordensreglene**'}},
+  forbudsskiltliggende:{navn:'Forbudsskilt, liggende', sub:'A4 liggende, tre forbudsskilt og to språk', bilder:0, fmts:['a4l'],
+    felt:['tittel','ut1','tx1','ut2','tx2','cta','url'],
+    demo:{tittel:'Ikke tillatt i svømmehallen', ut1:'Mobil, kamera og mat', tx1:'Det er ikke lov å bruke mobil eller kamera, eller å spise, i garderobene og ved bassengene.', ut2:'Phones, cameras and food', tx2:'Phones, cameras and eating are not allowed in the changing rooms or by the pools.', cta:'Les **ordensreglene**'}},
+  qrplakat:{navn:'Stor QR-kode', sub:'Lite tekst og en stor QR-kode', bilder:0,
+    felt:['stikk','tittel','ingress','cta','url'],
+    demo:{stikk:'Svømmehallen', tittel:'Se **åpningstidene**', ingress:'Tidene endrer seg i ferier og på helligdager. Skann koden for å se dagens tider.', cta:'Skann for åpningstider'}},
+  prisliste:{navn:'Prisliste', sub:'Priser med prikker fram til beløpet', bilder:0,
+    felt:['stikk','tittel','ingress','innhold','cta','url'],
+    demo:{stikk:'Svømmehallen', tittel:'Priser', ingress:'Gjelder fra 1. januar 2027.', innhold:'Enkeltbillett\nVoksen: 95 kr\nBarn (4–15 år): 50 kr\nHonnør: 60 kr\n\nKlippekort (10 bad)\nVoksen: 800 kr\nBarn: 400 kr\n\nBarn under 4 år bader gratis.', cta:'Kjøp klippekort på **nett**'}},
   inndelt:{navn:'Inndelt plakat', sub:'Bilde, tittel og to spalter', bilder:1,
     felt:['stikk','tittel','ingress','ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','ut3','tx3','cta','url']},
 };
-Object.values(TPLS).forEach(t => { t.fmts = t.fmts || ['a4']; }); // én mal = ett format (liggende plakatversjoner er skjult)
+Object.values(TPLS).forEach(t => { t.fmts = t.fmts || ['a4']; }); // én mal = ett format (liggende plakatversjoner er skjult; liggende og skjerm er egne maler)
 // Maler som er erstattet av designerens nye versjoner. De vises ikke lenger, men gamle PDF-er åpnes i erstatteren.
 const ERSTATTET = {forklaring:'inndelt', tekst:'tekstplakat', bilder:'trebilder', delt:'hoydebilde', bildetekst:'hoydebilde'};
 // Malene gruppert etter hva plakaten skal gjøre (innhold først)
 const GRUPPER = [
   {navn:'Vise fram noe med et stort bilde', tekst:'Kort budskap der bildet gjør mye av jobben.', maler:['bildedrevet','forside']},
-  {navn:'Forklare og informere', tekst:'Når leseren trenger litt mer tekst, punkter eller fakta.', maler:['inndelt','hoydebilde','trebilder','tekstplakat']},
+  {navn:'Forklare og informere', tekst:'Når leseren trenger litt mer tekst, punkter eller fakta.', maler:['inndelt','hoydebilde','trebilder','tekstplakat','trebilderliggende','tekstplakatliggende']},
   {navn:'Invitere til noe', tekst:'Kurs, møter og arrangementer.', maler:['invitasjon']},
-  {navn:'Skjermer', tekst:'Infoskjermer (16:9) og skjermene på bymøblene (9:16).', maler:['infoskjerm','infoskjerm2','bymobel']},
+  {navn:'Skjermer', tekst:'Infoskjermer (16:9) og skjermene på bymøblene (9:16).', maler:['infoskjerm','infoskjerm2','tekstplakatskjerm','trebilderskjerm','bymobel']},
 ];
+/* Egne seksjoner for en enhet: vises bare når siden åpnes med ?enhet=… (for eksempel staging/svommehallen/).
+   Malene her ligger ikke i GRUPPER og er derfor ikke en del av testlista før de er godkjent. */
+const ENHETER = {
+  svommehallen:{navn:'Svømmehallen', tekst:'Maler laget for svømmehallen. Forslag, ikke godkjent av designer.', maler:['forbudsskilt','forbudsskiltliggende','qrplakat','prisliste','tekstplakat'],
+    // Eksempeltekst for vanlige maler når de brukes fra svømmehallens seksjon (de egne malene har den i TPLS)
+    demo:{tekstplakat:{stikk:'Svømmehallen', tittel:'Velkommen til **badet**', ingress:'Dette må du vite før du går i vannet.',
+      innhold:'Før du bader\nDusj uten badetøy, og vask håret, før du går i bassenget.\n\nHusk\n- Badehette hvis du har langt hår\n- Barn under 10 år bader sammen med en voksen\n- Badetøy, ikke shorts eller undertøy\n\nHverdager: kl. 07–21\nLørdag og søndag: kl. 10–17', cta:'Skann for **åpningstider**'}}},
+};
+const ENHET = (() => { try { const e = new URLSearchParams(location.search).get('enhet') || ''; return ENHETER[e] ? e : ''; } catch(_){ return ''; } })();
+const visGrupper = () => ENHET ? [ENHETER[ENHET], ...GRUPPER] : GRUPPER;
 const fmtFor = k => TPLS[k].fmts.includes(S.fmt) ? S.fmt : TPLS[k].fmts[0];
 const bildeSlots = k => TPLS[k].bilder === 3 ? [0,1,4] : [0,1].slice(0, TPLS[k].bilder);
-const FMT = {a4:{W:794,H:1123,ratio:3,navn:'-a4'}, wide:{W:1280,H:720,ratio:1.5,navn:'-skjerm'}, bym:{W:720,H:1280,ratio:3,navn:'-bymobel'}};
+const FMT = {a4:{W:794,H:1123,ratio:3,navn:'-a4'}, a4l:{W:1123,H:794,ratio:3,navn:'-a4-liggende'}, wide:{W:1280,H:720,ratio:1.5,navn:'-skjerm'}, bym:{W:720,H:1280,ratio:3,navn:'-bymobel'}};
 
 // Eksempeltekst: forteller hva feltet skal formidle. Brukes som starttekst, og nedlastingen varsler hvis den står igjen.
 const DEMO = {
@@ -94,6 +125,8 @@ const S = {
   imgs:[], ki:false, zoom:'fit', skjulTomme:false, ikon:null, mork:false,
   bs1:'', bs2:'', bs3:'', pIntro:'',
   side2:true, side:1,
+  tema:null, // valgfritt tema (se js/tema.js)
+  innhold:null, // brødtekst som fritekst (se INNHOLD_MALER)
   s2Tittel:'Et foreldrekurs for migrasjonsfamilier',
   s2Ut1:'Hva er ICDP-kurs?',
   s2Tx1:'ICDP (International Child Development Programme) er et foreldreveiledningskurs som styrker samspillet mellom foreldre og barn. Kurset tar utgangspunkt i hverdagslige situasjoner og gir konkrete verktøy for å forstå barnets behov, regulere følelser og bygge en trygg og positiv relasjon.',
@@ -107,5 +140,79 @@ const S = {
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+/* ═════════ BRØDTEKST SOM FRITEKST ═════════
+   I malene med brødtekst (INNHOLD_MALER) skriver brukeren brødteksten i ett felt, S.innhold, med lett formatering:
+     en kort linje øverst i et avsnitt blir mellomtittel (eller en linje som starter med #),
+     «- » gir punkt, «Etikett: verdi» gir fet etikett, «---» gir skillelinje, tom linje gir nytt avsnitt.
+   De faste feltene (INNHOLD_FELT) holdes oppdatert fra teksten. Da virker arbeidsfila i prod, og teksten følger med til
+   maler som bruker de faste feltene. Endres feltene et annet sted (annen mal, arbeidsfil fra prod), lages teksten på nytt. */
+const INNHOLD_MALER = ['prisliste','tekstplakat','tekstplakatliggende','tekstplakatskjerm','trebilder','trebilderliggende','trebilderskjerm','hoydebilde'];
+const INNHOLD_FELT = ['ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk'];
+const erEtikett = l => /^[^:*#\-•\s][^:]{0,22}:\s+\S/.test(l) && !/^https?:/i.test(l);
+function lesInnhold(tekst){ // → [{t:'h'|'p'|'liste'|'etikett'|'linje', v}]
+  const ut = [], punkt = /^[-*•]\s+/, linje = /^(-{3,}|\*{3,}|_{3,})$/;
+  for(const a of String(tekst || '').replace(/\r/g, '').split(/\n[ \t]*\n/)){
+    const L = a.split('\n').map(x => x.trim()).filter(Boolean);
+    let i = 0;
+    while(i < L.length){
+      const l = L[i];
+      if(linje.test(l)){ ut.push({t:'linje', v:''}); i++; continue; }
+      if(/^#{1,6}\s+/.test(l)){ ut.push({t:'h', v:l.replace(/^#+\s+/, '').replace(/\*\*/g, '')}); i++; continue; }
+      if(punkt.test(l)){ const p = []; while(i < L.length && punkt.test(L[i])) p.push(L[i++].replace(punkt, '')); ut.push({t:'liste', v:p.join('\n')}); continue; }
+      if(erEtikett(l)){ const p = []; while(i < L.length && erEtikett(L[i])) p.push(L[i++]); ut.push({t:'etikett', v:p.join('\n')}); continue; }
+      if(i === 0 && L.length > 1 && l.length <= 60 && !/[.,;]$/.test(l)){ ut.push({t:'h', v:l.replace(/\*\*/g, '')}); i++; continue; }
+      const p = []; while(i < L.length && !linje.test(L[i]) && !/^#{1,6}\s/.test(L[i]) && !punkt.test(L[i]) && !erEtikett(L[i])) p.push(L[i++]);
+      ut.push({t:'p', v:p.join('\n')});
+    }
+  }
+  return ut;
+}
+function fraGamle(o){ // de faste feltene → fritekst
+  o = o || S; const v = k => String(o[k] || '').trim();
+  const grupper = [[v('ut1'), v('tx1')], [v('ut2'), v('tx2')],
+    [v('pTittel'), v('pIntro'), v('punkter').split('\n').map(x => x.trim()).filter(Boolean).map(x => '- ' + x).join('\n')], [v('praktisk')]];
+  return grupper.map(g => g.filter(Boolean).join('\n')).filter(Boolean).join('\n\n');
+}
+function tilGamle(){ // fritekst → de faste feltene (best mulig)
+  const b = lesInnhold(S.innhold), av = t => b.filter(x => x.t === t && x.v.trim()).map(x => x.v);
+  const h = av('h'), p = av('p');
+  S.ut1 = h[0] || ''; S.ut2 = h[1] || ''; S.pTittel = h.slice(2).join(' / ');
+  S.tx1 = p[0] || ''; S.tx2 = p.slice(1).join('\n\n'); S.pIntro = '';
+  S.punkter = av('liste').join('\n'); S.praktisk = av('etikett').join('\n');
+}
+const gamleNokkel = () => JSON.stringify(INNHOLD_FELT.map(k => S[k] || ''));
+let INNHOLD_SIST = null, GAMLE_SIST = null;
+function synkInnhold(){ // kalles før hver tegning og lagring
+  if(S.innhold == null) S.innhold = fraGamle();
+  else if(S.innhold !== INNHOLD_SIST) tilGamle();                 // teksten er endret (brukeren, KI, arbeidsfil)
+  else if(gamleNokkel() !== GAMLE_SIST) S.innhold = fraGamle();   // feltene er endret (annen mal, arbeidsfil fra prod)
+  INNHOLD_SIST = S.innhold; GAMLE_SIST = gamleNokkel();
+}
 const has = k => S[k] && String(S[k]).trim() !== '';
 
+
+DEMO.innhold = fraGamle(DEMO); // eksempelteksten viser formatet
+
+/* Eksempeltekst per mal. Hver mal har ett sammenhengende sett (tittel og brødtekst handler om det samme):
+   DEMO, overstyrt av enhetens sett (ENHETER[…].demo) og malens eget (TPLS[…].demo). */
+function demoFor(k){
+  const egen = {...((ENHET && ENHETER[ENHET].demo && ENHETER[ENHET].demo[k]) || {}), ...(TPLS[k].demo || {})};
+  // Har malen egen brødtekst, skal ikke resten av brødteksten hentes fra den generelle eksempelteksten
+  const tom = Object.keys(egen).some(f => f === 'innhold' || INNHOLD_FELT.includes(f)) ? Object.fromEntries(INNHOLD_FELT.map(f => [f, ''])) : {};
+  return {...DEMO, ...tom, ...egen};
+}
+// Alle eksempeltekster som finnes, per felt (for å se om et felt fortsatt har eksempeltekst)
+const EKSEMPLER = (() => { const e = {}; const legg = o => Object.entries(o || {}).forEach(([f, v]) => (e[f] = e[f] || new Set()).add(v));
+  legg(DEMO); Object.values(TPLS).forEach(t => legg(t.demo)); Object.values(ENHETER).forEach(en => Object.values(en.demo || {}).forEach(legg)); return e; })();
+const erEksempel = (f, v) => v == null || !!(EKSEMPLER[f] && EKSEMPLER[f].has(v));
+const innholdErEksempel = () => erEksempel('innhold', S.innhold) || INNHOLD_FELT.every(g => !S[g] || erEksempel(g, S[g]));
+// Felt som fortsatt har eksempeltekst (fra hvilken som helst mal) får malens eksempeltekst, så tittel og
+// brødtekst alltid hører sammen. Tekst brukeren har skrevet selv, røres ikke. Brukes ved malbytte og i miniatyrene.
+function brukEksempel(k){
+  const mal = demoFor(k), urortInnhold = innholdErEksempel();
+  Object.keys(mal).forEach(f => { if(f !== 'innhold' && !INNHOLD_FELT.includes(f) && erEksempel(f, S[f])) S[f] = mal[f]; });
+  if(urortInnhold){
+    if(TPLS[k].felt.includes('innhold')) S.innhold = mal.innhold;                       // feltene følger etter i synkInnhold()
+    else { INNHOLD_FELT.forEach(g => { S[g] = mal[g] ?? ''; }); S.innhold = null; }      // brødteksten lages fra feltene
+  }
+}

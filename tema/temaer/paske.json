@@ -1,0 +1,81 @@
+{
+  "id": "paske",
+  "navn": "Påske",
+  "sub": "Egg, kylling og påskeliljer",
+  "kategori": "arshjul",
+  "maaneder": [
+    3,
+    4
+  ],
+  "malgrupper": [
+    "barn",
+    "alle",
+    "senior"
+  ],
+  "panel": "gul",
+  "bolge": "navy",
+  "slor": "gronn",
+  "helt": [
+    {
+      "m": "egg",
+      "x": 4,
+      "y": 60,
+      "s": 100,
+      "r": -12
+    },
+    {
+      "m": "kylling",
+      "x": 80,
+      "y": 70,
+      "s": 120
+    },
+    {
+      "m": "blomst",
+      "x": 140,
+      "y": 0,
+      "s": 70,
+      "r": 10,
+      "f": [
+        "gul",
+        "korall",
+        "morkgronn"
+      ]
+    },
+    {
+      "m": "egg",
+      "x": 60,
+      "y": 140,
+      "s": 56,
+      "r": 14,
+      "f": [
+        "lysbla",
+        "korall",
+        "gul"
+      ]
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "blomst",
+      "prikk"
+    ],
+    "antall": 9,
+    "dekning": 0.5,
+    "farger": [
+      "hvit",
+      "korall",
+      "morkgronn"
+    ]
+  },
+  "demo": {
+    "stikk": "Velkommen til",
+    "tittel": "**Påske**verksted",
+    "ingress": "Vi maler egg, lager pynt og leter etter påskeharen.",
+    "praktisk": "Når: Onsdag 24. mars kl. 11–13\nHvor: Biblioteket\nFor: Barn 4–10 år med voksen",
+    "merke": "Gratis!",
+    "hilsen": "God påske!",
+    "url": "tonsberg.kommune.no/paske",
+    "qr": "Skann og\n**meld deg på**",
+    "arr": "Biblioteket"
+  }
+}

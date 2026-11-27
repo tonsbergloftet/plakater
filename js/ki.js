@@ -13,6 +13,7 @@ const KI_FELT = { // hva feltet skal gjøre, og omtrent hvor langt det kan være
   tx2:     ['Brødtekst 2', '2–3 korte setninger.', 200],
   ut3:     ['Underoverskrift 3', 'Kort underoverskrift.', 40],
   tx3:     ['Brødtekst 3', '1–3 korte setninger med tilleggsinformasjon.', 160],
+  innhold: ['Brødtekst', 'All brødtekst i ett felt. Format: avsnitt skilles med tom linje (\\n\\n). En kort linje øverst i et avsnitt blir mellomtittel. Punkter starter med «- ». Praktisk informasjon skrives «Etikett: verdi», én per linje. Ikke bruk annen markdown enn **ord** for utheving.', 600],
   pTittel: ['Overskrift over punktene', 'Kort overskrift.', 40],
   pIntro:  ['Innledning til punktlista', 'Én kort setning.', 80],
   punkter: ['Punktliste', '3–5 punkter, ett per linje (skilles med \\n). Hvert punkt kort, gjerne med verb først.', 160],
@@ -32,8 +33,8 @@ const KI_LENGDE = {
   infoskjerm: {tx1:90, praktisk:300},
   bildedrevet: {ingress:60, cta:45},
   forside: {ingress:70},
-  hoydebilde: {tx1:150, tx2:150},
-  trebilder: {tx1:150, tx2:150},
+  hoydebilde: {tx1:150, tx2:150, innhold:450},
+  trebilder: {tx1:150, tx2:150, innhold:450},
 };
 const kiFelt = () => TPLS[S.tpl].felt.filter(k => KI_FELT[k] && !(/^bs\d$/.test(k) && !has(k)));
 function kiInstruks(){
@@ -113,33 +114,46 @@ function kiDiff(gml, ny){
   return h;
 }
 let kiForslag = null, kiForrige = null, kiToastTimer = null;
+// Kjenner igjen at det som limes inn er bestillingen selv, ikke svaret fra KI-en (vanlig feil i brukertestene)
+const erBestilling = t => /Du er kommunikasjonsrådgiver|Svar KUN med én JSON-kodeblokk/.test(t);
+function kiSteg(n){
+  document.querySelectorAll('#kimodal .kisteg').forEach(s => s.classList.toggle('na', +s.dataset.steg === n));
+  document.querySelectorAll('#kiframdrift li').forEach(l => { l.classList.toggle('na', +l.dataset.s === n); l.classList.toggle('ferdig', +l.dataset.s < n); });
+  const fokus = {1:'kikopier', 2:null, 3:'kisvar', 4:'kibruk'}[n];
+  if(fokus) setTimeout(() => $(fokus).focus(), 0);
+  else { const b = document.querySelector('#kimodal .kisteg.na .btn.pri'); if(b) setTimeout(() => b.focus(), 0); }
+}
 function initKI(){
   const m = $('kimodal');
   const lukk = () => m.classList.remove('on');
   $('kiknapp').onclick = () => {
     $('kiprompt').value = kiInstruks(); $('kiprompt').style.display = 'none'; $('kikopiert').textContent = '';
-    $('kisvar').value = ''; $('kisvar').style.display = ''; $('kilest').style.display = 'none'; $('kifeil').textContent = ''; $('kiforslag').innerHTML = ''; $('kibruk').style.display = 'none'; kiForslag = null;
-    m.classList.add('on'); $('kikopier').focus();
+    $('kisvar').value = ''; $('kifeil').textContent = ''; $('kiforslag').innerHTML = ''; kiForslag = null;
+    m.classList.add('on'); kiSteg(1);
   };
   $('kilukk').onclick = lukk;
   m.addEventListener('click', e => { if(e.target === m) lukk(); });
   document.addEventListener('keydown', e => { if(e.key === 'Escape' && m.classList.contains('on')) lukk(); });
+  m.querySelectorAll('[data-til]').forEach(b => b.onclick = () => kiSteg(+b.dataset.til));
   $('kikopier').onclick = async () => {
     const t = kiInstruks(); $('kiprompt').value = t;
-    try{ await navigator.clipboard.writeText(t); $('kikopiert').textContent = 'Kopiert! Lim den inn i KI-verktøyet.'; }
+    try{ await navigator.clipboard.writeText(t); $('kikopiert').textContent = 'Kopiert.'; setTimeout(() => kiSteg(2), 500); }
     catch(e){ // f.eks. når fila er åpnet fra disk: vis teksten så den kan kopieres for hånd
       const ta = $('kiprompt'); ta.style.display = ''; ta.focus(); ta.select();
       let ok = false; try{ ok = document.execCommand('copy'); }catch(_){}
-      $('kikopiert').textContent = ok ? 'Kopiert! Lim den inn i KI-verktøyet.' : 'Marker teksten under og kopier den (Ctrl+C).';
+      if(ok){ $('kikopiert').textContent = 'Kopiert.'; setTimeout(() => kiSteg(2), 500); }
+      else $('kikopiert').innerHTML = 'Marker teksten under og kopier den (Ctrl+C). Gå så videre. <button class="btn" data-til="2" onclick="kiSteg(2)">Videre</button>';
     }
   };
-  const visForslag = () => {
-    $('kifeil').textContent = ''; $('kiforslag').innerHTML = ''; $('kibruk').style.display = 'none';
-    if(!$('kisvar').value.trim()) return;
-    const o = kiLes($('kisvar').value);
-    if(!o){ $('kifeil').textContent = 'Fant ingen forslag i teksten. Lim inn hele svaret fra KI-verktøyet.'; return; }
+  const lesSvar = () => {
+    $('kifeil').textContent = ''; $('kiforslag').innerHTML = '';
+    const tekst = $('kisvar').value;
+    if(!tekst.trim()) return;
+    if(erBestilling(tekst)){ $('kifeil').textContent = 'Dette er bestillingen du kopierte i steg 1, ikke svaret. Lim den inn i Copilot først (steg 2), og kopier svaret Copilot gir deg.'; return; }
+    const o = kiLes(tekst);
+    if(!o){ $('kifeil').textContent = 'Fant ikke hele svaret. Gå tilbake til Copilot og bruk kopier-knappen øverst til høyre i JSON-boksen, så kommer alt med.'; return; }
     const felt = kiFelt().filter(k => k in o);
-    if(!felt.length){ $('kifeil').textContent = 'Svaret passer ikke til malen som er valgt nå. Har du byttet mal? Kopier bestillingen på nytt.'; return; }
+    if(!felt.length){ $('kifeil').textContent = 'Svaret passer ikke til malen som er valgt nå. Har du byttet mal? Start på nytt fra steg 1.'; return; }
     kiForslag = {}; felt.forEach(k => kiForslag[k] = String(o[k] ?? '').replace(/\r/g, '').trim());
     const endret = felt.filter(k => String(S[k] || '').trim() !== kiForslag[k]);
     let opps = o._endringer; if(typeof opps === 'string') opps = opps.split(/\n+/);
@@ -149,11 +163,11 @@ function initKI(){
       (endret.length ? '<div class="kiliste">' + endret.map(k => `<label class="kirad"><input type="checkbox" data-k="${k}" checked><span class="navn">${esc(KI_FELT[k][0])}</span><span class="diff">${kiDiff(S[k] || '', kiForslag[k])}</span></label>`).join('')
         + (felt.length > endret.length ? `<div class="kiuendret">${felt.length - endret.length} felt er ikke endret.</div>` : '') + '</div>'
         : '<p class="kinote">KI-en foreslo ingen endringer.</p>');
-    $('kisvar').style.display = 'none'; $('kilest').style.display = '';
-    if(endret.length) $('kibruk').style.display = '';
+    $('kibruk').style.display = endret.length ? '' : 'none';
+    kiSteg(4);
   };
-  $('kisvar').addEventListener('input', () => { clearTimeout($('kisvar')._t); $('kisvar')._t = setTimeout(visForslag, 250); });
-  $('kinytt').onclick = () => { $('kisvar').value = ''; $('kisvar').style.display = ''; $('kilest').style.display = 'none'; $('kiforslag').innerHTML = ''; $('kibruk').style.display = 'none'; $('kisvar').focus(); };
+  $('kisvar').addEventListener('input', () => { clearTimeout($('kisvar')._t); $('kisvar')._t = setTimeout(lesSvar, 250); });
+  $('kinytt').onclick = () => { $('kisvar').value = ''; $('kiforslag').innerHTML = ''; kiSteg(3); };
   $('kibruk').onclick = () => {
     if(!kiForslag) return;
     kiForrige = {};
@@ -166,4 +180,3 @@ function initKI(){
     kiForrige = null; $('kitoast').classList.remove('on'); fillForm(); render();
   };
 }
-

@@ -1,0 +1,51 @@
+{
+  "id": "strikkekafe",
+  "navn": "Strikking",
+  "sub": "Garn, pinner og kaffe",
+  "kategori": "aktivitet",
+  "maaneder": [],
+  "malgrupper": [
+    "voksne",
+    "senior"
+  ],
+  "slor": "gul",
+  "motiv": [
+    {
+      "m": "garn",
+      "x": 10,
+      "y": 30,
+      "s": 130,
+      "f": [
+        "lysbla",
+        "gul"
+      ]
+    },
+    {
+      "m": "garn",
+      "x": 100,
+      "y": 80,
+      "s": 90,
+      "f": [
+        "gronn",
+        "gul"
+      ]
+    },
+    {
+      "m": "kopp",
+      "x": 130,
+      "y": 10,
+      "s": 60
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "hjerte",
+      "prikk"
+    ],
+    "antall": 8,
+    "dekning": 0.35,
+    "farger": [
+      "navy"
+    ]
+  }
+}

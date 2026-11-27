@@ -1,0 +1,46 @@
+{
+  "id": "quiz",
+  "navn": "Quiz",
+  "sub": "Spørsmål og lyse ideer",
+  "kategori": "aktivitet",
+  "maaneder": [],
+  "malgrupper": [
+    "ungdom",
+    "voksne",
+    "ansatte",
+    "senior"
+  ],
+  "slor": "gul",
+  "motiv": [
+    {
+      "m": "sporsmal",
+      "x": 0,
+      "y": 20,
+      "s": 130,
+      "r": -6,
+      "f": [
+        "hvit",
+        "navy"
+      ]
+    },
+    {
+      "m": "lyspare",
+      "x": 110,
+      "y": 40,
+      "s": 100,
+      "r": 12
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "stjerne",
+      "prikk"
+    ],
+    "antall": 8,
+    "dekning": 0.35,
+    "farger": [
+      "navy",
+      "gul"
+    ]
+  }
+}

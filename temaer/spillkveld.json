@@ -1,0 +1,52 @@
+{
+  "id": "spillkveld",
+  "navn": "Spill",
+  "sub": "Terninger og spillkontroller",
+  "kategori": "aktivitet",
+  "maaneder": [],
+  "malgrupper": [
+    "ungdom",
+    "barn",
+    "alle"
+  ],
+  "slor": "korall",
+  "motiv": [
+    {
+      "m": "kontroll",
+      "x": 30,
+      "y": 60,
+      "s": 140,
+      "r": -8
+    },
+    {
+      "m": "terning",
+      "x": 0,
+      "y": 0,
+      "s": 70,
+      "r": -10
+    },
+    {
+      "m": "terning",
+      "x": 130,
+      "y": 10,
+      "s": 60,
+      "r": 14,
+      "f": [
+        "gul",
+        "navy"
+      ]
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "stjerne",
+      "prikk"
+    ],
+    "antall": 8,
+    "dekning": 0.35,
+    "farger": [
+      "lysbla",
+      "gul"
+    ]
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "id": "mai17",
+  "navn": "17. mai",
+  "sub": "Flagg, sløyfer og vimpler",
+  "kategori": "arshjul",
+  "maaneder": [
+    5
+  ],
+  "malgrupper": [
+    "alle",
+    "barn"
+  ],
+  "slor": "bla",
+  "motiv": [
+    {
+      "m": "flagg",
+      "x": 10,
+      "y": 10,
+      "s": 120,
+      "r": -10
+    },
+    {
+      "m": "flagg",
+      "x": 80,
+      "y": 20,
+      "s": 110,
+      "r": 8
+    },
+    {
+      "m": "rosett",
+      "x": 120,
+      "y": 110,
+      "s": 70,
+      "r": 6
+    },
+    {
+      "m": "vimpler",
+      "x": 0,
+      "y": 140,
+      "s": 90
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "vimpler"
+    ],
+    "antall": 3,
+    "dekning": 0.35
+  }
+}

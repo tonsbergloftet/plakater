@@ -5,13 +5,18 @@ let uidN = 0;
 const hasSide2 = () => S.tpl==='bildetekst' && S.fmt==='a4' && S.side2;
 function buildPage(tpl, fmt, side, edit){
   EDIT = !!edit;
+  synkInnhold(); // brødtekst ↔ faste felt (js/oppsett.js)
+  const egenSlor = S.slor; S.slor = temaSlor(); // et valgt tema bestemmer slørfargen (js/tema.js)
   const c = SLOR[S.slor];
   const el = document.createElement('div');
   el.className = 'page ' + fmt;
   el.style.setProperty('--slor', c.c);
   el.style.setProperty('--slor-mork', c.mork);
   el.style.setProperty('--slor-tint', c.tint);
-  el.innerHTML = side===2 ? LAYOUTS.bildetekst2('u'+(uidN++)+'_') : LAYOUTS[tpl]('u'+(uidN++)+'_', fmt);
+  try {
+    el.innerHTML = side===2 ? LAYOUTS.bildetekst2('u'+(uidN++)+'_') : LAYOUTS[tpl]('u'+(uidN++)+'_', fmt);
+    if(side !== 2) leggPaaTema(el, tpl, fmt);
+  } finally { S.slor = egenSlor; }
   EDIT = false;
   if(edit){ el.classList.add('edit'); if(S.skjulTomme) el.classList.add('skjul-tomme'); }
   return el;
@@ -82,7 +87,9 @@ function renderThumbs(){
 function miniatyr(th, k){
   th.innerHTML = '';
   const tw = th.clientWidth || 130;
+  const lagret = {...S}, sist = [INNHOLD_SIST, GAMLE_SIST]; brukEksempel(k);              // miniatyren viser malens egen eksempeltekst
   const p = buildPage(k, fmtFor(k));
+  Object.keys(S).forEach(f => { if(!(f in lagret)) delete S[f]; }); Object.assign(S, lagret); [INNHOLD_SIST, GAMLE_SIST] = sist;
   const holder = document.createElement('div');
   holder.style.position = 'relative'; holder.style.overflow = 'hidden';
   th.appendChild(holder);
