@@ -1,0 +1,76 @@
+{
+  "id": "hostferie",
+  "navn": "Høstferie",
+  "sub": "Løv, sopp og paraply",
+  "kategori": "arshjul",
+  "maaneder": [
+    9,
+    10
+  ],
+  "malgrupper": [
+    "barn",
+    "ungdom"
+  ],
+  "panel": "korall",
+  "bolge": "navy",
+  "slor": "gul",
+  "helt": [
+    {
+      "m": "paraply",
+      "x": 90,
+      "y": 0,
+      "s": 110,
+      "r": 10
+    },
+    {
+      "m": "blad",
+      "x": 10,
+      "y": 20,
+      "s": 80,
+      "r": -30,
+      "f": [
+        "gul",
+        "rod"
+      ]
+    },
+    {
+      "m": "blad",
+      "x": 40,
+      "y": 100,
+      "s": 70,
+      "r": 20,
+      "f": [
+        "rod",
+        "gul"
+      ]
+    },
+    {
+      "m": "sopp",
+      "x": 110,
+      "y": 110,
+      "s": 80
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "blad"
+    ],
+    "antall": 9,
+    "dekning": 0.55,
+    "farger": [
+      "gul",
+      "rod"
+    ]
+  },
+  "demo": {
+    "stikk": "Gøy i",
+    "tittel": "**Høst**ferien",
+    "ingress": "Aktiviteter hver dag: tur i skogen, kino, bading og verksted.",
+    "praktisk": "Uke: 40\nHvor: Ulike steder i kommunen\nFor: 6–16 år",
+    "merke": "Gratis!",
+    "hilsen": "Kle deg etter været",
+    "url": "tonsberg.kommune.no/hostferie",
+    "qr": "Skann for\n**hele programmet**",
+    "arr": "Kultur og fritid"
+  }
+}

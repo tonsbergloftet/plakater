@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Temaplakater – Tønsberg kommune</title>
+<link rel="stylesheet" href="tema.css">
+</head>
+<body>
+<div class="testbanner" role="note">TESTVERSJON</div>
+<aside class="side" aria-label="Valg">
+  <a class="tilbake" href="../">← Til plakatgeneratoren</a>
+  <h1>Temaplakater</h1>
+  <p class="lead">Lekne plakater til arrangementer. Temaet bestemmer farger, motiver og stemning. Logo, ramme, bølgeform og QR er alltid de samme.</p>
+
+  <section class="steg"><h2><span>1</span>Tema</h2>
+    <div class="filter">
+      <input type="search" id="sok" placeholder="Søk: jul, quiz, bading …" aria-label="Søk i temaer">
+      <div class="chips" id="kategorier" role="group" aria-label="Kategori"></div>
+      <select id="malgruppe" aria-label="Målgruppe"></select>
+    </div>
+    <div class="antall" id="antall" role="status"></div>
+    <div class="temaer" id="temaer"></div>
+  </section>
+  <section class="steg"><h2><span>2</span>Variant</h2><div class="varianter" id="varianter"></div></section>
+  <section class="steg felt"><h2><span>3</span>Tekst</h2>
+    <p class="hint">Du kan også klikke rett i plakaten og skrive. Skriv <b>**ord**</b> i tittelen for å fremheve.</p>
+    <div id="felt"></div>
+  </section>
+  <section class="steg"><h2><span>4</span>Last ned</h2>
+    <div class="knapper">
+      <button class="knapp" id="lastPng">PNG</button>
+      <button class="knapp" id="lastPdf">PDF (A4)</button>
+      <button class="knapp sek" id="nullstill">Tilbakestill tekst</button>
+    </div>
+    <div class="varsel" id="varsel" role="status"></div>
+  </section>
+</aside>
+
+<main class="scene" id="scene"><div class="ramme" id="ramme"></div></main>
+
+<aside class="regler" aria-label="Regelsjekk">
+  <h2>Regelsjekk</h2>
+  <div id="regler"></div>
+  <div class="forklaring"><span><i style="background:#013952"></i>Låst</span><span><i style="background:#c5daaf"></i>I profilen</span><span><i style="background:#f1be48"></i>Utvidelse</span></div>
+</aside>
+
+<script src="bolge.js"></script>
+<script src="../js/motiver.js"></script>
+<script src="../lib/qrcode-generator.js"></script>
+<script src="../lib/html-to-image.js"></script>
+<script src="../lib/jspdf.umd.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

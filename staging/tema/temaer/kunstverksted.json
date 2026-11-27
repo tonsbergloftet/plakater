@@ -1,0 +1,77 @@
+{
+  "id": "kunstverksted",
+  "navn": "Kunstverksted",
+  "sub": "Pensel, palett og farger",
+  "kategori": "aktivitet",
+  "maaneder": [],
+  "malgrupper": [
+    "barn",
+    "ungdom",
+    "senior"
+  ],
+  "panel": "navy",
+  "bolge": "hvit",
+  "slor": "korall",
+  "helt": [
+    {
+      "m": "fargeklatt",
+      "x": 90,
+      "y": 10,
+      "s": 100,
+      "f": [
+        "korall"
+      ]
+    },
+    {
+      "m": "fargeklatt",
+      "x": 0,
+      "y": 90,
+      "s": 70,
+      "r": 40,
+      "f": [
+        "lysbla"
+      ]
+    },
+    {
+      "m": "palett",
+      "x": 20,
+      "y": 30,
+      "s": 130
+    },
+    {
+      "m": "pensel",
+      "x": 110,
+      "y": 50,
+      "s": 110,
+      "f": [
+        "gul",
+        "navy",
+        "korall"
+      ]
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "prikk",
+      "fargeklatt"
+    ],
+    "antall": 9,
+    "dekning": 0.5,
+    "farger": [
+      "gul",
+      "korall",
+      "lysbla"
+    ]
+  },
+  "demo": {
+    "stikk": "Lag noe selv på",
+    "tittel": "**Kunst**verksted",
+    "ingress": "Vi maler, tegner og lager collage. Alt utstyr er på plass.",
+    "praktisk": "Når: Lørdag 13. mars kl. 11–14\nHvor: Kulturhuset, sal 2\nFor: 8–14 år",
+    "merke": "Gratis\nmateriell!",
+    "hilsen": "Klær som tåler maling",
+    "url": "tonsberg.kommune.no/kunst",
+    "qr": "Skann og\n**meld deg på**",
+    "arr": "Kulturskolen"
+  }
+}

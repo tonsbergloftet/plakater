@@ -1,0 +1,69 @@
+{
+  "id": "fastelavn",
+  "navn": "Fastelavn og karneval",
+  "sub": "Masker, ris og konfetti",
+  "kategori": "arshjul",
+  "maaneder": [
+    2,
+    3
+  ],
+  "malgrupper": [
+    "barn"
+  ],
+  "panel": "korall",
+  "bolge": "navy",
+  "slor": "gul",
+  "helt": [
+    {
+      "m": "maske",
+      "x": 0,
+      "y": 30,
+      "s": 140,
+      "r": -8
+    },
+    {
+      "m": "ris",
+      "x": 110,
+      "y": 40,
+      "s": 110,
+      "r": 8
+    },
+    {
+      "m": "konfetti",
+      "x": 0,
+      "y": 120,
+      "s": 100
+    },
+    {
+      "m": "konfetti",
+      "x": 110,
+      "y": 0,
+      "s": 80,
+      "r": 90
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "konfetti",
+      "prikk"
+    ],
+    "antall": 10,
+    "dekning": 0.55,
+    "farger": [
+      "gul",
+      "hvit",
+      "lysbla"
+    ]
+  },
+  "demo": {
+    "stikk": "Kom utkledd til",
+    "tittel": "**Karneval**",
+    "ingress": "Kostymeparade, dans og fastelavnsboller.",
+    "praktisk": "Når: Søndag 7. februar kl. 12–14\nHvor: Barnehagen\nFor: Barn og foreldre",
+    "merke": "Premie for\nbeste kostyme!",
+    "hilsen": "Masker kan lånes",
+    "url": "tonsberg.kommune.no/karneval",
+    "qr": "Skann for\n**program**",
+    "arr": "Høgenhall barnehage"
+  }
+}

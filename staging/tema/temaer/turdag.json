@@ -1,0 +1,75 @@
+{
+  "id": "turdag",
+  "navn": "Turdag",
+  "sub": "Fjell, skog og friluft",
+  "kategori": "aktivitet",
+  "maaneder": [],
+  "malgrupper": [
+    "alle",
+    "barn",
+    "senior",
+    "ansatte"
+  ],
+  "panel": "lysbla",
+  "bolge": "navy",
+  "slor": "gronn",
+  "helt": [
+    {
+      "m": "sol",
+      "x": 120,
+      "y": 0,
+      "s": 60
+    },
+    {
+      "m": "fjell",
+      "x": 0,
+      "y": 30,
+      "s": 180
+    },
+    {
+      "m": "gran",
+      "x": 0,
+      "y": 100,
+      "s": 70
+    },
+    {
+      "m": "gran",
+      "x": 30,
+      "y": 120,
+      "s": 56
+    },
+    {
+      "m": "sekk",
+      "x": 130,
+      "y": 130,
+      "s": 64,
+      "r": 8,
+      "f": [
+        "rod",
+        "navy",
+        "gul"
+      ]
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "sky"
+    ],
+    "antall": 4,
+    "dekning": 0.8,
+    "farger": [
+      "hvit"
+    ]
+  },
+  "demo": {
+    "stikk": "Bli med på",
+    "tittel": "**Tur**dag",
+    "ingress": "Rolig tur i eget tempo med bålpause på toppen.",
+    "praktisk": "Når: Søndag 5. september kl. 11.00\nOppmøte: Parkeringsplassen ved Ilene\nLengde: Ca. 5 km",
+    "merke": "Passer\nfor alle!",
+    "hilsen": "Gode sko og matpakke",
+    "url": "tonsberg.kommune.no/tur",
+    "qr": "Skann for\n**turkart**",
+    "arr": "Frisklivssentralen"
+  }
+}

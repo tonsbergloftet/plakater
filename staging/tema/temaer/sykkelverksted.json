@@ -1,0 +1,62 @@
+{
+  "id": "sykkelverksted",
+  "navn": "Sykkelverksted",
+  "sub": "Sykkel og skiftenøkkel",
+  "kategori": "aktivitet",
+  "maaneder": [
+    3,
+    4,
+    5,
+    6
+  ],
+  "malgrupper": [
+    "barn",
+    "ungdom",
+    "alle"
+  ],
+  "panel": "lysbla",
+  "bolge": "navy",
+  "slor": "gul",
+  "helt": [
+    {
+      "m": "sykkel",
+      "x": 0,
+      "y": 40,
+      "s": 170,
+      "f": [
+        "rod",
+        "navy"
+      ]
+    },
+    {
+      "m": "nokkel",
+      "x": 130,
+      "y": 0,
+      "s": 70,
+      "f": [
+        "navy"
+      ]
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "prikk"
+    ],
+    "antall": 6,
+    "dekning": 0.5,
+    "farger": [
+      "hvit"
+    ]
+  },
+  "demo": {
+    "stikk": "Gjør sykkelen klar",
+    "tittel": "**Sykkel**verksted",
+    "ingress": "Vi skifter slanger, justerer bremser og smører kjeder. Gratis.",
+    "praktisk": "Når: Onsdag 14. april kl. 15–18\nHvor: Skolegården\nFor: Alle med sykkel",
+    "merke": "Gratis\nreparasjon!",
+    "hilsen": "Husk hjelm",
+    "url": "tonsberg.kommune.no/sykkel",
+    "qr": "Skann for\n**sykkeltips**",
+    "arr": "Miljø og klima"
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "id": "apenthus",
+  "navn": "Åpent hus",
+  "sub": "Hus, kaffe og velkommen",
+  "kategori": "aktivitet",
+  "maaneder": [],
+  "malgrupper": [
+    "alle",
+    "senior",
+    "voksne"
+  ],
+  "panel": "gronn",
+  "bolge": "navy",
+  "slor": "lysbla",
+  "helt": [
+    {
+      "m": "hus",
+      "x": 20,
+      "y": 10,
+      "s": 150
+    },
+    {
+      "m": "kopp",
+      "x": 130,
+      "y": 110,
+      "s": 70
+    },
+    {
+      "m": "hjerte",
+      "x": 150,
+      "y": 0,
+      "s": 40
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "prikk",
+      "hjerte"
+    ],
+    "antall": 6,
+    "dekning": 0.35,
+    "farger": [
+      "hvit"
+    ]
+  },
+  "demo": {
+    "stikk": "Kom innom på",
+    "tittel": "**Åpent** hus",
+    "ingress": "Se de nye lokalene, møt de ansatte og still spørsmål.",
+    "praktisk": "Når: Onsdag 6. oktober kl. 14–18\nHvor: Nye Træleborg helsehus\nFor: Alle",
+    "merke": "Kaffe og\nkake!",
+    "hilsen": "Døra står åpen",
+    "url": "tonsberg.kommune.no/apenthus",
+    "qr": "Skann for\n**adresse**",
+    "arr": "Helse og omsorg"
+  }
+}
