@@ -1,0 +1,53 @@
+{
+  "id": "lesestund",
+  "navn": "Lesing",
+  "sub": "Bøker og bokkafé",
+  "kategori": "aktivitet",
+  "maaneder": [],
+  "malgrupper": [
+    "barn",
+    "senior",
+    "alle"
+  ],
+  "slor": "gul",
+  "motiv": [
+    {
+      "m": "bok",
+      "x": 10,
+      "y": 40,
+      "s": 150
+    },
+    {
+      "m": "kopp",
+      "x": 130,
+      "y": 110,
+      "s": 64,
+      "f": [
+        "hvit",
+        "korall",
+        "hvit"
+      ]
+    },
+    {
+      "m": "stjerne",
+      "x": 140,
+      "y": 10,
+      "s": 30,
+      "f": [
+        "gul"
+      ]
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "stjerne",
+      "prikk"
+    ],
+    "antall": 8,
+    "dekning": 0.35,
+    "farger": [
+      "navy",
+      "gul"
+    ]
+  }
+}

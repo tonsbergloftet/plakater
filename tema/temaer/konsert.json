@@ -1,0 +1,67 @@
+{
+  "id": "konsert",
+  "navn": "Konsert",
+  "sub": "Gitar, mikrofon og noter",
+  "kategori": "aktivitet",
+  "maaneder": [],
+  "malgrupper": [
+    "alle",
+    "senior",
+    "ungdom"
+  ],
+  "panel": "gra",
+  "bolge": "navy",
+  "slor": "korall",
+  "helt": [
+    {
+      "m": "gitar",
+      "x": 20,
+      "y": 10,
+      "s": 140
+    },
+    {
+      "m": "mikrofon",
+      "x": 120,
+      "y": 50,
+      "s": 80,
+      "r": 10,
+      "f": [
+        "hvit",
+        "gul"
+      ]
+    },
+    {
+      "m": "note",
+      "x": 140,
+      "y": 0,
+      "s": 50,
+      "r": 8,
+      "f": [
+        "gul"
+      ]
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "note",
+      "prikk"
+    ],
+    "antall": 8,
+    "dekning": 0.35,
+    "farger": [
+      "korall",
+      "hvit"
+    ]
+  },
+  "demo": {
+    "stikk": "Live musikk",
+    "tittel": "**Konsert** i parken",
+    "ingress": "Lokale band spiller hele ettermiddagen.",
+    "praktisk": "Når: Lørdag 28. august kl. 14–18\nHvor: Byparken\nFor: Alle",
+    "merke": "Gratis\ninngang!",
+    "hilsen": "Ta med teppe",
+    "url": "tonsberg.kommune.no/konsert",
+    "qr": "Skann for\n**hvem som spiller**",
+    "arr": "Kultur og fritid"
+  }
+}

@@ -89,7 +89,7 @@ function urlBreak(u){ return esc(u||'').replace(/([\/.])/g,'$1<wbr>'); }
    EDIT er sann bare når forhåndsvisningen bygges. Da blir alle tekstfelt redigerbare,
    og tomme felt vises med grå hjelpetekst. Miniatyrer og nedlasting bygges uten. */
 let EDIT = false;
-const PH = {pIntro:'Innledning til punktlista (valgfri)', ut3:'Underoverskrift', tx3:'Skriv brødtekst',
+const PH = {innhold:'Skriv brødteksten her. Tom linje gir nytt avsnitt.', pIntro:'Innledning til punktlista (valgfri)', ut3:'Underoverskrift', tx3:'Skriv brødtekst',
   stikk:'Tema', tittel:'Skriv en tittel', ingress:'Skriv en kort ingress',
   ut1:'Underoverskrift', tx1:'Skriv brødtekst', pTittel:'Overskrift over punktene',
   punkter:'Ett punkt per linje', ut2:'Underoverskrift', tx2:'Skriv brødtekst',
@@ -99,7 +99,7 @@ const PH = {pIntro:'Innledning til punktlista (valgfri)', ut3:'Underoverskrift',
   s2Merknad:'Kort merknad med pil', s2Kontakt:'Kontaktinformasjon', merke:'Tekst i merket', avslutt:'Avsluttende setning (fet kursiv)',
   merkeTx:'Kort tekst', bs1:'Stikkord om bildet (valgfritt)', bs2:'Stikkord om bildet (valgfritt)', bs3:'Stikkord om bildet (valgfritt)',
 };
-const KIND = {tittel:'tit', tx1:'rich', tx2:'rich', tx3:'rich', s2Tx1:'rich', s2Tx2:'rich', s2Tx3:'rich', s2Slutt:'rich', punkter:'list', praktisk:'prak', url:'url'};
+const KIND = {innhold:'innhold', tittel:'tit', tx1:'rich', tx2:'rich', tx3:'rich', s2Tx1:'rich', s2Tx2:'rich', s2Tx3:'rich', s2Slutt:'rich', punkter:'list', praktisk:'prak', url:'url'};
 const SINGLE = new Set(['ut3','stikk','ut1','ut2','pTittel','cta','url','qrTekst','s2Ut1','s2Ut2','s2Slutt','bs1','bs2','bs3']);
 const hasE = k => EDIT || has(k);
 let EKSPORTERER = false;
@@ -107,8 +107,8 @@ function disp(k, kindOverride){ // [MANGLER] fra KI-forslag markeres i forhånds
   const h = disp0(k, kindOverride);
   return EKSPORTERER ? h : h.replace(/\[MANGLER\]/g, '<mark class="mangler">[MANGLER]</mark>');
 }
-function disp0(k, kindOverride){
-  const v = String(S[k]||''), kind = kindOverride || KIND[k];
+function disp0(k, kindOverride, verdi){ // verdi: vis denne teksten i stedet for S[k]
+  const v = String(verdi ?? S[k] ?? ''), kind = kindOverride || KIND[k];
   if(kind==='tit') return esc(v).replace(/\*\*(.+?)\*\*/g, '<span class="tem">$1</span>');
   if(kind==='bold') return esc(v).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
   if(kind==='dline') return v.split('\n').map(x=>x.trim()).filter(Boolean).map(l => {
@@ -118,6 +118,14 @@ function disp0(k, kindOverride){
   if(kind==='rich') return rich(v);
   if(kind==='ctab'){ const l = v.split('\n'); return `<b>${esc(l[0])}</b>` + (l.length > 1 ? `<span class="sm">${esc(l.slice(1).join('\n'))}</span>` : ''); }
   if(kind==='url') return urlBreak(v);
+  if(kind==='innholdpris') return lesInnhold(v).map(b => b.t === 'etikett'
+      ? `<div class="prisrader">${b.v.split('\n').map(l => { const i = l.indexOf(':'); return `<div class="prow"><span class="pl">${esc(l.slice(0,i).trim())}</span><span class="pd"></span><span class="pv">${esc(l.slice(i+1).trim())}</span></div>`; }).join('')}</div>`
+      : disp0(null, 'innhold', b.t === 'h' ? '# ' + b.v : b.t === 'liste' ? b.v.split('\n').map(x => '- ' + x).join('\n') : b.t === 'linje' ? '---' : b.v)).join('');
+  if(kind==='innhold') return lesInnhold(v).map(b => b.t === 'h' ? `<div class="h10">${esc(b.v)}</div>`
+    : b.t === 'p' ? `<div class="p10">${rich(b.v)}</div>`
+    : b.t === 'liste' ? `<div class="liste">${disp0(null, 'list', b.v)}</div>`
+    : b.t === 'etikett' ? `<div class="praktisk">${disp0(null, 'prak', b.v)}</div>`
+    : `<div class="linje10"></div>`).join('');
   if(kind==='list') return v.split('\n').map(x=>x.trim()).filter(Boolean).map(x=>`<div class="li">${esc(x)}</div>`).join('');
   if(kind==='prak') return v.split('\n').map(x=>x.trim()).filter(Boolean).map(l => {
     if(/^[-•]\s*/.test(l)) return `<div class="pb">${esc(l.replace(/^[-•]\s*/, ''))}</div>`;
@@ -526,13 +534,40 @@ LAYOUTS.bymobel = (uid) => {
 };
 
 
+
+/* Liggende versjoner (A4 liggende og 16:9) av malene med lys grå flate (tekstplakat, trebilder).
+   Ingen designerfil ennå (designregler, åpent spørsmål 8). Bygget av låste byggeklosser, bare likt skalert:
+   - 16:9: ramme, bølgepar, logoutsparing, logo og QR som infoskjermen med stort bilde (SKJ.S10, mal 12).
+   - A4 liggende: ramme, logo og QR i samme mm-mål som stående A4 (FS8), bølgeparet fra 16:9 skalert likt
+     til sidebredden (1123/1280) og flyttet ned. Bølgeparet er fra infoskjermen med to bilder (SKJ.S9), fordi det går over hele bredden. QR-koden har samme avstand til panelkanten som på stående A4. */
+function liggende(uid, f){
+  const c = SLOR[S.slor], L = f === 'a4l', W = L ? 1123 : 1280, H = L ? 794 : 720;
+  const panelD = L ? rrect(28.7,28.7,1094.3,765.3,54.5) : rrect4(24,24,1256,696,[53.3,68,53.3,68]);
+  const sk = 1123/1280, bolgeTf = L ? `translate(0,60) scale(${sk})` : '';
+  const defs = `<radialGradient id="${uid}rg" gradientUnits="userSpaceOnUse" cx="${W/2}" cy="${H/2}" r="${L?680:700}"><stop offset="0" stop-color="#fbfbfb"/><stop offset="1" stop-color="#e2e2e2"/></radialGradient>
+      <linearGradient id="${uid}sl" gradientUnits="userSpaceOnUse" ${L ? 'x1="721.3" y1="601.5" x2="743.8" y2="713.3"' : 'x1="845.7" y1="597.5" x2="863.8" y2="687.4"'}><stop offset="0" stop-color="${c.c}" stop-opacity=".75"/><stop offset="1" stop-color="${c.c}" stop-opacity="0"/></linearGradient>
+      <clipPath id="${uid}pc"><path d="${panelD}"/></clipPath>`;
+  // A4 liggende bruker bølgeparet fra infoskjermen med to bilder (S9), som går over hele bredden. 16:9 bruker S10.
+  const bolge = L ? `<g transform="${bolgeTf}" pointer-events="none"><path d="${SKJ.S9.bolge}" fill="url(#${uid}sl)"/><path d="${SKJ.S9.navy}" fill="${NAVY}"/></g>`
+                  : `<g pointer-events="none"><path d="${SKJ.S10.gronn}" fill="url(#${uid}sl)"/><path d="${SKJ.S10.navy}" fill="${NAVY}"/></g>`;
+  const utsparing = L ? `<g pointer-events="none"><path d="${FS8.hvit}" fill="#fff"/><path d="${FS8.hale}" fill="#fff"/></g>`
+                      : `<g pointer-events="none"><path d="${SKJ.S10.hvit}" fill="#fff"/><path d="${SKJ.S10.hale}" fill="#fff"/></g>`;
+  const logoXYW = L ? [87.5,48.5,89] : [69,40.5,65]; // logo() kalles i malene
+  const qrHtml = q => L
+    ? (q ? `<div class="qrbox7" style="left:957.3px;top:630.3px;width:103.3px;height:103.3px;padding:8px">${q}</div>` : '')
+      + `<div class="box" data-base="18.22" style="left:${q?727.3:851}px;top:647.3px;width:210px;height:80.5px;justify-content:flex-end">${E('cta','qrt1','div',null,'bold')}</div>`
+    : skjermQr(q, 1077.5, 468, 125.5, SKJ.S10.pil,
+        `<div class="box" data-base="36.2" style="left:1022px;top:613px;width:222px;height:72px;font-size:36.2px;transform:rotate(-2deg)">${E('cta','skript','div','line-height:.81')}</div>`);
+  return {L, W, H, c, panelD, defs, bolge, utsparing, logoXYW, qrHtml};
+}
+
 /* 10 · Tekstplakat. A4 er målt fra InDesign-fila (mal5_tekstplakat.idml): lys grå flate med radial overgang,
    samme bølger som mal 1, all tekst i én spalte, valgfritt ikon øverst til høyre. Liggende er en tilpasning. */
-LAYOUTS.tekstplakat = (uid,f) => {
-  const c = SLOR[S.slor], A = f==='a4', W = A?794:1280, H = A?1123:720;
-  const pn = A ? {x0:28.7,y0:28.7,x1:765,y1:1094,r:54.5} : {x0:20,y0:20,x1:1260,y1:700,r:40};
+LAYOUTS.tekstplakat = (uid,f,valg) => { // valg.pris: brødteksten vises som prisliste (se LAYOUTS.prisliste)
+  const c = SLOR[S.slor], A = true, W = 794, H = 1123;
+  const pn = {x0:28.7,y0:28.7,x1:765,y1:1094,r:54.5};
   const panelD = rrect(pn.x0,pn.y0,pn.x1,pn.y1,pn.r);
-  const tf = A ? 'translate(0,174.45)' : 'matrix(1.6121,0,0,0.44,0,267)';
+  const tf = 'translate(0,174.45)';
   const svg = `<svg class="bg" viewBox="0 0 ${W} ${H}"><defs>
       <radialGradient id="${uid}rg" gradientUnits="userSpaceOnUse" cx="${W/2}" cy="${H/2}" r="${A?561.3:700}"><stop offset="0" stop-color="#fbfbfb"/><stop offset="1" stop-color="#e2e2e2"/></radialGradient>
       <linearGradient id="${uid}sl" gradientUnits="userSpaceOnUse" x1="459.1" y1="745.8" x2="471" y2="817.9"><stop offset="0" stop-color="${c.c}" stop-opacity=".75"/><stop offset="1" stop-color="${c.c}" stop-opacity="0"/></linearGradient>
@@ -547,20 +582,123 @@ LAYOUTS.tekstplakat = (uid,f) => {
   </svg>`;
   const q = S.qr ? qrSvg() : '';
   const topp = E('stikk','stikk') + E('tittel','tittel') + E('ingress','ingress');
-  const brod = E('ut1','h10') + E('tx1','p10','div',null,'rich') + E('ut2','h10') + E('tx2','p10','div',null,'rich')
-    + E('pTittel','h10') + E('pIntro','p10') + E('punkter','liste') + E('praktisk','praktisk');
-  const harBrod = ['ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk'].some(hasE);
+  const pris = !!(valg && valg.pris);
+  const brod = E('innhold', pris ? 'innhold10 pris10' : 'innhold10', 'div', null, pris ? 'innholdpris' : 'innhold');
+  const harBrod = hasE('innhold');
   if(A) return svg + logo(87.5,48.5,89) + ikonHer(608,90,98,NAVY,'#f3f3f3')
     + box(105,255,584,670,20,'tp10', topp + (harBrod ? '<div class="gap10"></div>' : '') + brod)
     + (q ? `<div class="qrbox7" style="left:628px;top:959px;width:103.3px;height:103.3px;padding:8px">${q}</div>` : '')
     + `<div class="box" data-base="18.22" style="left:${q?399:522}px;top:976px;width:210px;height:80.5px;justify-content:flex-end">${E('cta','qrt1','div',null,'bold')}</div>`;
-  return svg + logo(63,34,66) + ikonHer(1150,40,80,NAVY,'#f3f3f3')
-    + box(80,170,520,400,18,'tp10', topp)
-    + box(660,(S.ikon && ikonSvg(S.ikon)) ? 130 : 60,520,(S.ikon && ikonSvg(S.ikon)) ? 440 : 510,16,'tp10', brod)
-    + (q ? `<div class="qrbox7" style="left:1148px;top:602px;width:88px;height:88px;padding:7px">${q}</div>` : '')
-    + `<div class="box" data-base="16" style="left:${q?930:1028}px;top:620px;width:200px;height:66px;justify-content:flex-end">${E('cta','qrt1','div',null,'bold')}</div>`;
+};
+/* Tekstplakat, liggende og skjerm: innholdet (logoen legges på i LAYOUTS under). Se liggende(). */
+function tekstplakatLiggende(uid, f){
+  const g = liggende(uid, f), {L, W, H} = g;
+  const svg = `<svg class="bg" viewBox="0 0 ${W} ${H}"><defs>${g.defs}</defs>
+    <rect width="${W}" height="${H}" fill="#fff"/>
+    <g clip-path="url(#${uid}pc)" pointer-events="none"><rect width="${W}" height="${H}" fill="url(#${uid}rg)"/>${g.bolge}</g>
+    ${g.utsparing}
+  </svg>`;
+  const q = S.qr ? qrSvg() : '';
+  const topp = E('stikk','stikk') + E('tittel','tittel') + E('ingress','ingress');
+  const brod = E('innhold','innhold10','div',null,'innhold');
+  const harBrod = hasE('innhold');
+  const ikon = !!(S.ikon && ikonSvg(S.ikon));
+  // To spalter: tittel til venstre, brødtekst til høyre. Uten brødtekst får tittelen hele bredden.
+  // Teksten starter under logoutsparingen (som på stående A4), og begge spaltene starter på samme høyde.
+  const v = L ? {x:105, y:255, b:harBrod?440:760, h:395, base:18} : {x:87.5, y:200, b:harBrod?500:880, h:410, base:18};
+  const hy = L ? {x:600, y:255, b:440, h:285, base:16} : {x:650, y:200, b:540, h:260, base:16};
+  return svg + (L ? ikonHer(962,72,98,NAVY,'#f3f3f3') : ikonHer(1140,48,80,NAVY,'#f3f3f3'))
+    + box(v.x,v.y,v.b,v.h,v.base,'tp10', topp)
+    + (harBrod ? box(hy.x,hy.y,hy.b,hy.h,hy.base,'tp10', brod) : '')
+    + g.qrHtml(q);
+}
+
+
+
+/* ═════════ SVØMMEHALLEN (ENHETER i oppsett.js). Forslag, ikke godkjent av designer. ═════════ */
+
+/* Forbudsskilt (som ISO 7010): rød ring og skråstrek over et sort symbol på hvit bunn. Tegnet i en 200 × 200-boks.
+   Rødt er T_rød fra profilen. */
+const FORBUD_ROD = '#923c3d';
+const FORBUD = {
+  mobil:  {navn:'Mobil', d:'<rect x="72" y="42" width="56" height="116" rx="11" fill="#1d1d1b"/><rect x="79" y="55" width="42" height="84" rx="3" fill="#fff"/><circle cx="100" cy="148" r="5" fill="#fff"/>'},
+  kamera: {navn:'Kamera', d:'<rect x="78" y="58" width="44" height="20" rx="5" fill="#1d1d1b"/><rect x="44" y="70" width="112" height="76" rx="12" fill="#1d1d1b"/><circle cx="100" cy="108" r="27" fill="#fff"/><circle cx="100" cy="108" r="16" fill="#1d1d1b"/><rect x="132" y="80" width="14" height="8" rx="2" fill="#fff"/>'},
+  mat:    {navn:'Mat', d:'<rect x="56" y="42" width="7" height="48" rx="3" fill="#1d1d1b"/><rect x="68" y="42" width="7" height="48" rx="3" fill="#1d1d1b"/><rect x="80" y="42" width="7" height="48" rx="3" fill="#1d1d1b"/><rect x="56" y="80" width="31" height="20" rx="8" fill="#1d1d1b"/><rect x="66" y="94" width="11" height="66" rx="5" fill="#1d1d1b"/><path d="M118 42 C140 50 144 92 132 104 L118 104 Z" fill="#1d1d1b"/><rect x="118" y="98" width="12" height="62" rx="5" fill="#1d1d1b"/>'},
+};
+function forbudSkilt(type, x, y, d){
+  const k = 100 - 84 * Math.SQRT1_2, l = 100 + 84 * Math.SQRT1_2;
+  return `<g transform="translate(${x},${y}) scale(${d/200})" role="img" aria-label="Forbudt: ${FORBUD[type].navn}"><circle cx="100" cy="100" r="92" fill="#fff"/>${FORBUD[type].d}`
+    + `<circle cx="100" cy="100" r="84" fill="none" stroke="${FORBUD_ROD}" stroke-width="18"/><path d="M${k.toFixed(1)},${k.toFixed(1)} L${l.toFixed(1)},${l.toFixed(1)}" stroke="${FORBUD_ROD}" stroke-width="18"/></g>`;
+}
+const toSpraak = () => `<div class="fbk"><div class="fsp">${E('ut1','h10')}${E('tx1','p10','div',null,'rich')}</div><div class="fsp">${E('ut2','h10')}${E('tx2','p10','div',null,'rich')}</div></div>`;
+
+/* Forbudsskilt, stående A4: tre forbudsskilt og likestilt tekst på to språk i to spalter. Bygget som Tekstplakat. */
+LAYOUTS.forbudsskilt = (uid) => {
+  const c = SLOR[S.slor], W = 794, H = 1123;
+  const panelD = rrect(28.7,28.7,765,1094,54.5);
+  const svg = `<svg class="bg" viewBox="0 0 ${W} ${H}"><defs>
+      <radialGradient id="${uid}rg" gradientUnits="userSpaceOnUse" cx="${W/2}" cy="${H/2}" r="561.3"><stop offset="0" stop-color="#fbfbfb"/><stop offset="1" stop-color="#e2e2e2"/></radialGradient>
+      <linearGradient id="${uid}sl" gradientUnits="userSpaceOnUse" x1="459.1" y1="745.8" x2="471" y2="817.9"><stop offset="0" stop-color="${c.c}" stop-opacity=".75"/><stop offset="1" stop-color="${c.c}" stop-opacity="0"/></linearGradient>
+      <clipPath id="${uid}pc"><path d="${panelD}"/></clipPath>
+    </defs>
+    <rect width="${W}" height="${H}" fill="#fff"/>
+    <g clip-path="url(#${uid}pc)" pointer-events="none">
+      <rect width="${W}" height="${H}" fill="url(#${uid}rg)"/>
+      <g transform="translate(0,174.45)"><path d="${FS8.gronn}" fill="url(#${uid}sl)"/><path d="${FS8.navy}" fill="${NAVY}"/></g>
+    </g>
+    <g pointer-events="none">${forbudSkilt('mobil',92,330,190)}${forbudSkilt('kamera',302,330,190)}${forbudSkilt('mat',512,330,190)}</g>
+    <g pointer-events="none"><path d="${FS8.hvit}" fill="#fff"/><path d="${FS8.hale}" fill="#fff"/></g>
+  </svg>`;
+  const q = S.qr ? qrSvg() : '';
+  return svg + logo(87.5,48.5,89)
+    + box(105,190,584,125,17,'tp10', E('tittel','tittel')).replace('height:125px;', 'height:125px;justify-content:flex-end;padding-bottom:8px;')
+    + box(105,565,584,360,26,'tp10 fb2', toSpraak())
+    + (q ? `<div class="qrbox7" style="left:628px;top:959px;width:103.3px;height:103.3px;padding:8px">${q}</div>` : '')
+    + `<div class="box" data-base="18.22" style="left:${q?399:522}px;top:976px;width:210px;height:80.5px;justify-content:flex-end">${E('cta','qrt1','div',null,'bold')}</div>`;
+};
+/* Forbudsskilt, A4 liggende: skiltene øverst til høyre for logoen, tittel og to spalter under. Se liggende(). */
+LAYOUTS.forbudsskiltliggende = (uid) => {
+  const g = liggende(uid, 'a4l'), {W, H} = g;
+  const svg = `<svg class="bg" viewBox="0 0 ${W} ${H}"><defs>${g.defs}</defs>
+    <rect width="${W}" height="${H}" fill="#fff"/>
+    <g clip-path="url(#${uid}pc)" pointer-events="none"><rect width="${W}" height="${H}" fill="url(#${uid}rg)"/>${g.bolge}</g>
+    <g pointer-events="none">${forbudSkilt('mobil',440,55,170)}${forbudSkilt('kamera',650,55,170)}${forbudSkilt('mat',860,55,170)}</g>
+    ${g.utsparing}
+  </svg>`;
+  const q = S.qr ? qrSvg() : '';
+  return svg + logo(87.5,48.5,89)
+    + box(105,245,920,95,17,'tp10', E('tittel','tittel')).replace('height:95px;', 'height:95px;justify-content:flex-end;padding-bottom:8px;')
+    + box(105,355,920,265,22,'tp10 fb2', toSpraak())
+    + g.qrHtml(q);
 };
 
+/* Stor QR-kode, stående A4: lite tekst og en stor QR-kode midt på. Bygget som Tekstplakat, men QR-koden er flyttet
+   fra hjørnet til midten og gjort tre ganger større. */
+LAYOUTS.qrplakat = (uid) => {
+  const c = SLOR[S.slor], W = 794, H = 1123;
+  const panelD = rrect(28.7,28.7,765,1094,54.5);
+  const svg = `<svg class="bg" viewBox="0 0 ${W} ${H}"><defs>
+      <radialGradient id="${uid}rg" gradientUnits="userSpaceOnUse" cx="${W/2}" cy="${H/2}" r="561.3"><stop offset="0" stop-color="#fbfbfb"/><stop offset="1" stop-color="#e2e2e2"/></radialGradient>
+      <linearGradient id="${uid}sl" gradientUnits="userSpaceOnUse" x1="459.1" y1="745.8" x2="471" y2="817.9"><stop offset="0" stop-color="${c.c}" stop-opacity=".75"/><stop offset="1" stop-color="${c.c}" stop-opacity="0"/></linearGradient>
+      <clipPath id="${uid}pc"><path d="${panelD}"/></clipPath>
+    </defs>
+    <rect width="${W}" height="${H}" fill="#fff"/>
+    <g clip-path="url(#${uid}pc)" pointer-events="none">
+      <rect width="${W}" height="${H}" fill="url(#${uid}rg)"/>
+      <g transform="translate(0,174.45)"><path d="${FS8.gronn}" fill="url(#${uid}sl)"/><path d="${FS8.navy}" fill="${NAVY}"/></g>
+    </g>
+    <g pointer-events="none"><path d="${FS8.hvit}" fill="#fff"/><path d="${FS8.hale}" fill="#fff"/></g>
+  </svg>`;
+  const q = qrSvg();
+  return svg + logo(87.5,48.5,89)
+    + box(105,215,584,235,20,'tp10 qrp', E('stikk','stikk') + E('tittel','tittel') + E('ingress','ingress'))
+    + `<div class="qrbox7 qrstor" style="left:232px;top:470px;width:330px;height:330px;padding:22px">${q || '<span class="qrtom">Skriv nettadressen under «Lenke og QR-kode», så kommer QR-koden her</span>'}</div>`
+    + box(105,815,584,80,30,'tp10 qrp', E('cta','qrstortekst','div',null,'bold'));
+};
+
+/* Prisliste, stående A4: som Tekstplakat, men «Etikett: verdi» i brødteksten vises som prisrader med prikker
+   fram til beløpet. Samme felt som Tekstplakat, så teksten følger med. */
+LAYOUTS.prisliste = (uid, f) => LAYOUTS.tekstplakat(uid, f, {pris:true}); // logo() tegnes av tekstplakat
 
 /* 11 · Inndelt plakat. A4 er målt fra InDesign-fila (mal6_inndelt_plakat.idml): bilde øverst, tittel i blått bølgefelt,
    brødtekst i to spalter på hvit bunn med tynn ramme som tones ut oppover. Liggende er en tilpasning. */
@@ -622,11 +760,11 @@ function rundPoly(p, r){ // mangekant med avrundede hjørner (samme kurvetype so
   return d + ' Z';
 }
 LAYOUTS.trebilder = (uid,f) => {
-  const c = SLOR[S.slor], A = f==='a4', W = A?794:1280, H = A?1123:720;
-  const pn = A ? {x0:28.7,y0:28.7,x1:765,y1:1094,r:54.5} : {x0:20,y0:20,x1:1260,y1:700,r:40};
+  const c = SLOR[S.slor], A = true, W = 794, H = 1123;
+  const pn = {x0:28.7,y0:28.7,x1:765,y1:1094,r:54.5};
   const panelD = rrect(pn.x0,pn.y0,pn.x1,pn.y1,pn.r);
-  const tf = A ? 'translate(0,174.45)' : 'matrix(1.6121,0,0,0.44,0,267)';
-  const map = A ? (q => q) : (q => [700 + (q[0]-430.9)/326.9*540, 22 + (q[1]-37.4)*.66]);
+  const tf = 'translate(0,174.45)';
+  const map = q => q;
   const bilder = TB5.map((pts,i) => {
     const P = pts.map(map), xs = P.map(q => q[0]), ys = P.map(q => q[1]);
     const d = rundPoly(P, A ? 52.9 : 40);
@@ -647,19 +785,50 @@ LAYOUTS.trebilder = (uid,f) => {
   </svg>`;
   const q = S.qr ? qrSvg() : '';
   const topp = E('stikk','stikk') + E('tittel','tittel') + E('ingress','ingress');
-  const brod = E('ut1','h10') + E('tx1','p10','div',null,'rich') + E('ut2','h10') + E('tx2','p10','div',null,'rich')
-    + E('pTittel','h10') + E('pIntro','p10') + E('punkter','liste') + E('praktisk','praktisk');
-  const harBrod = ['ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk'].some(hasE);
+  const brod = E('innhold','innhold10','div',null,'innhold');
+  const harBrod = hasE('innhold');
   const ki = S.ki ? `<div class="ki" style="right:${A?50:36}px;top:${A?48:32}px">${KI_ICON}KI-generert bilde</div>` : '';
   if(A) return svg + logo(87.5,48.5,89) + ki
     + box(87,257,292,700,20,'tp10 tb5', topp + (harBrod ? '<div class="gap10"></div>' : '') + brod)
     + (q ? `<div class="qrbox7" style="left:628px;top:959px;width:103.3px;height:103.3px;padding:8px">${q}</div>` : '')
     + `<div class="box" data-base="18.22" style="left:${q?399:522}px;top:976px;width:210px;height:80.5px;justify-content:flex-end">${E('cta','qrt1','div',null,'bold')}</div>`;
-  return svg + logo(63,34,66) + ki
-    + box(80,150,560,440,17,'tp10 tb5', topp + (harBrod ? '<div class="gap10"></div>' : '') + brod)
-    + (q ? `<div class="qrbox7" style="left:1148px;top:602px;width:88px;height:88px;padding:7px">${q}</div>` : '')
-    + `<div class="box" data-base="16" style="left:${q?930:1028}px;top:620px;width:200px;height:66px;justify-content:flex-end">${E('cta','qrt1','div',null,'bold')}</div>`;
 };
+/* Tre bilder, liggende og skjerm: innholdet (logoen legges på i LAYOUTS under). Se liggende().
+   Bilderammene fra A4 (TB5) flyttes til høyre halvdel; nederste bilde ligger under bølgen som på A4. */
+function trebilderLiggende(uid, f){
+  const g = liggende(uid, f), {L, W, H} = g;
+  // A4 liggende: bølgen går høyt på høyre side, så bildene er presset sammen i høyden og slutter like under bølgetoppen.
+  // Da synes det meste av det nederste bildet (på stående ligger en større del under bølgen).
+  const fl = L ? {x0:630, x1:1086, y0:37.4, y1:615} : {x0:680, x1:1232, y0:32, y1:688};
+  const map = q => [fl.x0 + (q[0]-430.9)/326.9*(fl.x1-fl.x0), fl.y0 + (q[1]-37.4)/(990.2-37.4)*(fl.y1-fl.y0)];
+  const bilder = TB5.map((pts,i) => {
+    const P = pts.map(map), xs = P.map(q => q[0]), ys = P.map(q => q[1]);
+    return imageIn(uid, rundPoly(P, L ? 52.9 : 40), Math.min(...xs), Math.min(...ys), Math.max(...xs)-Math.min(...xs), Math.max(...ys)-Math.min(...ys), [0,1,4][i]);
+  });
+  const svg = `<svg class="bg" viewBox="0 0 ${W} ${H}"><defs>${g.defs}</defs>
+    <rect width="${W}" height="${H}" fill="#fff"/>
+    <g clip-path="url(#${uid}pc)"><rect width="${W}" height="${H}" fill="url(#${uid}rg)" pointer-events="none"/>
+      ${bilder[2]}${g.bolge}${bilder[0]}${bilder[1]}
+    </g>
+    ${g.utsparing}
+  </svg>`;
+  const q = S.qr ? qrSvg() : '';
+  const topp = E('stikk','stikk') + E('tittel','tittel') + E('ingress','ingress');
+  const brod = E('innhold','innhold10','div',null,'innhold');
+  const harBrod = hasE('innhold');
+  const ki = S.ki ? `<div class="ki" style="right:${L?50:40}px;top:${L?48:36}px">${KI_ICON}KI-generert bilde</div>` : '';
+  const v = L ? {x:105, y:255, b:490, h:400, base:18} : {x:87.5, y:200, b:540, h:420, base:20};
+  return svg + ki
+    + box(v.x,v.y,v.b,v.h,v.base,'tp10 tb5', topp + (harBrod ? '<div class="gap10"></div>' : '') + brod)
+    + g.qrHtml(q);
+}
+
+/* Egne maler for liggende A4 og infoskjerm (forslag, ikke godkjent av designer).
+   Samme innhold og felt som Tekstplakat og Tre bilder, så teksten følger med når brukeren bytter mal. */
+LAYOUTS.tekstplakatliggende = (uid) => tekstplakatLiggende(uid, 'a4l') + logo(87.5,48.5,89);
+LAYOUTS.trebilderliggende = (uid) => trebilderLiggende(uid, 'a4l') + logo(87.5,48.5,89);
+LAYOUTS.tekstplakatskjerm = (uid) => tekstplakatLiggende(uid, 'wide') + logo(69,40.5,65);
+LAYOUTS.trebilderskjerm = (uid) => trebilderLiggende(uid, 'wide') + logo(69,40.5,65);
 
 
 /* 10 · Høydebilde. A4 er målt fra InDesign-fila (mal8_plakat_med_hoydebilde.idml): høyt bilde til venstre under bølgen,
@@ -689,9 +858,8 @@ LAYOUTS.hoydebilde = (uid,f) => {
   </svg>`;
   const q = S.qr ? qrSvg() : '';
   const topp = E('stikk','stikk') + E('tittel','tittel') + E('ingress','ingress');
-  const brod = E('ut1','h10') + E('tx1','p10','div',null,'rich') + E('ut2','h10') + E('tx2','p10','div',null,'rich')
-    + E('pTittel','h10') + E('pIntro','p10') + E('punkter','liste') + E('praktisk','praktisk');
-  const harBrod = ['ut1','tx1','ut2','tx2','pTittel','pIntro','punkter','praktisk'].some(hasE);
+  const brod = E('innhold','innhold10','div',null,'innhold');
+  const harBrod = hasE('innhold');
   const ki = S.ki ? `<div class="ki" style="left:${A?56:44}px;top:${A?210:150}px">${KI_ICON}KI-generert bilde</div>` : '';
   if(A) return svg + logo(87.5,48.5,89) + ki + ikonHer(635.5,82,96,NAVY,'#f3f3f3')
     + box(431,206,292,720,20,'tp10 tb5', topp + (harBrod ? '<div class="gap10"></div>' : '') + brod)
@@ -744,13 +912,14 @@ LAYOUTS.infoskjerm = (uid) => {
       <path d="${SKJ.S9.hvit}" fill="#fff"/><path d="${SKJ.S9.hale}" fill="#fff"/>
     </g>
   </svg>`;
+  const dy = S.tema && typeof TEMAER !== 'undefined' && TEMAER[S.tema] ? 62 : 0; // med tema står illustrasjonen over teksten
   const q = S.qr ? qrSvg() : '';
   const ki = S.ki ? `<div class="ki" style="left:40px;top:640px">${KI_ICON}KI-generert bilde</div>` : '';
   const tekst = E('stikk','stikk') + E('tittel','tittel')
     + `<div class="regel" style="margin:1.13em 0 1.07em"></div>` + E('ut1','h11b') + E('tx1','p11b')
     + (hasE('praktisk') ? `<div class="regel" style="margin:1.22em 0 .87em"></div>` + E('praktisk','praktisk') : '');
   return svg + logo(73,40,71.5) + ki
-    + box(434.5,98,449,580,20.18,'is11', tekst)
+    + box(434.5,98+dy,449,580-dy,20.18,'is11', tekst)
     + skjermQr(q, 1099, 503.5, 125.5, SKJ.S9.pil,
         `<div class="box" data-base="30.6" style="left:1040px;top:643px;width:200px;height:62px;font-size:30.6px">${E('cta','skript','div','line-height:.81')}</div>`);
 };

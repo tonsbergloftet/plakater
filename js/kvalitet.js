@@ -55,7 +55,7 @@ function opplosning(page){
     if(!I || !I.src || I.ex || !im) return;
     const pr = I.w / (+im.getAttribute('width') || 1); // bildepiksler per plakatpiksel
     const nr = n === 4 ? 3 : n + 1;
-    if(S.fmt === 'a4'){ const ppi = Math.round(pr * 96); if(ppi < 80) ut.push(`Bilde ${nr} har for lav oppløsning (ca. ${ppi} ppi) og blir synlig uskarpt på trykk. Zoom mindre inn eller bruk et større bilde.`); } // 80 ppi: grensen for synlig uskarphet på plakat sett på litt avstand
+    if(S.fmt === 'a4' || S.fmt === 'a4l'){ const ppi = Math.round(pr * 96); if(ppi < 80) ut.push(`Bilde ${nr} har for lav oppløsning (ca. ${ppi} ppi) og blir synlig uskarpt på trykk. Zoom mindre inn eller bruk et større bilde.`); } // 80 ppi: grensen for synlig uskarphet på plakat sett på litt avstand
     else if(pr / FMT[S.fmt].ratio < .5) ut.push(`Bilde ${nr} er lite for denne skjermstørrelsen og kan se uskarpt ut. Bruk et større bilde eller zoom mindre inn.`);
   });
   return ut;

@@ -1,0 +1,77 @@
+{
+  "id": "nyttar",
+  "navn": "Nyttår",
+  "sub": "Fyrverkeri og festkveld",
+  "kategori": "arshjul",
+  "maaneder": [
+    12,
+    1
+  ],
+  "malgrupper": [
+    "alle",
+    "ungdom",
+    "senior"
+  ],
+  "panel": "gra",
+  "bolge": "navy",
+  "slor": "gul",
+  "helt": [
+    {
+      "m": "fyrverkeri",
+      "x": 20,
+      "y": 0,
+      "s": 120,
+      "f": [
+        "gul",
+        "korall",
+        "lysbla"
+      ]
+    },
+    {
+      "m": "fyrverkeri",
+      "x": 110,
+      "y": 40,
+      "s": 90,
+      "f": [
+        "lysbla",
+        "gul",
+        "korall"
+      ]
+    },
+    {
+      "m": "konfetti",
+      "x": 10,
+      "y": 110,
+      "s": 90
+    },
+    {
+      "m": "konfetti",
+      "x": 100,
+      "y": 120,
+      "s": 90,
+      "r": 40
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "stjerne",
+      "prikk"
+    ],
+    "antall": 12,
+    "dekning": 0.5,
+    "farger": [
+      "gul"
+    ]
+  },
+  "demo": {
+    "stikk": "Vi feirer",
+    "tittel": "Godt **nytt** år!",
+    "ingress": "Nyttårsfest med musikk, kaker og fyrverkeri på skjerm klokka 12.",
+    "praktisk": "Når: Torsdag 31. desember kl. 18–00.30\nHvor: Felleshuset\nFor: Alle beboere med familie",
+    "merke": "Alkohol-\nfritt!",
+    "hilsen": "Velkommen inn i 2027",
+    "url": "tonsberg.kommune.no/nyttar",
+    "qr": "Skann og\n**meld deg på**",
+    "arr": "Bo- og aktivitetstjenester"
+  }
+}

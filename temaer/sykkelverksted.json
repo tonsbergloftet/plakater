@@ -1,0 +1,49 @@
+{
+  "id": "sykkelverksted",
+  "navn": "Sykkel",
+  "sub": "Sykkel og skiftenøkkel",
+  "kategori": "aktivitet",
+  "maaneder": [
+    3,
+    4,
+    5,
+    6
+  ],
+  "malgrupper": [
+    "barn",
+    "ungdom",
+    "alle"
+  ],
+  "slor": "gul",
+  "motiv": [
+    {
+      "m": "sykkel",
+      "x": 0,
+      "y": 40,
+      "s": 170,
+      "f": [
+        "rod",
+        "navy"
+      ]
+    },
+    {
+      "m": "nokkel",
+      "x": 130,
+      "y": 0,
+      "s": 70,
+      "f": [
+        "navy"
+      ]
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "prikk"
+    ],
+    "antall": 6,
+    "dekning": 0.35,
+    "farger": [
+      "navy"
+    ]
+  }
+}

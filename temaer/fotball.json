@@ -1,0 +1,37 @@
+{
+  "id": "fotball",
+  "navn": "Fotball",
+  "sub": "Gressbane, banelinjer og ball",
+  "kategori": "aktivitet",
+  "maaneder": [],
+  "malgrupper": [
+    "barn",
+    "ungdom",
+    "ansatte"
+  ],
+  "slor": "gronn",
+  "motiv": [
+    {
+      "m": "fart",
+      "x": 0,
+      "y": 40,
+      "s": 70
+    },
+    {
+      "m": "fotball",
+      "x": 30,
+      "y": 10,
+      "s": 170
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "prikk"
+    ],
+    "antall": 5,
+    "dekning": 0.25,
+    "farger": [
+      "morkgronn"
+    ]
+  }
+}

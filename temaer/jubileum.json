@@ -1,0 +1,61 @@
+{
+  "id": "jubileum",
+  "navn": "Jubileum og feiring",
+  "sub": "Kake, ballonger og konfetti",
+  "kategori": "aktivitet",
+  "maaneder": [],
+  "malgrupper": [
+    "alle",
+    "ansatte"
+  ],
+  "slor": "gul",
+  "motiv": [
+    {
+      "m": "kake",
+      "x": 30,
+      "y": 60,
+      "s": 140
+    },
+    {
+      "m": "ballong",
+      "x": 0,
+      "y": 0,
+      "s": 70,
+      "r": -10,
+      "f": [
+        "gul",
+        "hvit"
+      ]
+    },
+    {
+      "m": "ballong",
+      "x": 140,
+      "y": 0,
+      "s": 60,
+      "r": 10,
+      "f": [
+        "lysbla",
+        "hvit"
+      ]
+    },
+    {
+      "m": "konfetti",
+      "x": 60,
+      "y": 0,
+      "s": 80
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "konfetti",
+      "prikk"
+    ],
+    "antall": 8,
+    "dekning": 0.35,
+    "farger": [
+      "gul",
+      "lysbla",
+      "korall"
+    ]
+  }
+}

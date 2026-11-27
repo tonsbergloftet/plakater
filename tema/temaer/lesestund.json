@@ -1,0 +1,66 @@
+{
+  "id": "lesestund",
+  "navn": "Lesestund",
+  "sub": "Bøker og bokkafé",
+  "kategori": "aktivitet",
+  "maaneder": [],
+  "malgrupper": [
+    "barn",
+    "senior",
+    "alle"
+  ],
+  "panel": "gronn",
+  "bolge": "navy",
+  "slor": "gul",
+  "helt": [
+    {
+      "m": "bok",
+      "x": 10,
+      "y": 40,
+      "s": 150
+    },
+    {
+      "m": "kopp",
+      "x": 130,
+      "y": 110,
+      "s": 64,
+      "f": [
+        "hvit",
+        "korall",
+        "hvit"
+      ]
+    },
+    {
+      "m": "stjerne",
+      "x": 140,
+      "y": 10,
+      "s": 30,
+      "f": [
+        "gul"
+      ]
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "stjerne",
+      "prikk"
+    ],
+    "antall": 8,
+    "dekning": 0.5,
+    "farger": [
+      "hvit",
+      "gul"
+    ]
+  },
+  "demo": {
+    "stikk": "Velkommen til",
+    "tittel": "**Lese**stund",
+    "ingress": "Vi leser høyt fra nye og gamle bildebøker.",
+    "praktisk": "Når: Hver onsdag kl. 10.30\nHvor: Barneavdelingen på biblioteket\nFor: 2–6 år",
+    "merke": "Gratis!",
+    "hilsen": "Finn en god pute",
+    "url": "tonsberg.kommune.no/lesestund",
+    "qr": "Skann for\n**datoer**",
+    "arr": "Biblioteket"
+  }
+}

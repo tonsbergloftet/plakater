@@ -1,0 +1,65 @@
+{
+  "id": "spillkveld",
+  "navn": "Spillkveld",
+  "sub": "Terninger og spillkontroller",
+  "kategori": "aktivitet",
+  "maaneder": [],
+  "malgrupper": [
+    "ungdom",
+    "barn",
+    "alle"
+  ],
+  "panel": "navy",
+  "bolge": "hvit",
+  "slor": "korall",
+  "helt": [
+    {
+      "m": "kontroll",
+      "x": 30,
+      "y": 60,
+      "s": 140,
+      "r": -8
+    },
+    {
+      "m": "terning",
+      "x": 0,
+      "y": 0,
+      "s": 70,
+      "r": -10
+    },
+    {
+      "m": "terning",
+      "x": 130,
+      "y": 10,
+      "s": 60,
+      "r": 14,
+      "f": [
+        "gul",
+        "navy"
+      ]
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "stjerne",
+      "prikk"
+    ],
+    "antall": 10,
+    "dekning": 0.4,
+    "farger": [
+      "lysbla",
+      "gul"
+    ]
+  },
+  "demo": {
+    "stikk": "Fredag er det",
+    "tittel": "**Spill**kveld",
+    "ingress": "Brettspill, kortspill og konsoll. Ta med favorittspillet ditt.",
+    "praktisk": "Når: Hver fredag kl. 18–22\nHvor: Ungdomshuset\nFor: 13–18 år",
+    "merke": "Gratis\npizza!",
+    "hilsen": "Taperen rydder",
+    "url": "tonsberg.kommune.no/spill",
+    "qr": "Skann for\n**spilliste**",
+    "arr": "Ungdom og fritid"
+  }
+}

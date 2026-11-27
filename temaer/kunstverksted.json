@@ -1,0 +1,64 @@
+{
+  "id": "kunstverksted",
+  "navn": "Kunst og maling",
+  "sub": "Pensel, palett og farger",
+  "kategori": "aktivitet",
+  "maaneder": [],
+  "malgrupper": [
+    "barn",
+    "ungdom",
+    "senior"
+  ],
+  "slor": "korall",
+  "motiv": [
+    {
+      "m": "fargeklatt",
+      "x": 90,
+      "y": 10,
+      "s": 100,
+      "f": [
+        "korall"
+      ]
+    },
+    {
+      "m": "fargeklatt",
+      "x": 0,
+      "y": 90,
+      "s": 70,
+      "r": 40,
+      "f": [
+        "lysbla"
+      ]
+    },
+    {
+      "m": "palett",
+      "x": 20,
+      "y": 30,
+      "s": 130
+    },
+    {
+      "m": "pensel",
+      "x": 110,
+      "y": 50,
+      "s": 110,
+      "f": [
+        "gul",
+        "navy",
+        "korall"
+      ]
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "prikk",
+      "fargeklatt"
+    ],
+    "antall": 8,
+    "dekning": 0.35,
+    "farger": [
+      "gul",
+      "korall",
+      "lysbla"
+    ]
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "id": "turdag",
+  "navn": "Tur og friluft",
+  "sub": "Fjell, skog og friluft",
+  "kategori": "aktivitet",
+  "maaneder": [],
+  "malgrupper": [
+    "alle",
+    "barn",
+    "senior",
+    "ansatte"
+  ],
+  "slor": "gronn",
+  "motiv": [
+    {
+      "m": "sol",
+      "x": 120,
+      "y": 0,
+      "s": 60
+    },
+    {
+      "m": "fjell",
+      "x": 0,
+      "y": 30,
+      "s": 180
+    },
+    {
+      "m": "gran",
+      "x": 0,
+      "y": 100,
+      "s": 70
+    },
+    {
+      "m": "gran",
+      "x": 30,
+      "y": 120,
+      "s": 56
+    },
+    {
+      "m": "sekk",
+      "x": 130,
+      "y": 130,
+      "s": 64,
+      "r": 8,
+      "f": [
+        "rod",
+        "navy",
+        "gul"
+      ]
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "sky"
+    ],
+    "antall": 4,
+    "dekning": 0.35,
+    "farger": [
+      "navy"
+    ]
+  }
+}

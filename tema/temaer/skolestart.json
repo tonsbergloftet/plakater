@@ -1,0 +1,65 @@
+{
+  "id": "skolestart",
+  "navn": "Skolestart",
+  "sub": "Sekk, blyant og bøker",
+  "kategori": "arshjul",
+  "maaneder": [
+    8
+  ],
+  "malgrupper": [
+    "barn",
+    "alle"
+  ],
+  "panel": "morkgronn",
+  "bolge": "navy",
+  "slor": "gul",
+  "helt": [
+    {
+      "m": "sekk",
+      "x": 40,
+      "y": 30,
+      "s": 130
+    },
+    {
+      "m": "blyant",
+      "x": 120,
+      "y": 0,
+      "s": 90,
+      "r": 10
+    },
+    {
+      "m": "bok",
+      "x": 0,
+      "y": 120,
+      "s": 90,
+      "r": -8,
+      "f": [
+        "rod",
+        "hvit",
+        "gul"
+      ]
+    }
+  ],
+  "dekor": {
+    "motiver": [
+      "stjerne",
+      "prikk"
+    ],
+    "antall": 8,
+    "dekning": 0.35,
+    "farger": [
+      "hvit"
+    ]
+  },
+  "demo": {
+    "stikk": "Velkommen til",
+    "tittel": "**Skole**start",
+    "ingress": "Første skoledag for nye 1.-klassinger. Foreldre er velkomne.",
+    "praktisk": "Når: Onsdag 18. august kl. 09.00\nHvor: Gymsalen\nFor: Nye elever med foresatte",
+    "merke": "Kaffe og\nboller!",
+    "hilsen": "Vi gleder oss!",
+    "url": "tonsberg.kommune.no/skolestart",
+    "qr": "Skann for\n**praktisk info**",
+    "arr": "Byskogen skole"
+  }
+}

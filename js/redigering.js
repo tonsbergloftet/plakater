@@ -13,9 +13,10 @@ function syncFields(){
     f.classList.toggle('hide', !used.includes(k));
   });
 }
-const TEXT_KEYS = ['pIntro','ut3','tx3','merkeTx','bs1','bs2','bs3','stikk','tittel','ingress','ut1','tx1','pTittel','punkter','ut2','tx2','praktisk','cta','url','qrTekst','s2Tittel','s2Ut1','s2Tx1','s2Ut2','s2Tx2','s2Tx3','s2Slutt','s2Merknad','s2Kontakt','merke','avslutt'];
+const TEXT_KEYS = ['innhold','pIntro','ut3','tx3','merkeTx','bs1','bs2','bs3','stikk','tittel','ingress','ut1','tx1','pTittel','punkter','ut2','tx2','praktisk','cta','url','qrTekst','s2Tittel','s2Ut1','s2Tx1','s2Ut2','s2Tx2','s2Tx3','s2Slutt','s2Merknad','s2Kontakt','merke','avslutt'];
 function fillForm(){
   TEXT_KEYS.forEach(k => { $(k).value = S[k] || ''; });
+  tegnTemavalg();
   $('urlqr').value = S.url || '';
   $('visurl').checked = S.visUrl !== false;
   $('visurlrad').style.display = ['forklaring','delt','tekst','bilder','bildetekst'].includes(S.tpl) ? '' : 'none';
@@ -68,13 +69,13 @@ function fillForm(){
   document.querySelectorAll('.tplbtn').forEach(b => b.classList.toggle('on', b.dataset.tpl===S.tpl));
   document.querySelectorAll('#fmtseg button').forEach(b => b.classList.toggle('on', b.dataset.fmt===S.fmt));
   document.querySelectorAll('.sw').forEach(b => b.classList.toggle('on', b.dataset.s===S.slor));
-  $('dlnote').textContent = S.fmt==='a4' ? 'PDF i A4 for utskrift. PNG i høy oppløsning.' : S.fmt==='bym' ? 'PNG i 2160 × 3840 (9:16) for skjermene på bymøblene. PDF i samme format.' : 'PNG i 1920 × 1080 for infoskjerm. PDF i samme format.';
+  $('dlnote').textContent = S.fmt==='a4' ? 'PDF i A4 for utskrift. PNG i høy oppløsning.' : S.fmt==='a4l' ? 'PDF i A4 liggende for utskrift. PNG i høy oppløsning.' : S.fmt==='bym' ? 'PNG i 2160 × 3840 (9:16) for skjermene på bymøblene. PDF i samme format.' : 'PNG i 1920 × 1080 for infoskjerm. PDF i samme format.';
   syncFields();
 }
 
 function initUI(){
   const tp = $('tpls');
-  GRUPPER.forEach(gr => {
+  visGrupper().forEach(gr => {
     tp.insertAdjacentHTML('beforeend', `<div class="grp">${esc(gr.navn)}</div>`);
     gr.maler.forEach(k => {
       const t = TPLS[k], b = document.createElement('button');
@@ -108,6 +109,8 @@ function initUI(){
   document.querySelectorAll('#fmtseg button').forEach(b => b.onclick = () => { S.fmt = b.dataset.fmt; fillForm(); render(); });
   let t = null;
   TEXT_KEYS.forEach(k => $(k).addEventListener('input', () => { S[k] = $(k).value; clearTimeout(t); t = setTimeout(render, 120); }));
+  $('innhold').addEventListener('focus', () => visFormhjelp(true)); $('innhold').addEventListener('blur', () => visFormhjelp(false));
+  initTema();
   $('urlqr').addEventListener('input', () => { S.url = $('urlqr').value; $('url').value = S.url; $('qrapner').textContent = has('url') ? 'Når noen skanner koden med mobilkameraet, åpnes: ' + (/^https?:\/\//i.test(S.url.trim()) ? '' : 'https://') + S.url.trim() : ''; clearTimeout(t); t = setTimeout(render, 200); });
   $('url').addEventListener('input', () => { $('urlqr').value = $('url').value; });
   $('qr').onchange = () => { S.qr = $('qr').checked; syncFields(); render(); };
@@ -158,6 +161,7 @@ function initUI(){
     el.classList.add('editing');
     el.textContent = el.dataset.kind === 'dline' ? (S[k]||'').split('\n').map(x=>x.trim()).filter(Boolean).join('  |  ') : (S[k] || ''); // råtekst mens man skriver
     if(k === 'url') urlVed = S.url;
+    if(k === 'innhold') visFormhjelp(true);
     const r = document.createRange(); r.selectNodeContents(el); r.collapse(false);
     const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
   });
@@ -173,6 +177,7 @@ function initUI(){
     const el = e.target.closest('.ed'); if(!el) return;
     const k = el.dataset.k;
     el.classList.remove('editing');
+    if(k === 'innhold') visFormhjelp(false);
     el.innerHTML = disp(k, el.dataset.kind);
     if((k === 'merke' && !has(k)) || /^bs\d$/.test(k)){ setTimeout(render, 0); return; } // tomt merke fjernes
     el.classList.toggle('tom', !has(k));
@@ -384,11 +389,30 @@ function oppdaterKi(){
 
 
 // Startskjermen: «Hva skal plakaten gjøre?»
+/* Formateringshjelp: viser hva hver skrivemåte blir til i brødteksten. Prislista viser «Etikett: verdi» som prisrad. */
+function visFormhjelp(på){
+  const el = $('formhjelp'); if(!el) return;
+  if(!på){ el.classList.remove('on'); return; }
+  const pris = S.tpl === 'prisliste';
+  const rad = (skriv, blir) => `<tr><td><code>${skriv}</code></td><td>${blir}</td></tr>`;
+  el.innerHTML = `<h3>Slik styrer du stilen</h3><table><tr><th>Du skriver</th><th>Blir</th></tr>`
+    + rad('Før du bader\nDusj først.', '<span class="fh-h">Før du bader</span><br>Dusj først.')
+    + rad('# Husk', '<span class="fh-h">Husk</span> (alltid mellomtittel)')
+    + rad('- Badehette', '• Badehette')
+    + (pris ? rad('Voksen: 95 kr', '<span class="fh-pris">Voksen<i></i><b>95 kr</b></span>')
+            : rad('Tid: kl. 18', '<span class="fh-e">Tid:</span> kl. 18'))
+    + rad('---', '<span class="fh-l"></span>')
+    + rad('**viktig**', '<span class="fh-u">viktig</span>')
+    + `</table><p>Tom linje starter et nytt avsnitt. En kort første linje i et avsnitt blir mellomtittel.${pris ? ' Hver «Navn: pris» på egen linje blir en prisrad.' : ''}</p>`;
+  el.classList.add('on');
+}
 function velgMal(k){ if(TPLS[S.tpl] && TPLS[S.tpl].fmts.length === 1 && TPLS[k].fmts.length > 1) S.fmt = 'a4'; // fra en skjermmal tilbake til plakat
-  S.tpl = k; S.fmt = fmtFor(k); if(!TPLS[k].fmts.includes(S.fmt)) S.fmt = 'a4'; oppdaterKi(); fillForm(); render(); }
+  S.tpl = k; S.fmt = fmtFor(k); if(!TPLS[k].fmts.includes(S.fmt)) S.fmt = 'a4';
+  brukEksempel(k);
+  oppdaterKi(); fillForm(); render(); }
 function apneStart(forsteGang){
   const g = $('startgrp');
-  g.innerHTML = GRUPPER.map(gr => `<div class="sgrp"><h3>${esc(gr.navn)}</h3><p>${esc(gr.tekst)}</p><div class="srow">${gr.maler.map(k => `<button class="skort" data-tpl="${k}" title="${esc(TPLS[k].sub)}"><div class="thumb"></div><span class="lbl">${esc(TPLS[k].navn)}</span></button>`).join('')}</div></div>`).join('');
+  g.innerHTML = visGrupper().map(gr => `<div class="sgrp"><h3>${esc(gr.navn)}</h3><p>${esc(gr.tekst)}</p><div class="srow">${gr.maler.map(k => `<button class="skort" data-tpl="${k}" title="${esc(TPLS[k].sub)}"><div class="thumb"></div><span class="lbl">${esc(TPLS[k].navn)}</span></button>`).join('')}</div></div>`).join('');
   $('start').classList.add('on');
   $('start').dataset.forste = forsteGang ? '1' : '';
   setTimeout(() => g.querySelectorAll('.skort').forEach(b => miniatyr(b.querySelector('.thumb'), b.dataset.tpl)), 30);
