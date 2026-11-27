@@ -2,7 +2,7 @@
    Temaet endrer bare det malen har plass til. Malen, teksten, logoen, rammen, bølgeformen og QR-koden er de samme.
    - Slør: temaets slørfarge (en av de fire i SLOR) brukes i stedet for den valgte.
    - Flate: malene med lys grå flate får en lys tone av slørfargen (SLOR.tint), så mørk tekst fortsatt har god kontrast.
-   - Motiv: temaets illustrasjon på malens faste motivplass (TEMA_PLASS). Vises ikke når malen har valgt ikon på samme sted.
+   - Motiv: temaets illustrasjon på malens faste motivplass (TEMA_PLASS), aldri over et bilde. Vises ikke når malen har valgt ikon på samme sted.
    - Dekor: små motiver strødd i malens ledige felt (TEMA_PLASS.dekor), aldri over tekst eller bilder.
    Temaene ligger som JSON i temaer/ (én fil per tema, rekkefølgen i temaer/index.json).
    Motivene ligger i js/motiver.js (tegnet i en 200 × 200-boks, farger fra profilen). */
@@ -22,13 +22,9 @@ const TEMA_PLASS = {
   trebilderliggende:  {motiv:[350,30,190], dekor:[[290,40,345,235]], tint:true},
   trebilderskjerm:    {motiv:[440,25,165], dekor:[[340,30,430,185]], tint:true},
   hoydebilde:         {motiv:[590,30,175], ikon:true, dekor:[[440,30,580,195]], tint:true},
-  inndelt:            {motiv:[590,50,160], dekor:[]},
-  bildedrevet:        {motiv:[60,520,190], dekor:[]},
-  forside:            {motiv:[580,60,160], dekor:[]},
-  invitasjon:         {motiv:[580,60,160], dekor:[]},
-  infoskjerm:         {motiv:[1100,40,140], dekor:[]},
-  infoskjerm2:        {motiv:[1080,70,140], dekor:[]},
+  infoskjerm:         {motiv:[765,14,112], dekor:[]},   // over teksten, som flyttes ned (LAYOUTS.infoskjerm)
 };
+// Maler uten tema: illustrasjonen ville ligget over et bilde (inndelt, bildedrevet, forside, invitasjon, infoskjerm2).
 
 let TEMAER = {}, TEMA_REKKE = [];
 async function lastTemaer(){
@@ -108,7 +104,7 @@ function tegnTemavalg(){
   $('sec-slor').classList.toggle('styrt', !!t);
   $('slortema').classList.toggle('hide', !t);
   if(t) $('slortema').textContent = `Slørfargen styres av temaet «${t.navn}». Velg «Ingen» tema over plakaten for å velge selv.`;
-  if(!kan){ stripe.innerHTML = `<span class="tl">Tema</span><span class="tingen">${TEMA_REKKE.length ? 'Denne malen har ingen temaer ennå.' : ''}</span>`; return; }
+  if(!kan){ stripe.innerHTML = `<span class="tl">Tema</span><span class="tingen">${TEMA_REKKE.length ? 'Temaer finnes bare for maler der illustrasjonen ikke dekker et bilde.' : ''}</span>`; return; }
   const aktuelle = TEMA_REKKE.map(id => TEMAER[id]).filter(x => x && x.maaneder.length && temaAvstand(x) <= 1).sort((a, b) => temaAvstand(a) - temaAvstand(b)).slice(0, 4);
   const vis = [{id:'', navn:'Ingen'}, ...aktuelle];
   if(S.tema && TEMAER[S.tema] && !vis.some(c => c.id === S.tema)) vis.push(TEMAER[S.tema]);

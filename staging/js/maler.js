@@ -912,13 +912,14 @@ LAYOUTS.infoskjerm = (uid) => {
       <path d="${SKJ.S9.hvit}" fill="#fff"/><path d="${SKJ.S9.hale}" fill="#fff"/>
     </g>
   </svg>`;
+  const dy = S.tema && typeof TEMAER !== 'undefined' && TEMAER[S.tema] ? 62 : 0; // med tema står illustrasjonen over teksten
   const q = S.qr ? qrSvg() : '';
   const ki = S.ki ? `<div class="ki" style="left:40px;top:640px">${KI_ICON}KI-generert bilde</div>` : '';
   const tekst = E('stikk','stikk') + E('tittel','tittel')
     + `<div class="regel" style="margin:1.13em 0 1.07em"></div>` + E('ut1','h11b') + E('tx1','p11b')
     + (hasE('praktisk') ? `<div class="regel" style="margin:1.22em 0 .87em"></div>` + E('praktisk','praktisk') : '');
   return svg + logo(73,40,71.5) + ki
-    + box(434.5,98,449,580,20.18,'is11', tekst)
+    + box(434.5,98+dy,449,580-dy,20.18,'is11', tekst)
     + skjermQr(q, 1099, 503.5, 125.5, SKJ.S9.pil,
         `<div class="box" data-base="30.6" style="left:1040px;top:643px;width:200px;height:62px;font-size:30.6px">${E('cta','skript','div','line-height:.81')}</div>`);
 };
