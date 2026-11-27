@@ -137,6 +137,8 @@ Status fra 19.11.2026. Sjekk med designeren om noe er avklart, og oppdater lista
   - **Slør:** temaets slørfarge, en av de fire i `SLOR`.
   - **Flate:** malene med lys grå flate får en lys tone av slørfargen (`SLOR.tint`). Mørk tekst beholder god kontrast.
   - **Motiv:** en illustrasjon på malens faste motivplass (`TEMA_PLASS`). Den vises ikke når malen har valgt ikon på samme plass.
+  - **Aldri over bilder** (designer, 27.11.2026). Maler der motivet ville dekket et bilde, har ikke tema: Inndelt, Bildedrevet, Forside, Invitasjon og Infoskjerm 2.
+  - **Infoskjerm:** motivet står over teksten, og teksten flyttes 62 px ned når et tema er valgt.
   - **Dekor:** små motiver i malens ledige felt, aldri over tekst eller bilder.
   - Logo, ramme, bølgeform, typografi og QR endres ikke.
   - Motivene (`js/motiver.js`) bruker profilfargene, også rød, mørkegrønn og grå, som ikke står i malene ellers.
